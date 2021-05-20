@@ -1,0 +1,18 @@
+{
+  "home": "Inicio",
+  "regenerate": "Regenerar",
+  "timermode": "Contratiempo",
+  "settings": "Configuración",
+  "play_btn": "Iniciar",
+  "stop_btn": "Detener",
+  "interface": "Interfaz",
+  "appearance": "Apariencia",
+  "accessibility": "Accesibilidad",
+  "keybinds": "Atajos de teclado",
+  "advanced": "Avanzado",
+  "about": "Acerca de {{app_name}}",
+  "minimize_btn": "Minimizar",
+  "restore_btn": "Restaurar",
+  "maximize_btn": "Maximizar",
+  "close_btn": "Cerrar"
+}

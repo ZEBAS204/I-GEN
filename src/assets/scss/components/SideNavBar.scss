@@ -1,0 +1,38 @@
+.nav-bar {
+	//position: fixed;
+	width: 64px;
+	height: 100%;
+	//padding: 10px;
+	//left: 0; top: 0;
+	text-align: center;
+	display: flex;
+	overflow: hidden auto; // Allow scrolling
+
+	& &-top {
+		//top: 0;
+		margin-top: 1em;
+	}
+
+	& &-bottom {
+		bottom: 0;
+		position: absolute;
+		margin-bottom: 0.5em;
+	}
+
+	&-button-icon {
+		&:hover {
+			background-color: var(--chakra-colors-whiteAlpha-300);
+		}
+	}
+
+	& .active {
+		& .nav-bar-button-icon {
+			border-color: #0099ff !important;
+			color: #0099ff !important;
+
+			&:hover {
+				background-color: #0099ff17;
+			}
+		}
+	}
+}

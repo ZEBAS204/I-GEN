@@ -1,0 +1,13 @@
+.ghost_background {
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: url(../../icons/ghost.svg) 0 0 repeat;
+	background-size: 8em;
+	//transform: rotate(21deg);
+	opacity: 0.1;
+	pointer-events: none; // Allow clicking through element
+	z-index: -1; // Prevent overlapping the nav menu
+}

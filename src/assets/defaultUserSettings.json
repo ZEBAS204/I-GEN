@@ -1,0 +1,27 @@
+[
+  {
+    "key": "opt-in-serviceworker",
+    "value": true,
+    "type": "boolean"
+  },
+  {
+    "key": "theme_swap_icon",
+    "value": true,
+    "type": "boolean"
+  },
+  {
+    "key": "github_icon",
+    "value": true,
+    "type": "boolean"
+  },
+  {
+    "key": "theme_swap_icon",
+    "value": true,
+    "type": "boolean"
+  },
+  {
+    "key": "side_nav_direction",
+    "value": 0,
+    "type": "number"
+  }
+]
