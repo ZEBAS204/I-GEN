@@ -1,0 +1,52 @@
+
+Objectives:
+  Create a random adjective/noun combinator with language selection (i18) and editable worlds list.
+  ☐ Simple Combinator
+  ☐ Timer mode, every x time regenerate
+  ☐ Shortcuts Keys
+  ☐ Offline App | Electron -> Progressive Web Application (PWA)
+  ☐ Responsive Design:
+    ☐ Resize UI according to display
+    ☐ Mobile friendly navigation
+  ✔ Single Page Application (SPA)
+  ☐ Use Page Transitions
+  ✔ Add translations support (i18)
+
+Todo:
+  Restore:
+    Things to restore from previous lost work.
+    ☐ Default Settings (booleans are passed as strings, so in wrong type state)
+    ☐ Side navigation bar style
+    ☐ Timer Mode
+
+  User Settings:
+    ✔ Light/Dark theme
+    ☐ Customizable colours @low
+    ☐ Use animations @low
+    ☐ Ability to toggle Sidebar expanded view mode @low
+    ☐ Ability to disable Sidebar name popups in button view @low
+    ✔ Sidebar preferred position (left/right)
+    ☐ Editable adj/noun lists
+    ☐ Text To Speak: @low
+      ☐ Speaker Voice (if supported)
+      ☐ Speaker Voice Volume
+    ☐ Import/Export lists (url support)
+    ☐ Electron: @low
+      ☐ Ability to toggle use of OS windows frame
+      ☐ Ability to unlock Electron devtools in production version @low
+
+  Maintenance:
+    ☐ Add debugging utils
+    ☐ Label translations
+
+  Other:
+    Not important during development, but usefull for later
+    ✔ Add 404 error page
+    ☐ Service Workers - Speed Up Cache (https://github.com/cra-template/pwa) @low
+    ☐ Server side words api (runs along with the page to retrieve words faster) @low
+    ☐ Icon and a proper name of project @low
+
+
+Adjectives and Nouns thanks to Kevin's word lists: https://github.com/en-wl/wordlist
+
+https://wordnet.princeton.edu/download/current-version#win
