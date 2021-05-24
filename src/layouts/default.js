@@ -27,10 +27,10 @@ class DefaultLayout extends Component {
 	render() {
 		return (
 			<BrowserRouter>
-				<Flex h="100%">
+				<Flex id="content" h="100%">
 					<SideNav />
 
-					<Flex className="main-container" grow={1} basis={'auto'} m={5}>
+					<Flex id="content-container" grow={1} basis={'auto'} m={5}>
 						<Switch>
 							<Route exact path="/" component={Home} />
 							<Route path="/settings" component={Settings} />

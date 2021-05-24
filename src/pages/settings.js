@@ -7,7 +7,6 @@ import {
 	TabPanel,
 	useColorModeValue,
 	Text,
-	Divider,
 } from '@chakra-ui/react'
 
 import { useTranslation } from 'react-i18next' // Translations

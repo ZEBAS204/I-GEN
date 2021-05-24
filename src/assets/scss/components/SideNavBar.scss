@@ -1,38 +1,57 @@
-.nav-bar {
-	//position: fixed;
+.navbar {
 	width: 64px;
 	height: 100%;
-	//padding: 10px;
-	//left: 0; top: 0;
-	text-align: center;
-	display: flex;
-	overflow: hidden auto; // Allow scrolling
 
-	& &-top {
-		//top: 0;
-		margin-top: 1em;
-	}
-
-	& &-bottom {
-		bottom: 0;
-		position: absolute;
-		margin-bottom: 0.5em;
-	}
-
-	&-button-icon {
-		&:hover {
-			background-color: var(--chakra-colors-whiteAlpha-300);
+	& &-icons-row {
+		height: 100%; // Fix icons focus border cuts
+		display: flex;
+		flex-direction: column;
+		text-align: center;
+		align-items: unset;
+		overflow: hidden auto; // Allow scrolling
+		padding: {
+			top: 1rem;
+			bottom: 1rem;
 		}
-	}
 
-	& .active {
-		& .nav-bar-button-icon {
-			border-color: #0099ff !important;
-			color: #0099ff !important;
+		&-button-icon {
+			list-style: none;
 
 			&:hover {
-				background-color: #0099ff17;
+				background-color: var(--chakra-colors-whiteAlpha-300);
 			}
+		}
+
+		& a {
+			text-decoration: none;
+
+			&.active {
+				& .navbar-icons-row-button-icon {
+					border-color: #0099ff !important;
+					color: #0099ff !important;
+
+					&:hover {
+						background-color: #0099ff17;
+					}
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 500px) {
+	.navbar {
+		width: 100%;
+		height: 5rem;
+		// TODO: add user property order for mobile (display menu at top/bottom)
+		order: 1 !important; // Force order to the bottom of the window
+
+		& &-icons-row {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-around;
+			padding: 0 1rem;
+			overflow: hidden;
 		}
 	}
 }

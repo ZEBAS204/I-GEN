@@ -16,11 +16,8 @@ import {
 import {
 	//*IoRemove, IoScan, IoClose, // Windows
 	//*IoRemoveCircle, IoScanCircle, IoCloseCircle, // Linux
-	IoEllipse, // Mac...
+	IoEllipse, // Mac
 } from 'react-icons/io5' // Material Design Icons
-
-// Style
-import '../assets/scss/components/OS_Bar.scss'
 
 function OS_MENU_BAR() {
 	const [isElectron, setElectronInstance] = useState(false)
@@ -29,6 +26,7 @@ function OS_MENU_BAR() {
 
 	useEffect(() => {
 		;(async () => {
+			// TODO: Don't add OS bar in mobile
 			await getData('electron').then((e) => {
 				console.log('[OS] Electron:', e)
 				setElectronInstance(e)

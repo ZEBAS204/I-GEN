@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { useColorModeValue, Flex, Center, Button } from '@chakra-ui/react'
+import { useColorModeValue, Center, Button } from '@chakra-ui/react'
 import { IoSyncOutline } from 'react-icons/io5' // Icons
 
 import WordGenerator from '../components/WordGenerator'
@@ -15,27 +15,26 @@ function Home() {
 	const { t } = useTranslation()
 
 	return (
-		<Flex
+		<Center
 			p={3}
 			bg={bgColor}
 			borderRadius="md"
 			flexBasis="100%" // Allow to fill empty space
 		>
-			<Center>
-				<div>
-					<WordGenerator ref={generator} />
-					<br />
-					<Button
-						spacing={4}
-						variant="solid"
-						rightIcon={<IoSyncOutline />}
-						onClick={() => generator.current.regenerateWord()}
-					>
-						{t('regenerate')}
-					</Button>
-				</div>
-			</Center>
-		</Flex>
+			<div>
+				<WordGenerator ref={generator} />
+				<br />
+				<Button
+					spacing={4}
+					variant="solid"
+					colorScheme="blue"
+					rightIcon={<IoSyncOutline />}
+					onClick={() => generator.current.regenerateWord()}
+				>
+					{t('regenerate')}
+				</Button>
+			</div>
+		</Center>
 	)
 }
 

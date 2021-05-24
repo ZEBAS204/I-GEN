@@ -5,11 +5,6 @@
     "type": "boolean"
   },
   {
-    "key": "theme_swap_icon",
-    "value": true,
-    "type": "boolean"
-  },
-  {
     "key": "github_icon",
     "value": true,
     "type": "boolean"

@@ -2,6 +2,9 @@ import { Component } from 'react'
 import { Box, Flex, Spacer, Icon, Text, Stack } from '@chakra-ui/react'
 import { IoAdd } from 'react-icons/io5' // + Icon
 
+// Style
+import '../assets/scss/components/WordGenerator.scss'
+
 class WordGenerator extends Component {
 	constructor(props) {
 		super(props)
@@ -17,9 +20,9 @@ class WordGenerator extends Component {
 		this.regenerateWord = this.regenerateWord.bind(this)
 	}
 
-	// Get a random word from both lists: nouns and adjectivecs
+	// Get a random word from both lists: nouns and adjectives
 	regenerateWord() {
-		//! Hardcoded but do the work for debugging pruporses
+		//! Hardcoded but do the work for debugging purposes
 		if (this.state.number === 1) {
 			this.setState({
 				number: 2,
@@ -34,10 +37,19 @@ class WordGenerator extends Component {
 		}
 		if (this.state.number === 3) {
 			this.setState({
-				number: 1,
+				number: 4,
 				words: {
 					noun: 'egad564ad56h4ad6h',
 					adjective: 'gjmz4556<h4w6efaaax :3',
+				},
+			})
+		}
+		if (this.state.number === 4) {
+			this.setState({
+				number: 1,
+				words: {
+					noun: 'asasasas',
+					adjective: 'pppppppppppppppppppp',
 				},
 			})
 		}
