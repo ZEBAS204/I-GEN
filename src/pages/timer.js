@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { useColorModeValue, Center, Button, Stack } from '@chakra-ui/react'
+import { useColorModeValue, Center, Flex, Button } from '@chakra-ui/react'
 import { IoSyncOutline } from 'react-icons/io5' // Icons
 
 import WordGenerator from '../components/WordGenerator'
@@ -22,10 +22,9 @@ function TimerMode() {
 			borderRadius="md"
 			flexBasis="100%" // Allow to fill empty space
 		>
-			<div>
+			<Flex flexDirection="column">
 				<WordGenerator ref={generator} />
 				<br />
-				<Stack></Stack>
 				<Button
 					spacing={4}
 					variant="solid"
@@ -35,7 +34,7 @@ function TimerMode() {
 				>
 					{t('timermode')}
 				</Button>
-			</div>
+			</Flex>
 		</Center>
 	)
 }

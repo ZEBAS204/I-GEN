@@ -1,6 +1,6 @@
 //import Electron from 'electron';
 import React, { useState, useEffect } from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { getData } from '../utils/appStorage'
 
 import { useTranslation } from 'react-i18next'
@@ -51,7 +51,6 @@ function SideNav() {
 
 	return (
 		<chakra.nav className="navbar" bg={bgColor} order={NavDirection}>
-			{/* Should use Wrap? */}
 			<Stack as="ul" className="navbar-icons-row">
 				<NavLink exact to="/">
 					<IconButton
@@ -69,7 +68,7 @@ function SideNav() {
 				</NavLink>
 				{showGithubIcon && (
 					<a
-						href="https://www.example.com" // TODO: use node package env variable
+						href="https://www.example.com" // TODO: use env variable
 						target="_blank"
 						rel="noopener noreferrer"
 					>
@@ -90,16 +89,19 @@ function SideNav() {
 						icon={<IoSettingsSharp />}
 					/>
 				</NavLink>
-				{showThemeSwapIcon && (
-					<div>
-						<IconButton
-							aria-label="Swap theme icon"
-							className="navbar-icons-row-button"
-							onClick={toggleColorMode}
-							icon={themeIcon}
-						/>
-					</div>
-				)}
+				{
+					// ! Dev, remove later
+					showThemeSwapIcon && (
+						<div>
+							<IconButton
+								aria-label="Swap theme icon"
+								className="navbar-icons-row-button"
+								onClick={toggleColorMode}
+								icon={themeIcon}
+							/>
+						</div>
+					)
+				}
 			</Stack>
 		</chakra.nav>
 	)

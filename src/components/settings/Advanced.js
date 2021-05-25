@@ -19,7 +19,7 @@ class ExportLists extends Component {
 		const listData = new Blob([this.getListData().join('\n')], {
 			type: 'text/plain',
 		})
-		const typeList = 'xxxxxxxxxxxxxxx' // TODO
+		const typeList = 'xxxxxxxxxxxxxxx'
 		element.href = URL.createObjectURL(listData)
 		element.download = `${typeList}_list.txt`
 		document.body.appendChild(element)

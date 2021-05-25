@@ -24,7 +24,7 @@ const theme = extendTheme({
 	config: {
 		initialColorMode: 'light',
 		// TODO: fix not using user prefer color mode
-		useSystemColorMode: true, //! Ignores saved user config
+		useSystemColorMode: false, //! Ignores saved user config
 	},
 })
 

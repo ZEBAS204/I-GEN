@@ -1,7 +1,7 @@
 html,
 body,
 #root {
-	// Fix flexbox
+	// Fixes flexbox
 	height: 100%;
 	display: flex;
 	flex-direction: column;
@@ -12,9 +12,7 @@ body,
 	#content {
 		// So the Side navbar can be displayed on the bottom of the page
 		flex-direction: column;
-
-		/*&-container {
-		}
-		*/
 	}
 }
+
+// TODO: add scrollbar style

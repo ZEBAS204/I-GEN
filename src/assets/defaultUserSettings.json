@@ -18,5 +18,10 @@
     "key": "side_nav_direction",
     "value": 0,
     "type": "number"
+  },
+  {
+    "key": "dev_mode",
+    "value": false,
+    "type": "boolean"
   }
 ]

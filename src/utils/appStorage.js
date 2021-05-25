@@ -1,15 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 /**
- *
- * @param {string} key
- * @param {*} value
+ * Create a new data item into LocalStorage
+ * @param {string} key Name of the value to store with be accessed by
+ * @param {*} value Any value to give to the key
  * @param {boolean} success Success storign given key
  */
 const setData = async (key, value) => {
 	let success // Initialize var
 	try {
-		const jsonValue = JSON.stringify(value)
+		const jsonValue = JSON.stringify(value) // Saved as an object
 		await AsyncStorage.setItem(key, jsonValue)
 		success = true
 	} catch (e) {
@@ -21,15 +21,18 @@ const setData = async (key, value) => {
 }
 
 /**
- *
- * @param {string} key
+ * Get a stored data item from LocalStorage (if exists)
+ * @param {string} key Name of the data to accesses
  * @returns {*} key storaged value or null if non existent
  */
 const getData = async (key) => {
 	try {
 		const value = await AsyncStorage.getItem(key)
-		// value previously stored
-		return value !== null ? value : null
+		// convert the value if exist into an object,
+		// so we can preserve the original value type
+		const objValue = JSON.parse(value)
+
+		return value !== null ? objValue : null
 	} catch (e) {
 		// error reading value
 		return null
@@ -37,7 +40,7 @@ const getData = async (key) => {
 }
 
 /**
- *
+ * Removed a given key name from LocalStorage (if exists)
  * @param {string} key
  * @returns Success deleting given key
  */

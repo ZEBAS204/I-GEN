@@ -1,5 +1,6 @@
 import { getData, setData } from './appStorage'
 
+// * https://github.com/cheton/is-electron
 function checkElectronInstance() {
 	// Renderer process
 	if (
@@ -43,25 +44,25 @@ export default async function defaultSettings() {
 
 		// Loop all the settings from the default json and compare
 		// with the stored ones if they exist and their type match
+		let int = 0
 		defaults.forEach(async (def) => {
+			int++
 			// Get stored value from user
 			const storedValue = await getData(def.key)
-
-			console.info(storedValue, typeof storedValue)
 
 			// Compare the user value with the default ones
 			if (storedValue !== null) {
 				if (typeof storedValue === def.type) {
-					console.info('Everything okay!', def.key)
+					console.info(`[DS-${int}] Everything okay!`, { key: def.key })
 				} else {
 					// They key is stored but the expected type is wrong
 					// Set key to default value
-					console.info('Unexpected value of key ', def.key)
+					console.info(`[DS-${int}] Unexpected value of key `, { key: def.key })
 					setData(def.key, def.value)
 				}
 			} else {
 				// Key not exist
-				console.info(`Not found "${def.key}" creating a new one...`)
+				console.info(`[DS-${int}] Not found "${def.key}" creating a new one...`)
 				setData(def.key, def.value)
 			}
 		})

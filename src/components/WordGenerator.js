@@ -2,9 +2,6 @@ import { Component } from 'react'
 import { Box, Flex, Spacer, Icon, Text, Stack } from '@chakra-ui/react'
 import { IoAdd } from 'react-icons/io5' // + Icon
 
-// Style
-import '../assets/scss/components/WordGenerator.scss'
-
 class WordGenerator extends Component {
 	constructor(props) {
 		super(props)

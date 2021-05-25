@@ -26,7 +26,8 @@ function OS_MENU_BAR() {
 
 	useEffect(() => {
 		;(async () => {
-			// TODO: Don't add OS bar in mobile
+			// TODO: don't add OS bar in mobile
+			// TODO: bind electron buttons
 			await getData('electron').then((e) => {
 				console.log('[OS] Electron:', e)
 				setElectronInstance(e)
