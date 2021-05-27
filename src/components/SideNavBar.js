@@ -36,7 +36,10 @@ function SideNav() {
 	useEffect(() => {
 		;(async () => {
 			await getData('side_nav_direction').then((dir) => {
-				setNavDirection(dir)
+				// Only accept 0 or 1, maybe the user could changed in settings
+				// If not match, default will be left
+				let _dir = dir === 0 || dir === 1 ? dir : 0
+				setNavDirection(_dir)
 			})
 			await getData('github_icon').then((display) => {
 				setGitIconVisibility(display)
