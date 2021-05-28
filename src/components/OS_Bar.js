@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from 'react'
 import { getData } from '../utils/appStorage'
 
-import { useTranslation } from 'react-i18next'
-
 import {
 	Flex,
 	Box,
@@ -22,7 +20,6 @@ import {
 function OS_MENU_BAR() {
 	const [isElectron, setElectronInstance] = useState(false)
 	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200') // Theme colors (light, dark)
-	const { t } = useTranslation()
 
 	useEffect(() => {
 		;(async () => {
@@ -55,7 +52,6 @@ function OS_MENU_BAR() {
 					>
 						<IconButton
 							aria-label="Minimize Button"
-							title={t('minimize_btn')}
 							onClick={() => {
 								console.info('[OS] MINIMIZED')
 							}}
@@ -64,7 +60,6 @@ function OS_MENU_BAR() {
 						/>
 						<IconButton
 							aria-label="Maximize Button"
-							title={t('maximize_btn')}
 							onClick={() => {
 								console.info('[OS] MAXIMIZE/RESTORE')
 							}}
@@ -73,7 +68,6 @@ function OS_MENU_BAR() {
 						/>
 						<IconButton
 							aria-label="Close Button"
-							title={t('close_btn')}
 							onClick={() => {
 								console.info('[OS] CLOSED')
 							}}

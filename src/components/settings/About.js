@@ -8,11 +8,9 @@ function About() {
 
 	return (
 		<>
-			<Text fontSize="xl">{t('about')}</Text>
+			<Text fontSize="xl">{t('settings.about')}</Text>
 			<Divider />
-			HERE: Language, Accesibility (read generated text? - read volume),
-			Notifications (timer mode :D - mute notif.), save settings (idk why but
-			should be) Use animations (?)
+			This project it's a blablalblablbal
 		</>
 	)
 }

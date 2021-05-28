@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 
 import {
 	chakra, // Custom html elements
+	Tooltip,
 	useColorMode,
 	useColorModeValue,
 	IconButton,
@@ -55,43 +56,71 @@ function SideNav() {
 	return (
 		<chakra.nav className="navbar" bg={bgColor} order={NavDirection}>
 			<Stack as="ul" className="navbar-icons-row">
-				<NavLink exact to="/">
-					<IconButton
-						aria-label="Home"
-						className="navbar-icons-row-button"
-						icon={<IoHomeSharp />}
-					/>
-				</NavLink>
-				<NavLink to="/timer">
-					<IconButton
-						aria-label="Timer mode"
-						className="navbar-icons-row-button"
-						icon={<IoTimer />}
-					/>
-				</NavLink>
-				{showGithubIcon && (
-					<a
-						href="https://www.example.com" // TODO: use env variable
-						target="_blank"
-						rel="noopener noreferrer"
-					>
+				<Tooltip
+					label={t('buttons.home')}
+					placement="auto-start"
+					openDelay={500}
+					gutter="0"
+				>
+					<NavLink exact to="/">
 						<IconButton
-							aria-label="Github"
+							aria-label="Home"
 							className="navbar-icons-row-button"
-							onClick={() => {
-								console.log('Clicked github icon')
-							}}
-							icon={<IoLogoGithub />}
+							icon={<IoHomeSharp />}
 						/>
-					</a>
+					</NavLink>
+				</Tooltip>
+				<Tooltip
+					label={t('buttons.timermode')}
+					placement="auto-start"
+					openDelay={500}
+					gutter="0"
+				>
+					<NavLink to="/timer">
+						<IconButton
+							aria-label="Timer Mode"
+							className="navbar-icons-row-button"
+							icon={<IoTimer />}
+						/>
+					</NavLink>
+				</Tooltip>
+				{showGithubIcon && (
+					<Tooltip
+						label="Repo"
+						placement="auto-start"
+						openDelay={500}
+						gutter="0"
+					>
+						<a
+							href="https://www.example.com" // TODO: use env variable
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<IconButton
+								aria-label="Github"
+								className="navbar-icons-row-button"
+								onClick={() => {
+									console.log('Clicked github icon')
+								}}
+								icon={<IoLogoGithub />}
+							/>
+						</a>
+					</Tooltip>
 				)}
-				<NavLink to="/settings">
-					<IconButton
-						aria-label="Settings"
-						className="navbar-icons-row-button"
-						icon={<IoSettingsSharp />}
-					/>
-				</NavLink>
+				<Tooltip
+					label={t('buttons.settings')}
+					placement="auto-start"
+					openDelay={500}
+					gutter="0"
+				>
+					<NavLink to="/settings">
+						<IconButton
+							aria-label="Settings"
+							className="navbar-icons-row-button"
+							icon={<IoSettingsSharp />}
+						/>
+					</NavLink>
+				</Tooltip>
 				{
 					// ! Dev, remove later
 					showThemeSwapIcon && (

@@ -31,7 +31,7 @@ function Home() {
 					rightIcon={<IoSyncOutline />}
 					onClick={() => generator.current.regenerateWord()}
 				>
-					{t('regenerate')}
+					{t('buttons.regenerate')}
 				</Button>
 			</Flex>
 		</Center>

@@ -27,14 +27,14 @@ function Settings() {
 			flexBasis="100%" // Allow to fill empty space
 		>
 			<TabList bg={bgColor} borderRadius="md" p={3}>
-				<Text fontSize="xl">{t('settings')}</Text>
+				<Text fontSize="xl">{t('buttons.settings')}</Text>
 
-				<Tab>{t('interface')}</Tab>
-				<Tab>{t('appearance')}</Tab>
-				<Tab>{t('accessibility')}</Tab>
-				<Tab>{t('keybinds')}</Tab>
-				<Tab>{t('advanced')}</Tab>
-				<Tab>{t('about', { app_name: 'AN' })}</Tab>
+				<Tab>{t('settings.interface')}</Tab>
+				<Tab>{t('settings.appearance')}</Tab>
+				<Tab>{t('settings.accessibility')}</Tab>
+				<Tab>{t('settings.keybinds')}</Tab>
+				<Tab>{t('settings.advanced')}</Tab>
+				<Tab>{t('settings.about', { app_name: 'AN' })}</Tab>
 			</TabList>
 
 			<TabPanels bg={bgColor} borderRadius="md" ml={5} p={3}>
@@ -45,19 +45,17 @@ function Settings() {
 					<Advanced />
 				</TabPanel>
 				<TabPanel>
+					<Advanced />
+				</TabPanel>
+				<TabPanel>
+					<Advanced />
+				</TabPanel>
+				<TabPanel>
+					<Advanced />
+				</TabPanel>
+				<TabPanel>
 					<About />
 				</TabPanel>
-				<div>
-					<div header="APP Settings"></div>
-					<div header="Keybinds">............</div>
-					<div header="Appearance">
-						<h2>Ripple Effect</h2>
-						<h2>Theme</h2>
-						<div className="p-grid">
-							<p className="p-ml-2">Alternate between themes </p>
-						</div>
-					</div>
-				</div>
 			</TabPanels>
 		</Tabs>
 	)

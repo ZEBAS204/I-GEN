@@ -22,15 +22,16 @@ i18n
 			'htmlTag',
 		],
 		resources: {
-			'en-us': {
+			en: {
 				translation: require('../static/locales/en-us.json'),
 			},
-			'es-es': {
+			es: {
 				translation: require('../static/locales/es-es.json'),
 			},
 		},
+		keySeparator: '.', // Allow nesting keys with dots (def dot)
 		interpolation: {
-			escapeValue: false, // not needed for react as it escapes by default
+			escapeValue: false, // Not needed for react as it escapes by default
 		},
 	})
 // for all options read: https://www.i18next.com/overview/configuration-options

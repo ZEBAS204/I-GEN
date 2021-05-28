@@ -32,7 +32,7 @@ function TimerMode() {
 					rightIcon={<IoSyncOutline />}
 					onClick={() => generator.current.regenerateWord()}
 				>
-					{t('timermode')}
+					{t('buttons.timermode')}
 				</Button>
 			</Flex>
 		</Center>
