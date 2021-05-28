@@ -2,6 +2,8 @@ import { Component } from 'react'
 import { Box, Flex, Spacer, Icon, Text, Stack } from '@chakra-ui/react'
 import { IoAdd } from 'react-icons/io5' // + Icon
 
+import TTS from '../utils/tts' // TTS
+
 class WordGenerator extends Component {
 	constructor(props) {
 		super(props)
@@ -50,6 +52,9 @@ class WordGenerator extends Component {
 				},
 			})
 		}
+
+		// Todo: read user setting
+		new TTS(`${this.state.words.adjective} ${this.state.words.noun}`).say()
 	}
 
 	render() {
