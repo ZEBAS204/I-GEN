@@ -43,6 +43,7 @@
 	.navbar {
 		width: 100%;
 		height: 5rem;
+		//box-shadow: 0 0 5px 0 black;
 		// TODO: add user property order for mobile (display menu at top/bottom)
 		order: 1 !important; // Force order to the bottom of the window
 
@@ -52,6 +53,12 @@
 			justify-content: space-around;
 			padding: 0 1rem;
 			overflow: hidden;
+
+			& a,
+			& div,
+			&-button {
+				margin: 0;
+			}
 		}
 	}
 }
