@@ -6,7 +6,7 @@
 			"type": "firefox",
 			"request": "launch",
 			"reAttach": true,
-			"url": "http://localhost:3000/index.html",
+			"url": "http://localhost:3000/",
 			"webRoot": "${workspaceFolder}",
 			"reloadOnChange": {
 				"watch": ["${workspaceFolder}/src/**/*.js"],
