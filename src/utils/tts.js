@@ -1,7 +1,4 @@
-/*
- *
- * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance
- */
+//! Global variables
 const synth = window.speechSynthesis /* || chrome.tts*/
 const voices = synth.getVoices()
 
@@ -15,9 +12,11 @@ const voices = synth.getVoices()
  * @param {Number} pitch Pitch intensify
  * @param {String} lang OS supported language
  * @class
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance
  */
 export default class TTS {
 	static _lang = 'en-US'
+	static _voices = voices
 	static _voice = voices[0]
 	static _volume = 1
 	static _rate = 1
