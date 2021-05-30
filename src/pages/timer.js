@@ -1,5 +1,15 @@
 import React, { useRef, useState } from 'react'
-import { useColorModeValue, Center, Flex, Button } from '@chakra-ui/react'
+import {
+	useColorModeValue,
+	Center,
+	Flex,
+	Button,
+	NumberInput,
+	NumberInputField,
+	NumberInputStepper,
+	NumberIncrementStepper,
+	NumberDecrementStepper,
+} from '@chakra-ui/react'
 import { IoSyncOutline } from 'react-icons/io5' // Icons
 
 import WordGenerator from '../components/WordGenerator'
@@ -31,6 +41,7 @@ function TimerMode() {
 					colorScheme="blue"
 					rightIcon={<IoSyncOutline />}
 					onClick={() => generator.current.regenerateWord()}
+					alignSelf="center"
 				>
 					{t('buttons.timermode')}
 				</Button>

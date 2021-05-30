@@ -30,6 +30,7 @@ function Home() {
 					colorScheme="blue"
 					rightIcon={<IoSyncOutline />}
 					onClick={() => generator.current.regenerateWord()}
+					alignSelf="center"
 				>
 					{t('buttons.regenerate')}
 				</Button>
