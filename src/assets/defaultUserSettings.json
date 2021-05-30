@@ -1,27 +1,32 @@
 [
   {
-    "key": "opt-in-serviceworker",
-    "value": true,
-    "type": "boolean"
+    "key": "dev_mode",
+    "type": "boolean",
+    "value": false
   },
   {
     "key": "github_icon",
-    "value": true,
-    "type": "boolean"
+    "type": "boolean",
+    "value": true
   },
   {
-    "key": "theme_swap_icon",
-    "value": true,
-    "type": "boolean"
+    "key": "opt-in-serviceworker",
+    "type": "boolean",
+    "value": true
   },
   {
     "key": "side_nav_direction",
-    "value": 0,
-    "type": "number"
+    "type": "number",
+    "value": 0
   },
   {
-    "key": "dev_mode",
-    "value": false,
-    "type": "boolean"
+    "key": "theme_swap_icon",
+    "type": "boolean",
+    "value": true
+  },
+  {
+    "key": "tts_enabled",
+    "type": "boolean",
+    "value": false
   }
 ]
