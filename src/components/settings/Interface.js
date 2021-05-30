@@ -7,34 +7,38 @@ import {
 	Radio,
 	RadioGroup,
 	useColorMode,
-	useColorModeValue,
+	Switch,
+	Stack,
+	Spacer,
+	Heading,
 } from '@chakra-ui/react'
 
 import { useTranslation } from 'react-i18next' // Translations
 
+// TODO: default page (normal or timed mode)
+
 function Interface() {
 	const { t, i18n } = useTranslation()
-	const [themeMode, toggleColorMode] = useState(useColorMode())
 
 	useEffect(() => {
 		;(async () => {
-			// a
+			//a
 		})()
 	}, [])
 
 	return (
 		<>
-			<Text fontSize="xl">{t('settings.interface')}</Text>
+			<Heading>{t('settings.interface')}</Heading>
+			<br />
 			<Divider />
+			<br />
 			<Box>
-				<Text>Theme</Text>
-				<RadioGroup onChange={toggleColorMode} value={themeMode}>
-					<Radio></Radio>
-				</RadioGroup>
+				<Text>
+					HERE: Language, Accessibility (read generated text? - read volume),
+					Notifications (timer mode :D - mute notifications), save settings (idk
+					why but should be) Use animations (?)
+				</Text>
 			</Box>
-			HERE: Language, Accessibility (read generated text? - read volume),
-			Notifications (timer mode :D - mute notif.), save settings (idk why but
-			should be) Use animations (?)
 		</>
 	)
 }

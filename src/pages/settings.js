@@ -11,6 +11,8 @@ import {
 
 import { useTranslation } from 'react-i18next' // Translations
 import Interface from '../components/settings/Interface'
+import Appearance from '../components/settings/Appearance'
+import Accessibility from '../components/settings/Accessibility'
 import Advanced from '../components/settings/Advanced'
 import About from '../components/settings/About'
 
@@ -42,10 +44,10 @@ function Settings() {
 					<Interface />
 				</TabPanel>
 				<TabPanel>
-					<Advanced />
+					<Appearance />
 				</TabPanel>
 				<TabPanel>
-					<Advanced />
+					<Accessibility />
 				</TabPanel>
 				<TabPanel>
 					<Advanced />
