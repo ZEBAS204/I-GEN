@@ -5,32 +5,57 @@
 const synth = window.speechSynthesis /* || chrome.tts*/
 const voices = synth.getVoices()
 
+/**
+ * @param {String} text Text to speak
+ * @param {Boolean} awaitEnds Will enable the ability to use callbacks in say() function
+ *
+ * @param {Array} voice OS supported voice
+ * @param {Number} vol Voice volume
+ * @param {Number} rate Speak velocity
+ * @param {Number} pitch Pitch intensify
+ * @param {String} lang OS supported language
+ * @class
+ */
 export default class TTS {
-	constructor(text, voice, vol, rate, pitch, lang) {
-		this.text = text || 'Hello, world.'
-		this.lang = lang || 'en-US'
-		this.voice = voice || voices[0]
-		this.volume = vol || 1
-		this.rate = rate || 1
-		this.pitch = pitch || 1
+	static _lang = 'en-US'
+	static _voice = voices[0]
+	static _volume = 1
+	static _rate = 1
+	static _pitch = 1
+
+	constructor(text, awaitEnds) {
+		this.text = text || 'Hello, world!'
+		this.awaitEnds = awaitEnds || false
 	}
 
-	async say() {
+	// Callback when awaitEnds === true
+	async say(callback) {
 		if (synth.speaking) {
 			// Without this, will queue all messages and speak them
-			// as fast as the one speaking stops. Bad if user spams
+			// as fast as the one speaking ends. Bad if user spams
 			console.error(
 				"Already speaking\nDon't try spamming the button. I thought about that first"
 			)
-			return
+			return this
 		}
 		const tts = new SpeechSynthesisUtterance(this.text)
-		tts.voice = voices[this.voice]
-		tts.lang = this.lang
-		tts.volume = this.volume
-		tts.rate = this.rate
-		tts.pitch = this.pitch
+		tts.lang = TTS._lang
+		tts.voice = TTS._voice
+		tts.volume = TTS._volume
+		tts.rate = TTS._rate
+		tts.pitch = TTS._pitch
 		synth.speak(tts)
+
+		// Create a new event to fire after speech ending
+		if (this.awaitEnds) {
+			tts.addEventListener(
+				'end',
+				(event) => {
+					if (callback && typeof callback === 'function') callback()
+				},
+				{ once: true } // Remove event listener after firing
+			)
+		}
 
 		return this
 	}
