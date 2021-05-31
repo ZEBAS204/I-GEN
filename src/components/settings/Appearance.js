@@ -15,7 +15,9 @@ import {
 
 import { useTranslation } from 'react-i18next' // Translations
 
+// TODO: add option to use navbar as in darkmode for light mode (note: too many mode words)
 // TODO: update components when changing options
+// @see https://reactjs.org/docs/context.html#reactcreatecontext
 
 export default function Appearance() {
 	const { t } = useTranslation()
@@ -51,29 +53,36 @@ export default function Appearance() {
 
 	return (
 		<>
-			<Heading>{t('settings.appearance')}</Heading>
+			<Heading size="md">{t('settings.theme')}</Heading>
 			<br />
-			<Divider />
-			<br />
-			<Box>
-				<Text>Theme</Text>
+			<Heading size="sm">Change theme</Heading>
+			<Text>Blind or not blind. That's the question</Text>
+			<Box padding="4">
 				<RadioGroup onChange={(toggleTheme, changeTheme)} value={theme}>
 					<Stack>
 						<Radio value="light">Light</Radio>
 						<Radio value="dark">Dark</Radio>
+						<Radio value="auto">Sync with computer</Radio>
 					</Stack>
 				</RadioGroup>
 			</Box>
+			<br />
+			<Stack direction="row">
+				<Text>Dark sidebar</Text>
+				<Spacer />
+				<Switch />
+			</Stack>
+			<br />
 			<Divider />
+			<br />
+			<Heading size="md">Repository Icon</Heading>
 			<Stack direction="row">
 				<Text>Show Project repository quick link icon in navigation bar</Text>
 				<Spacer />
 				<Switch onChange={changeIconVis} isChecked={showIcon} />
 			</Stack>
 			<br />
-			HERE: Language, Accessibility (read generated text? - read volume),
-			Notifications (timer mode :D - mute notifications), save settings (idk why
-			but should be) Use animations (?)
+			HERE: Use animations (?)
 		</>
 	)
 }
