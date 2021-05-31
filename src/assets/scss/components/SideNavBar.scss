@@ -14,8 +14,9 @@
 			bottom: 1rem;
 		}
 
-		&-button-icon {
+		&-button {
 			list-style: none;
+			border: 3px solid transparent;
 
 			&:hover {
 				background-color: var(--chakra-colors-whiteAlpha-300);
@@ -26,9 +27,9 @@
 			text-decoration: none;
 
 			&.active {
-				& .navbar-icons-row-button-icon {
-					border-color: #0099ff !important;
-					color: #0099ff !important;
+				& .navbar-icons-row-button {
+					border-color: var(--chakra-colors-blue-300) !important;
+					color: var(--chakra-colors-blue-300) !important;
 
 					&:hover {
 						background-color: #0099ff17;
