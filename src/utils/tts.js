@@ -27,6 +27,16 @@ export default class TTS {
 		this.awaitEnds = awaitEnds || false
 	}
 
+	// Helper function to stop TTS
+	static stop() {
+		if (synth.speaking) {
+			synth.cancel()
+			// If we don't set this, will give a memory leak warning
+			// when prematurely get stopped
+			this.awaitEnds = null
+		}
+	}
+
 	// Callback when awaitEnds === true
 	async say(callback) {
 		if (synth.speaking) {
@@ -59,3 +69,6 @@ export default class TTS {
 		return this
 	}
 }
+
+//! REMOVE THIS
+window.TTS = TTS
