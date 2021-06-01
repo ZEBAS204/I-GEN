@@ -6,6 +6,7 @@ import {
 	ChakraProvider, // Chakra UI Context
 	ColorModeScript, // Chakra UI Easy theme swap
 	extendTheme, // Chakra UI Theme
+	Spinner,
 } from '@chakra-ui/react'
 
 import defaultSettings from './utils/defaultSettings' // Default Configuration
@@ -51,13 +52,13 @@ defaultSettings().then(async () => {
 // but will increase a tiny the loading time..
 ReactDOM.render(
 	<React.StrictMode>
-		{/*<React.Suspense fallback="<Spinner />">*/}
-		<ColorModeScript initialColorMode={theme.config.initialColorMode} />
-		<ChakraProvider resetCSS theme={theme}>
-			<OS_MENU_BAR />
-			<DefaultLayout />
-		</ChakraProvider>
-		{/*</React.Suspense>*/}
+		<React.Suspense fallback={<Spinner size="xl" />}>
+			<ColorModeScript initialColorMode={theme.config.initialColorMode} />
+			<ChakraProvider resetCSS theme={theme}>
+				<OS_MENU_BAR />
+				<DefaultLayout />
+			</ChakraProvider>
+		</React.Suspense>
 	</React.StrictMode>,
 	document.getElementById('root')
 )

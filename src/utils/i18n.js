@@ -9,11 +9,12 @@ import { supportedLanguages } from './supportedLanguages'
 // shortband for if-else later
 const dev = process.env.NODE_ENV === 'development'
 
-i18n
+// Registering the back-end plugin
+// Will allow asynchronous load of translations
+const backendEnabled = dev ? i18n : i18n.use(HttpApi)
+
+backendEnabled
 	// detect user language
-	// Registering the back-end plugin
-	// Will allow asynchronous load of translations
-	.use(HttpApi)
 	// learn more: https://github.com/i18next/i18next-browser-languageDetector
 	.use(LanguageDetector)
 	// pass the i18n instance to react-i18next.
@@ -57,12 +58,14 @@ i18n
 
 		// Back-end path. Will be used in release to asynchronously load translations
 		// eg. www.example.com/locates/es.json
-		backend: {
-			// {{lng}} = language = en / es
-			// {{ns}} = translation = translation.json
-			// {{lng}}/{{ns}}.json = /en/translation.json
-			loadPath: '/locales/{{lng}}.json',
-		},
+		backend: dev
+			? undefined
+			: {
+					// {{lng}} = language = en / es
+					// {{ns}} = translation = translation.json
+					// {{lng}}/{{ns}}.json = /en/translation.json
+					loadPath: '/locales/{{lng}}.json',
+			  },
 
 		keySeparator: '.', // Allow nesting keys with dots (def dot)
 		interpolation: {
