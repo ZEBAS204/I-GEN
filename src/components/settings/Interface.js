@@ -11,11 +11,13 @@ import {
 	Stack,
 	Spacer,
 	Heading,
+	Select,
 } from '@chakra-ui/react'
 
 import { useTranslation } from 'react-i18next' // Translations
 
 // TODO: default page (normal or timed mode)
+// TODO: automatize available languages
 
 function Interface() {
 	const { t, i18n } = useTranslation()
@@ -28,7 +30,32 @@ function Interface() {
 
 	return (
 		<>
-			<Heading>{t('settings.interface')}</Heading>
+			<Heading size="md">{t('settings.language')}</Heading>
+			<br />
+			<Heading size="sm">Select langauge to use</Heading>
+			<Box shadow="base">
+				<Select
+					variant="filled"
+					value={i18n.language}
+					onChange={(e) => i18n.changeLanguage(e.target.value)}
+				>
+					<option value="en">English</option>
+					<option value="es">Spanish</option>
+					{
+						// Get all available languages
+						/*
+						i18n.languages().map((voice, val = -1) => {
+							val++
+							return (
+								<option value={val} key={val}>
+									{voice.name}
+								</option>
+							)
+						})
+						*/
+					}
+				</Select>
+			</Box>
 			<br />
 			<Divider />
 			<br />

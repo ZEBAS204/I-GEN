@@ -149,7 +149,7 @@ export default function Accessibility() {
 						TTS._voices.map((voice, val = -1) => {
 							val++
 							return (
-								<option value={val} key={val}>
+								<option value={val} key={`voice-${val}`}>
 									{voice.name}
 								</option>
 							)
