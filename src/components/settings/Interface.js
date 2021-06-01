@@ -14,10 +14,11 @@ import {
 	Select,
 } from '@chakra-ui/react'
 
-import { useTranslation } from 'react-i18next' // Translations
+// Translations
+import { useTranslation } from 'react-i18next'
+import { supportedLanguages } from '../../utils/supportedLanguages'
 
 // TODO: default page (normal or timed mode)
-// TODO: automatize available languages
 
 function Interface() {
 	const { t, i18n } = useTranslation()
@@ -32,27 +33,20 @@ function Interface() {
 		<>
 			<Heading size="md">{t('settings.language')}</Heading>
 			<br />
-			<Heading size="sm">Select langauge to use</Heading>
-			<Box shadow="base">
+			<Heading size="sm">Select language to use</Heading>
+			<Box shadow="base" marginTop={2}>
 				<Select
 					variant="filled"
 					value={i18n.language}
 					onChange={(e) => i18n.changeLanguage(e.target.value)}
 				>
-					<option value="en">English</option>
-					<option value="es">Spanish</option>
 					{
 						// Get all available languages
-						/*
-						i18n.languages().map((voice, val = -1) => {
-							val++
-							return (
-								<option value={val} key={val}>
-									{voice.name}
-								</option>
-							)
-						})
-						*/
+						supportedLanguages.map((lang, key) => (
+							<option value={lang.code} key={`lng-${lang}-${key}`}>
+								{lang.name}
+							</option>
+						))
 					}
 				</Select>
 			</Box>
@@ -61,9 +55,8 @@ function Interface() {
 			<br />
 			<Box>
 				<Text>
-					HERE: Language, Accessibility (read generated text? - read volume),
-					Notifications (timer mode :D - mute notifications), save settings (idk
-					why but should be) Use animations (?)
+					HERE: Notifications (timer mode :D - mute notifications), Use
+					animations (?)
 				</Text>
 			</Box>
 		</>

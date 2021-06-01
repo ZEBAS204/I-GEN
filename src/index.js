@@ -22,7 +22,7 @@ import DefaultLayout from './layouts/default'
 
 const theme = extendTheme({
 	config: {
-		initialColorMode: 'light',
+		initialColorMode: 'dark',
 		// TODO: fix not using user prefer color mode
 		useSystemColorMode: false, //! Ignores saved user config
 	},
@@ -47,13 +47,17 @@ defaultSettings().then(async () => {
 	}
 })
 
+// <React.Suspense> allows asynchronously load translations using backend
+// but will increase a tiny the loading time..
 ReactDOM.render(
 	<React.StrictMode>
+		{/*<React.Suspense fallback="<Spinner />">*/}
 		<ColorModeScript initialColorMode={theme.config.initialColorMode} />
 		<ChakraProvider resetCSS theme={theme}>
 			<OS_MENU_BAR />
 			<DefaultLayout />
 		</ChakraProvider>
+		{/*</React.Suspense>*/}
 	</React.StrictMode>,
 	document.getElementById('root')
 )
