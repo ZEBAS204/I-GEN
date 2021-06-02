@@ -139,15 +139,16 @@ export default function Accessibility() {
 			<Box shadow="base">
 				<Select
 					variant="filled"
-					onChange={(e) => {
-						console.log('=============', e) //! TODO: Remove temp log
-					}}
+					onChange={(e) => TTS.changeVoice(e.target.value)}
 				>
 					{
-						// Get all available voices from the OS (-1 so starts from Array[0])
+						// Get all available voices from the OS
 						// As the default value will use the first voice item in array
-						TTS._voices.map((voice, val = -1) => {
-							val++
+						// TODO: sometimes voices doesn't load in FF89. Only happends if is the first time loading the page and the URL is /settings.
+						// TODO: works but doesn't return anything on Chrome
+						TTS._voices.map((voice, val) => {
+							val-- // We need to remove one so start from -1
+							val++ // Now the val is 0
 							return (
 								<option value={val} key={`voice-${val}`}>
 									{voice.name}

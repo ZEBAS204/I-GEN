@@ -70,7 +70,10 @@ export default function Appearance() {
 			<Stack direction="row">
 				<Text>Dark sidebar</Text>
 				<Spacer />
-				<Switch />
+				<Switch
+					isChecked={theme === 'dark' ? false : true}
+					isDisabled={theme === 'light' ? false : true}
+				/>
 			</Stack>
 			<br />
 			<Divider />

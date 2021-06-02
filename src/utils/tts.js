@@ -1,5 +1,5 @@
 //! Global variables
-const synth = window.speechSynthesis /* || chrome.tts*/
+const synth = window.speechSynthesis
 const voices = synth.getVoices()
 
 /**
@@ -37,6 +37,21 @@ export default class TTS {
 		}
 	}
 
+	/**
+	 * Helper function to change TTS voice
+	 * @param {Number} voice Index of the voice in voices() Array
+	 */
+	static changeVoice(voiceIndex) {
+		if (
+			voiceIndex &&
+			(typeof voiceIndex === 'number' || typeof voiceIndex === 'string')
+		) {
+			TTS._voice = voices[voiceIndex]
+		} else {
+			console.error('changeVoice: voice needs to be a specified number to work')
+		}
+	}
+
 	// Callback when awaitEnds === true
 	async say(callback) {
 		if (synth.speaking) {
@@ -47,6 +62,7 @@ export default class TTS {
 			)
 			return this
 		}
+
 		const tts = new SpeechSynthesisUtterance(this.text)
 		tts.lang = TTS._lang
 		tts.voice = TTS._voice
