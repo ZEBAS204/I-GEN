@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "dev": "npm run start",
     "dev-webpack": "webpack-dev-server --mode development",
-    "build": "react-scripts build",
+    "build": "react-scripts build && gulp",
     "bundle-build": "webpack --mode production",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -58,5 +59,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "source-map-explorer": "^2.5.2",
+    "webpack-cli": "^4.7.0"
   }
 }
