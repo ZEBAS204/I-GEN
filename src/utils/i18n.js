@@ -27,7 +27,7 @@ backendEnabled
 		// Language to use if translations are not available
 		fallbackLng: 'en',
 
-		// Allows "en-US" and "en-UK" to be implicitly supported when "en"
+		// Allows (eg."en-US" and "en-UK") to be implicitly supported when "en"
 		nonExplicitSupportedLngs: true,
 
 		// Overwrite defaults order from where language should be detected
@@ -48,10 +48,10 @@ backendEnabled
 		resources: dev
 			? {
 					en: {
-						translation: require('../static/locales/en-us.json'),
+						translation: require('../static/locales/en.json'),
 					},
 					es: {
-						translation: require('../static/locales/es-es.json'),
+						translation: require('../static/locales/es.json'),
 					},
 			  }
 			: undefined,
