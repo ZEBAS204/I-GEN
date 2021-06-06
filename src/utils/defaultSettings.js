@@ -32,16 +32,22 @@ function checkElectronInstance() {
 	return false
 }
 
-export default async function defaultSettings() {
+/**
+ *
+ * @param {Boolean} forceOverwrite If true, instead of the value check will overwrite and change all values to the defaults ones
+ */
+export default async function defaultSettings(forceOverwrite = false) {
 	const isElectron = () => {
 		const check = checkElectronInstance()
 		setData('electron', check)
 	}
 
-	const setDefaults = async () => {
+	const setDefaults = async (overwrite) => {
 		// Import default settings from assets
 		const defaults = require('../assets/defaultUserSettings.json')
 
+		// If all settings should be set to their defaults values
+		const _overwrite = overwrite
 		// Loop all the settings from the default json and compare
 		// with the stored ones if they exist and their type match
 		let int = 0
@@ -51,7 +57,8 @@ export default async function defaultSettings() {
 			const storedValue = await getData(def.key)
 
 			// Compare the user value with the default ones
-			if (storedValue !== null) {
+			// if _overwrite is true, will skip all checks and set defaults
+			if (storedValue !== null && !_overwrite) {
 				if (typeof storedValue === def.type) {
 					console.info(`[DS-${int}] Everything okay!`, { key: def.key })
 				} else {
@@ -70,5 +77,5 @@ export default async function defaultSettings() {
 
 	// Run in start
 	isElectron()
-	setDefaults()
+	setDefaults(typeof forceOverwrite === 'boolean' ? forceOverwrite : false)
 }

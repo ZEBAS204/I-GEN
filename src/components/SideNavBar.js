@@ -1,3 +1,5 @@
+// TODO: tooltips keep open without been hovered.
+
 //import Electron from 'electron';
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
@@ -37,16 +39,16 @@ function SideNav() {
 	useEffect(() => {
 		;(async () => {
 			await getData('side_nav_direction').then((dir) => {
-				// Only accept 0 or 1, maybe the user could changed in settings
-				// If not match, default will be left
+				// Only accept 0 or 1, the user could changed it in localstorage
+				// If check not match, default will be left
 				let _dir = dir === 0 || dir === 1 ? dir : 0
 				setNavDirection(_dir)
 			})
 			await getData('github_icon').then((display) => {
-				setGitIconVisibility(display)
+				setGitIconVisibility(display !== null ? display : true)
 			})
 			await getData('theme_swap_icon').then((display) => {
-				setThemeSwapVisibility(display)
+				setThemeSwapVisibility(display !== null ? display : true)
 			})
 		})()
 	}, [])
@@ -62,13 +64,15 @@ function SideNav() {
 					openDelay={500}
 					gutter="0"
 				>
-					<NavLink exact to="/">
-						<IconButton
-							aria-label="Home"
-							className="navbar-icons-row-button"
-							icon={<IoHomeSharp />}
-						/>
-					</NavLink>
+					<div>
+						<NavLink exact to="/">
+							<IconButton
+								aria-label="Home"
+								className="navbar-icons-row-button"
+								icon={<IoHomeSharp />}
+							/>
+						</NavLink>
+					</div>
 				</Tooltip>
 				<Tooltip
 					label={t('buttons.timermode')}
@@ -76,13 +80,15 @@ function SideNav() {
 					openDelay={500}
 					gutter="0"
 				>
-					<NavLink to="/timer">
-						<IconButton
-							aria-label="Timer Mode"
-							className="navbar-icons-row-button"
-							icon={<IoTimer />}
-						/>
-					</NavLink>
+					<div>
+						<NavLink to="/timer">
+							<IconButton
+								aria-label="Timer Mode"
+								className="navbar-icons-row-button"
+								icon={<IoTimer />}
+							/>
+						</NavLink>
+					</div>
 				</Tooltip>
 				{showGithubIcon && (
 					<Tooltip
@@ -91,20 +97,22 @@ function SideNav() {
 						openDelay={500}
 						gutter="0"
 					>
-						<a
-							href="https://www.example.com" // TODO: use env variable
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<IconButton
-								aria-label="Github"
-								className="navbar-icons-row-button"
-								onClick={() => {
-									console.log('Clicked github icon')
-								}}
-								icon={<IoLogoGithub />}
-							/>
-						</a>
+						<div>
+							<a
+								href="https://www.example.com" // TODO: use env variable
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<IconButton
+									aria-label="Github"
+									className="navbar-icons-row-button"
+									onClick={() => {
+										console.log('Clicked github icon')
+									}}
+									icon={<IoLogoGithub />}
+								/>
+							</a>
+						</div>
 					</Tooltip>
 				)}
 				<Tooltip
@@ -113,13 +121,15 @@ function SideNav() {
 					openDelay={500}
 					gutter="0"
 				>
-					<NavLink to="/settings">
-						<IconButton
-							aria-label="Settings"
-							className="navbar-icons-row-button"
-							icon={<IoSettingsSharp />}
-						/>
-					</NavLink>
+					<div>
+						<NavLink to="/settings">
+							<IconButton
+								aria-label="Settings"
+								className="navbar-icons-row-button"
+								icon={<IoSettingsSharp />}
+							/>
+						</NavLink>
+					</div>
 				</Tooltip>
 				{
 					// ! Dev, remove later

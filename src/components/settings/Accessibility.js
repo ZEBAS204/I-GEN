@@ -144,8 +144,7 @@ export default function Accessibility() {
 					{
 						// Get all available voices from the OS
 						// As the default value will use the first voice item in array
-						// TODO: sometimes voices doesn't load in FF89. Only happends if is the first time loading the page and the URL is /settings.
-						// TODO: works but doesn't return anything on Chrome
+						// TODO: doesn't return anything on Chrome if is the first time opening the page
 						TTS._voices.map((voice, val) => {
 							val-- // We need to remove one so start from -1
 							val++ // Now the val is 0
