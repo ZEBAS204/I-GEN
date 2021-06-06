@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import {
 	Tabs,
 	TabList,
@@ -10,16 +10,19 @@ import {
 } from '@chakra-ui/react'
 
 import { useTranslation } from 'react-i18next' // Translations
-import Interface from '../components/settings/Interface'
-import Appearance from '../components/settings/Appearance'
-import Accessibility from '../components/settings/Accessibility'
-import Advanced from '../components/settings/Advanced'
-import About from '../components/settings/About'
+const Interface = React.lazy(() => import('../components/settings/Interface'))
+const Appearance = React.lazy(() => import('../components/settings/Appearance'))
+const Accessibility = React.lazy(() =>
+	import('../components/settings/Accessibility')
+)
+const Advanced = React.lazy(() => import('../components/settings/Advanced'))
+const About = React.lazy(() => import('../components/settings/About'))
 
 function Settings() {
 	const { t } = useTranslation()
 	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
 
+	// TODO: add icons
 	/*
 	 All settings pages with their names
 	 * name = their name in settings (eg. setting.interface)
@@ -46,7 +49,7 @@ function Settings() {
 		{
 			name: 'about',
 			vars: {
-				app_name: 'AAS',
+				app_name: 'var',
 			},
 			content: About,
 		},
@@ -75,12 +78,14 @@ function Settings() {
 				{settings.map((page, key) => {
 					return (
 						<TabPanel key={key}>
-							{
-								/* Creates a new dinamic element
-								 * https://stackoverflow.com/questions/29875869/react-jsx-dynamic-component-name
-								 */
-								React.createElement(page.content)
-							}
+							<Suspense fallback="">
+								{
+									/* Creates a new dinamic element
+									 * https://stackoverflow.com/questions/29875869/react-jsx-dynamic-component-name
+									 */
+									React.createElement(page.content)
+								}
+							</Suspense>
 						</TabPanel>
 					)
 				})}
