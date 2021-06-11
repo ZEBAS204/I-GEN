@@ -1,79 +1,151 @@
-import { Component } from 'react'
+import React, { useState, useEffect } from 'react'
+import { getData, setData } from '../../utils/appStorage'
+import defaultSettings from '../../utils/defaultSettings'
+import Logger from '../../utils/logger'
+import {
+	Text,
+	Divider,
+	Switch,
+	Stack,
+	Spacer,
+	Heading,
+	Button,
+	// Alert dialog
+	AlertDialog,
+	AlertDialogBody,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogContent,
+	AlertDialogOverlay,
+	useDisclosure,
+} from '@chakra-ui/react'
 
-class ExportLists extends Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			loading: false,
+import { useTranslation } from 'react-i18next' // Translations
+
+export default function Advanced() {
+	const { t } = useTranslation()
+
+	const [useDebug, setDebug] = useState(false)
+	const [useSW, setSW] = useState(true)
+
+	// Restore default settings
+	const { isOpen, onOpen, onClose } = useDisclosure()
+	const cancelRef = React.useRef()
+
+	const restoreSettings = () => {
+		// If user accepted, reset all settings (notice the true)
+		// then just redirect to the main page path
+		defaultSettings(true).then(() => {
+			document.location.href = '/'
+		})
+	}
+
+	const toggleDebugMode = () => {
+		const use = !useDebug
+		setDebug(use)
+		setData('dev_mode', use)
+
+		// Force update of logger
+		Logger.isLoggerEnabled(true)
+	}
+
+	const toggleSW = () => {
+		// Save setting in a const so doesn't get overwrite when toggling
+		// TODO: prevent spam
+		const enabled = !useSW
+		setSW(enabled)
+		setData('opt-in-serviceworker', enabled)
+
+		// If user op-out remove all registered service workers and remove saved cache
+		if (!enabled) {
+			;(async () => {
+				try {
+					// Unregister all registered service workers
+					const registrations = await navigator.serviceWorker.getRegistrations()
+					const unregisterPromises = registrations.map((registration) =>
+						registration.unregister()
+					)
+
+					// Remove saved cache
+					const allCaches = await caches.keys()
+					const cacheDeletionPromises = allCaches.map((cache) =>
+						caches.delete(cache)
+					)
+
+					await Promise.all([...unregisterPromises, ...cacheDeletionPromises])
+				} catch (err) {
+					console.error('[SW] ', err)
+				}
+			})()
 		}
 	}
 
-	// Get the list
-	getListData = (typeList) => {}
+	useEffect(() => {
+		;(async () => {
+			await getData('opt-in-serviceworker').then((SW) => {
+				setSW(SW !== null ? SW : true)
+			})
 
-	downloadTxtFile = (btn) => {
-		console.log(btn)
-		btn.props.loading = true //! Should be a pointer to the clicked button
+			await getData('dev_mode').then((dev) => {
+				setDebug(dev !== null ? dev : false)
+			})
+		})()
+	}, [])
 
-		const element = document.createElement('a')
-		const listData = new Blob([this.getListData().join('\n')], {
-			type: 'text/plain',
-		})
-		const typeList = 'xxxxxxxxxxxxxxx'
-		element.href = URL.createObjectURL(listData)
-		element.download = `${typeList}_list.txt`
-		document.body.appendChild(element)
-	}
+	return (
+		<>
+			<Heading size="md">{t('settings.service_worker')}</Heading>
+			<br />
+			<Heading size="sm">Use Service Worker</Heading>
+			<Stack direction="row">
+				<Text>Allows faster load and offline use of the page.</Text>
+				<Spacer />
+				<Switch onChange={toggleSW} isChecked={useSW} />
+			</Stack>
+			<br />
+			<Divider />
+			<br />
+			<Heading size="md">{t('settings.debugging')}</Heading>
+			<br />
+			<Heading size="sm">Debug Logging</Heading>
+			<Stack direction="row">
+				<Text>Print debug messages in console</Text>
+				<Spacer />
+				<Switch onChange={toggleDebugMode} isChecked={useDebug} />
+			</Stack>
+			<br />
+			<br />
+			<Button colorScheme="red" variant="solid" onClick={onOpen}>
+				Restore default settings
+			</Button>
+			<AlertDialog
+				motionPreset="slideInBottom"
+				leastDestructiveRef={cancelRef}
+				onClose={onClose}
+				isOpen={isOpen}
+				isCentered
+			>
+				<AlertDialogOverlay />
 
-	render() {
-		return (
-			<div className="Import-Export-Lists">
-				<h1>Import/Export Lists</h1>
-				<h4>Nouns</h4>
-				<div className="p-grid">
-					<div className="p-col-fixed">
-						<span
-							mode="basic"
-							name="Import Nouns"
-							url="./nouns"
-							accept=".txt"
-							auto
-						/>
-					</div>
-					<div className="p-col-fixed">
-						<span
-							label="Export Nouns"
-							icon="pi pi-upload"
-							iconPos="left"
-							// loading
-							onClick={(btn) => this.downloadTxtFile(btn)}
-						/>
-					</div>
-				</div>
-				<h4>Adjectives</h4>
-				<div className="p-grid">
-					<div className="p-col-fixed">
-						<span
-							mode="basic"
-							name="Import Adjectives"
-							url="./adjectives"
-							accept=".txt"
-							auto
-						/>
-					</div>
-					<div className="p-col">
-						<span
-							label="Export Adjectives"
-							icon="pi pi-upload"
-							iconPos="left"
-							// loading
-							onClick={(btn) => this.downloadTxtFile.bind(this, btn)}
-						/>
-					</div>
-				</div>
-			</div>
-		)
-	}
+				<AlertDialogContent>
+					<AlertDialogHeader>Restore default settings</AlertDialogHeader>
+					<AlertDialogBody>
+						<Text>
+							Are you sure you want to reset to default all of your settings?
+							every single one of them?
+						</Text>
+						<Text color="red.400">* Note: This will make the page refresh</Text>
+					</AlertDialogBody>
+					<AlertDialogFooter>
+						<Button ref={cancelRef} onClick={onClose}>
+							No
+						</Button>
+						<Button colorScheme="red" ml={3} onClick={restoreSettings}>
+							Yes
+						</Button>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		</>
+	)
 }
-
-export default ExportLists

@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-//* import * as serviceWorker from './service-worker'
+import * as serviceWorker from './serviceWorkerRegistration'
+import Logger from './utils/logger'
 
 import {
 	ChakraProvider, // Chakra UI Context
@@ -17,7 +18,7 @@ import './utils/i18n'
 // Import Electron OS Menu Bar
 import OS_MENU_BAR from './components/OS_Bar'
 
-// Import Default App Layout
+// Import Default Page Layout
 import DefaultLayout from './layouts/default'
 
 const theme = extendTheme({
@@ -31,19 +32,24 @@ const theme = extendTheme({
 // Set Default User Settings if they are not defined
 defaultSettings().then(async () => {
 	//Enable Service Worker if user opt in.
-	if (await getData('opt-in-serviceworker')) {
-		console.info('[SW] User opt-in of service worker.')
+	if ('serviceWorker' in navigator) {
 		// If you want your app to work offline and load faster, you can change
 		// unregister() to register() below. Note this comes with some pitfalls.
 		// Learn more about service workers:
 		// https://github.com/facebook/create-react-app/blob/master/packages/cra-template/template/README.md
-		if (process.env.NODE_ENV === 'production') {
-			console.info('[SW] Service worker registered! :D')
-			// TODO: fix service worker
-			//* serviceWorker.register()
+		if (await getData('opt-in-serviceworker')) {
+			Logger.log(['SW', 'info'], 'Registering Service Worker...')
+			try {
+				// Will not register in dev environment
+				serviceWorker.register()
+			} catch (err) {
+				Logger.log(['SW', 'error'], err)
+			}
+		} else {
+			Logger.log(['SW', 'info'], 'User opt-out of service worker.')
 		}
 	} else {
-		console.info('[SW] User opt-out of service worker.')
+		Logger.log(['SW', 'warn'], 'Service Workers not supported by the browser')
 	}
 })
 
