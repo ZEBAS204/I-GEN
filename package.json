@@ -2,10 +2,13 @@
   "name": "react-anc",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
-    "dev": "npm run start",
+    "dev": "set BROWSER=NONE && npm run start",
+    "dev:build": "npm run build && serve -s build -l 5000",
+    "dev:serve": "serve -s build -l 5000",
     "dev-webpack": "webpack-dev-server --mode development",
     "build": "react-scripts build && gulp",
     "bundle-build": "webpack --mode production",
@@ -62,6 +65,7 @@
   },
   "devDependencies": {
     "gulp": "^4.0.2",
+    "serve": "^11.3.2",
     "source-map-explorer": "^2.5.2",
     "webpack-cli": "^4.7.0"
   }
