@@ -3,14 +3,16 @@ import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import HttpApi from 'i18next-http-backend'
 
-// Supported Languages
+// Supported Languages. Separated file so can be used in settings page to get all languages
 import { supportedLanguages } from './supportedLanguages'
 
 // shortband for if-else later
 const dev = process.env.NODE_ENV === 'development'
 
-// Registering the back-end plugin
-// Will allow asynchronous load of translations
+/* Registering the back-end plugin
+ * Will allow asynchronous load of translations
+ * Also, in production the locales will be cached by the service worker
+ */
 const backendEnabled = dev ? i18n : i18n.use(HttpApi)
 
 backendEnabled
@@ -24,21 +26,18 @@ backendEnabled
 		// Enable debug mode if in development mode environment
 		debug: dev,
 
+		// Do not use locates country codes (eg. en-CA)
+		load: 'languageOnly',
+
 		// Language to use if translations are not available
 		fallbackLng: 'en',
 
 		// Allows (eg."en-US" and "en-UK") to be implicitly supported when "en"
 		nonExplicitSupportedLngs: true,
 
-		// Overwrite defaults order from where language should be detected
-		order: [
-			'localStorage',
-			'sessionStorage',
-			'cookie', //! This project uses no cookies
-			'querystring',
-			'navigator',
-			'htmlTag',
-		],
+		// Overwrite defaults and order from where language should be detected
+		detection: ['localStorage', 'sessionStorage', 'navigator', 'htmlTag'],
+		order: ['localStorage', 'sessionStorage', 'navigator', 'htmlTag'],
 
 		// Add supported languages from ./supportedLanguages
 		supportedLngs: supportedLanguages.map((lang) => lang.code),

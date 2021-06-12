@@ -62,6 +62,20 @@ registerRoute(
 	})
 )
 
+// Cache translations
+registerRoute(
+	({ request, url }) =>
+		url.origin === self.location.origin && url.pathname.startsWith('/locales/'),
+
+	new StaleWhileRevalidate({
+		cacheName: 'locales',
+		plugins: [
+			// Will only save the last 5 locales used
+			new ExpirationPlugin({ maxEntries: 5 }),
+		],
+	})
+)
+
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener('message', (event) => {
