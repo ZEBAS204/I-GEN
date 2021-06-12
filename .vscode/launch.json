@@ -2,6 +2,15 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"name": "Chromium: Launch localhost",
+			"request": "launch",
+			"type": "pwa-msedge",
+			"url": "http://localhost:3000",
+			"webRoot": "${workspaceFolder}",
+			"skipFiles": ["${workspaceFolder}/node_modules/**"],
+			"smartStep": true
+		},
+		{
 			"name": "Firefox: Launch localhost",
 			"type": "firefox",
 			"request": "launch",
