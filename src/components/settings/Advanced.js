@@ -33,11 +33,16 @@ export default function Advanced() {
 	const cancelRef = React.useRef()
 
 	const restoreSettings = () => {
-		// If user accepted, reset all settings (notice the true)
-		// then just redirect to the main page path
-		defaultSettings(true).then(() => {
+		// If user accepted, clear Local & Session Storages
+		try {
+			window.localStorage.clear()
+			window.sessionStorage.clear()
+		} catch (err) {
+			Logger.log(['Settings', 'error'], 'Error trying to clear Page Storages')
+		} finally {
+			// Then just redirect to the main page path
 			document.location.href = '/'
-		})
+		}
 	}
 
 	const toggleDebugMode = () => {
@@ -51,7 +56,6 @@ export default function Advanced() {
 
 	const toggleSW = () => {
 		// Save setting in a const so doesn't get overwrite when toggling
-		// TODO: prevent spam
 		const enabled = !useSW
 		setSW(enabled)
 		setData('opt-in-serviceworker', enabled)

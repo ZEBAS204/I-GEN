@@ -1,4 +1,5 @@
 import { getData, setData } from './appStorage'
+import Logger from './logger'
 
 // * https://github.com/cheton/is-electron
 function checkElectronInstance() {
@@ -32,22 +33,16 @@ function checkElectronInstance() {
 	return false
 }
 
-/**
- *
- * @param {Boolean} forceOverwrite If true, instead of the value check will overwrite and change all values to the defaults ones
- */
-export default async function defaultSettings(forceOverwrite = false) {
+export default async function defaultSettings() {
 	const isElectron = () => {
 		const check = checkElectronInstance()
 		setData('electron', check)
 	}
 
-	const setDefaults = async (overwrite) => {
+	const setDefaults = () => {
 		// Import default settings from assets
 		const defaults = require('../assets/defaultUserSettings.json')
 
-		// If all settings should be set to their defaults values
-		const _overwrite = overwrite
 		// Loop all the settings from the default json and compare
 		// with the stored ones if they exist and their type match
 		let int = 0
@@ -57,19 +52,27 @@ export default async function defaultSettings(forceOverwrite = false) {
 			const storedValue = await getData(def.key)
 
 			// Compare the user value with the default ones
-			// if _overwrite is true, will skip all checks and set defaults
-			if (storedValue !== null && !_overwrite) {
+			if (storedValue !== null) {
 				if (typeof storedValue === def.type) {
-					console.info(`[DS-${int}] Everything okay!`, { key: def.key })
+					Logger.log(
+						[`DS-${int}`, 'info'],
+						`Expected value of key "${def.key}"`
+					)
 				} else {
 					// They key is stored but the expected type is wrong
 					// Set key to default value
-					console.info(`[DS-${int}] Unexpected value of key `, { key: def.key })
+					Logger.log(
+						[`DS-${int}`, 'info'],
+						`Value of key "${def.key}" is unexpected! Restoring key default value.`
+					)
 					setData(def.key, def.value)
 				}
 			} else {
 				// Key not exist
-				console.info(`[DS-${int}] Not found "${def.key}" creating a new one...`)
+				Logger.log(
+					[`DS-${int}`, 'info'],
+					`"${def.key}" key not found. Creating a new one...`
+				)
 				setData(def.key, def.value)
 			}
 		})
@@ -77,5 +80,5 @@ export default async function defaultSettings(forceOverwrite = false) {
 
 	// Run in start
 	isElectron()
-	setDefaults(typeof forceOverwrite === 'boolean' ? forceOverwrite : false)
+	setDefaults()
 }
