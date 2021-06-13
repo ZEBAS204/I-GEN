@@ -4,9 +4,10 @@
 
 const gulp = require('gulp')
 
+// Path of files to move to ./build directory (relative)
 const files = [
-	// Path of files to move to ./build directory (relative)
 	'./src/static/**/*.*',
+	'!./src/static/README.md', // exclude README.md
 ]
 
 // Destination where files will be copied
