@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { getData, setData } from '../../utils/appStorage'
-import defaultSettings from '../../utils/defaultSettings'
+import { getData, setData, clearData } from '../../utils/appStorage'
 import Logger from '../../utils/logger'
 import {
 	Text,
@@ -33,8 +32,9 @@ export default function Advanced() {
 	const cancelRef = React.useRef()
 
 	const restoreSettings = () => {
-		// If user accepted, clear Local & Session Storages
+		// If user accepted, clear ALL stored data (local,session,etc) excluded SW cache
 		try {
+			clearData()
 			window.localStorage.clear()
 			window.sessionStorage.clear()
 		} catch (err) {
