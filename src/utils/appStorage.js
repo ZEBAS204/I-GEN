@@ -1,4 +1,15 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import localforage from 'localforage'
+
+// This will rename the database from "storage" to "Settings"
+localforage.config({
+	name: 'Settings',
+})
+
+/* If in development environment, use localstorage (will allow modifying saved values)
+ * Also `dev` is used to return values as objects
+ */
+const dev = process.env.NODE_ENV === 'development'
+const storage = dev ? localStorage : localforage
 
 /**
  * Create a new data item into LocalStorage
@@ -9,8 +20,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 const setData = async (key, value) => {
 	let success // Initialize var
 	try {
-		const jsonValue = JSON.stringify(value) // Saved as an object
-		await AsyncStorage.setItem(key, jsonValue)
+		if (dev) {
+			value = JSON.stringify(value)
+		}
+
+		await storage.setItem(key, value)
 		success = true
 	} catch (e) {
 		// saving error
@@ -27,12 +41,10 @@ const setData = async (key, value) => {
  */
 const getData = async (key) => {
 	try {
-		const value = await AsyncStorage.getItem(key)
-		// convert the value if exist into an object,
-		// so we can preserve the original value type
-		const objValue = JSON.parse(value)
+		const value = await storage.getItem(key)
 
-		return value !== null ? objValue : null
+		// storage already returns null if the key requested not exists
+		return dev ? JSON.parse(value) : value
 	} catch (e) {
 		// error reading value
 		return null
@@ -47,10 +59,7 @@ const getData = async (key) => {
 const remData = async (key) => {
 	let success // Initialize var
 	try {
-		const value = await AsyncStorage.getItem(key)
-		if (value !== null) {
-			window.localStorage.removeItem(key)
-		}
+		await storage.removeItem(key)
 		success = true
 	} catch (e) {
 		// saving error
@@ -60,4 +69,23 @@ const remData = async (key) => {
 	}
 }
 
-export { setData, getData, remData }
+/**
+ * Remove all stored data
+ * @returns Success deleting given key
+ */
+const clearData = async () => {
+	let success // Initialize var
+	storage
+		.clear()
+		.then(() => {
+			success = true
+		})
+		.catch((err) => {
+			// This code runs if there were any errors
+			console.log(err)
+			success = false
+		})
+		.finally(() => success)
+}
+
+export { setData, getData, remData, clearData }
