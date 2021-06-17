@@ -61,6 +61,7 @@ export default function Accessibility() {
 		return () => {
 			// Just stop TTS if speaking, already has check inside the class function
 			TTS.stop()
+			setSpeaking(false)
 		}
 	}, [])
 
@@ -145,6 +146,7 @@ export default function Accessibility() {
 						// Get all available voices from the OS
 						// As the default value will use the first voice item in array
 						// TODO: doesn't return anything on Chrome if is the first time opening the page
+						//! AFAIK this issue only happeds on windows 10.
 						TTS._voices.map((voice, val) => {
 							val-- // We need to remove one so start from -1
 							val++ // Now the val is 0
