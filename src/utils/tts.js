@@ -1,7 +1,9 @@
-//?
+import Logger from './logger'
+import { getData } from './appStorage'
+
 /**
  * Check if TTS is supported in current browser
- * @returns {Boolean}
+ * @return {Boolean}
  */
 const isSupported = window.speechSynthesis !== null ? true : false
 
@@ -10,7 +12,7 @@ const synth = window.speechSynthesis
 /**
  * @param {String} text Text to speak
  * @param {Boolean} awaitEnds Will enable the ability to use callbacks in say() function
- *
+ * * Static params:
  * @param {Array} voice OS supported voice
  * @param {Number} vol Voice volume
  * @param {Number} rate Speak velocity
@@ -26,13 +28,18 @@ export default class TTS {
 	static _volume = 1
 	static _rate = 1
 	static _pitch = 1
+	static _allowSpam = false // Who would want to spam the TTS...?
 
 	constructor(text, awaitEnds) {
 		this.text = text || 'Hello, world!'
 		this.awaitEnds = awaitEnds || false
 	}
 
-	// Helper function to stop TTS if speaking
+	/**
+	 * Helper function to stop TTS if speaking
+	 * @return {void}
+	 * @static
+	 */
 	static stop() {
 		if (isSupported) {
 			if (synth.speaking) {
@@ -44,6 +51,11 @@ export default class TTS {
 		}
 	}
 
+	/**
+	 *
+	 * @return {Array} Device supported voices
+	 * @static
+	 */
 	static getVoices() {
 		let voices = []
 
@@ -54,16 +66,13 @@ export default class TTS {
 			voices = TTS._voices
 		} else {
 			if (isSupported) {
-				console.group('Voices')
-				synth.getVoices().forEach((voice, index) => {
-					index++
-					console.log(index, voice)
+				synth.getVoices().forEach((voice, i) => {
+					i++
 					TTS._voices.push(voice)
 				})
-				console.groupEnd()
 
-				// Set the default voice
-				// TODO: use voice defined by user
+				// Set default voice
+				// FIXME: use voice defined by user
 				TTS._voice = TTS._voices[0]
 			}
 		}
@@ -73,7 +82,8 @@ export default class TTS {
 
 	/**
 	 * Helper function to change TTS voice
-	 * @param {Number} voice Index of the voice in voices() Array
+	 * @param {Number} voiceIndex Index of the voice in voices() Array
+	 * @return {void}
 	 */
 	static changeVoice(voiceIndex) {
 		if (
@@ -82,17 +92,25 @@ export default class TTS {
 		) {
 			TTS._voice = TTS._voices[voiceIndex]
 		} else {
-			console.error('changeVoice: voice needs to be a specified number to work')
+			Logger.log(
+				['TTS', 'error'],
+				'ChangeVoice(): voice needs to be a specified number to work'
+			)
 		}
 	}
 
-	// Callback when awaitEnds === true
+	/**
+	 * Speak the given text with device TTS if supported
+	 * @param {Function} callback When stop speaking. Callback if `this.awaitEnds` is true
+	 * @async
+	 * @return {Object} The object itself
+	 */
 	async say(callback) {
 		if (!isSupported) {
 			return this
 		}
 
-		if (synth.speaking) {
+		if (synth.speaking && !TTS._allowSpam) {
 			// Without this, will queue all messages and speak them
 			// as fast as the one speaking ends. Bad if user spams
 			console.error(
@@ -102,9 +120,9 @@ export default class TTS {
 		}
 
 		const tts = new SpeechSynthesisUtterance(this.text)
-		tts.lang = TTS._lang
 		tts.voice = TTS._voice
 		tts.volume = TTS._volume
+		tts.lang = TTS._lang
 		tts.rate = TTS._rate
 		tts.pitch = TTS._pitch
 		synth.speak(tts)
@@ -113,25 +131,36 @@ export default class TTS {
 		if (this.awaitEnds) {
 			tts.addEventListener(
 				'end',
-				(event) => {
+				() => {
 					if (callback && typeof callback === 'function') callback()
 				},
-				{ once: true } // Remove event listener after firing
+				{ once: true } // Remove eventlistener after firing
 			)
 		}
 
 		return this
 	}
 }
-
 //? Chromium base browser (voices not loaded at startup)
 // We will use an eventlistener to known when the voices are loaded
 // so we can get all voices without any problem
-;(() => {
+;(async () => {
 	if (isSupported) {
 		// Firefox doesn't care about the listener but its loaded at startup
 		// so only needs to be fired.
 		TTS.getVoices()
+
+		// Load user saved TTS config if exist
+		await getData('tts_speed').then((speed) => {
+			if (speed !== null && typeof speed === 'number') {
+				TTS._rate = speed
+			}
+		})
+		await getData('tts_volume').then((vol) => {
+			if (vol !== null && typeof vol === 'number') {
+				TTS._volume = vol
+			}
+		})
 
 		// If the event listener is supported, and it's base chromium
 		// set the event so the browser don't get anxiety
@@ -140,17 +169,16 @@ export default class TTS {
 			synth.addEventListener(
 				'voiceschanged',
 				() => {
-					console.log('Voices loaded!', performance.now() - timeStart)
+					Logger.log(['TTS'], 'Voices loaded!', performance.now() - timeStart)
 					TTS.getVoices()
 				},
-				// Remove listener after firing
-				{ once: true }
+				{ once: true } // Remove eventlistener after firing
 			)
 		}
 	} else {
-		console.error('Looks like Text To Speak is not supported in your device :(')
+		console.error('Looks like Text To Speak is not supported by your device')
 	}
 })()
 
-//! REMOVE THIS
+//! Make it accessible from console
 window.TTS = TTS
