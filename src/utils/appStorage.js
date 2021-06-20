@@ -75,17 +75,26 @@ const remData = async (key) => {
  */
 const clearData = async () => {
 	let success // Initialize var
-	storage
-		.clear()
-		.then(() => {
-			success = true
-		})
-		.catch((err) => {
-			// This code runs if there were any errors
-			console.log(err)
-			success = false
-		})
-		.finally(() => success)
+	try {
+		// If in dev, we clear session and local storages
+		if (dev) {
+			storage.clear()
+			window.sessionStorage.clear()
+		} else {
+			// If not, we have to clear: IndexedDB/WebSQ + session + local
+			storage.clear()
+			window.localStorage.clear()
+			window.sessionStorage.clear()
+		}
+
+		success = true
+	} catch (err) {
+		// This code runs if there were any errors
+		console.log(err)
+		success = false
+	} finally {
+		return success
+	}
 }
 
 export { setData, getData, remData, clearData }
