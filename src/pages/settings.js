@@ -17,14 +17,16 @@ import {
 	RiQuestionLine,
 } from 'react-icons/ri'
 
-import { IoAccessibility, MdKeyboard } from 'react-icons/io5'
-
+import { MdAccessibility, MdKeyboard } from 'react-icons/md'
 import { useTranslation } from 'react-i18next' // Translations
+
+// Settings Pages
 const Interface = React.lazy(() => import('../components/settings/Interface'))
 const Appearance = React.lazy(() => import('../components/settings/Appearance'))
 const Accessibility = React.lazy(() =>
 	import('../components/settings/Accessibility')
 )
+const Keybinds = React.lazy(() => import('../components/settings/Keybinds'))
 const Advanced = React.lazy(() => import('../components/settings/Advanced'))
 const About = React.lazy(() => import('../components/settings/About'))
 
@@ -52,12 +54,17 @@ function Settings() {
 		{
 			name: 'accessibility',
 			content: Accessibility,
-			icon: <IoAccessibility />,
+			icon: <MdAccessibility />,
 		},
 		{
 			name: 'advanced',
 			content: Advanced,
 			icon: <RiToolsFill />,
+		},
+		{
+			name: 'keybinds',
+			content: Keybinds,
+			icon: <MdKeyboard />,
 		},
 		{
 			name: 'about',
