@@ -3,6 +3,8 @@ import { getData, setData } from '../../utils/appStorage'
 import {
 	Box,
 	Text,
+	Link,
+	Icon,
 	Divider,
 	Switch,
 	Stack,
@@ -10,6 +12,7 @@ import {
 	Heading,
 	Select,
 } from '@chakra-ui/react'
+import { RiExternalLinkLine } from 'react-icons/ri'
 
 // Translations
 import { useTranslation } from 'react-i18next'
@@ -60,6 +63,16 @@ function Interface() {
 					}
 				</Select>
 			</Box>
+			<br />
+			<Text>
+				If you would like to contribute to translations{' '}
+				{
+					// TODO: Use environment variable
+				}
+				<Link href="#" isExternal>
+					click here {<Icon as={RiExternalLinkLine} />}
+				</Link>
+			</Text>
 
 			<br />
 			<Divider />
