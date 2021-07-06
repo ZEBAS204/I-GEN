@@ -12,10 +12,18 @@ import {
 	Spacer,
 } from '@chakra-ui/react' // chakra-ui Framework
 import {
-	//*IoRemove, IoScan, IoClose, // Windows
-	//*IoRemoveCircle, IoScanCircle, IoCloseCircle, // Linux
-	IoEllipse, // Mac
-} from 'react-icons/io5' // Material Design Icons
+	// Windows
+	RiSubtractLine,
+	RiCheckboxMultipleBlankLine,
+	RiCloseLine,
+	// Linux
+	RiCheckboxIndeterminateLine,
+	RiCheckboxBlankLine,
+	RiCloseCircleLine,
+	// Mac
+	RiCheckboxBlankCircleFill,
+} from 'react-icons/ri'
+import Logger from '../utils/logger'
 
 function OS_MENU_BAR() {
 	const [isElectron, setElectronInstance] = useState(false)
@@ -26,18 +34,20 @@ function OS_MENU_BAR() {
 			// TODO: don't add OS bar in mobile
 			// TODO: bind electron buttons
 			await getData('electron').then((e) => {
-				console.log('[OS] Electron:', e)
+				Logger.log(['OS'], 'Electron:', e)
+				if (e) {
+					Logger.log(['OS'], 'Running on Electron, window menu bar')
+				} else {
+					Logger.log(['OS'], 'Not running on Electron')
+				}
 				setElectronInstance(e)
 			})
 		})()
 	}, [])
 	if (!isElectron) {
-		console.log('[OS] Not running electron, returning null')
-
 		return <></>
 	}
 
-	console.log('[OS] Running on electron, returning menu bar')
 	return (
 		<Box bg={bgColor} p="4px">
 			<Stack direction="row" align="center">
@@ -55,7 +65,7 @@ function OS_MENU_BAR() {
 							onClick={() => {
 								console.info('[OS] MINIMIZED')
 							}}
-							icon={<IoEllipse />}
+							icon={<RiCheckboxBlankCircleFill />}
 							isRound
 						/>
 						<IconButton
@@ -63,7 +73,7 @@ function OS_MENU_BAR() {
 							onClick={() => {
 								console.info('[OS] MAXIMIZE/RESTORE')
 							}}
-							icon={<IoEllipse />}
+							icon={<RiCheckboxBlankCircleFill />}
 							isRound
 						/>
 						<IconButton
@@ -71,7 +81,7 @@ function OS_MENU_BAR() {
 							onClick={() => {
 								console.info('[OS] CLOSED')
 							}}
-							icon={<IoEllipse />}
+							icon={<RiCheckboxBlankCircleFill />}
 							isRound
 						/>
 					</ButtonGroup>
