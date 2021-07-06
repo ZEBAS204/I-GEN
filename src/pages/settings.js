@@ -7,7 +7,17 @@ import {
 	TabPanel,
 	useColorModeValue,
 	Text,
+	Box,
 } from '@chakra-ui/react'
+
+import {
+	RiLayoutLeftLine,
+	RiBrushLine,
+	RiToolsFill,
+	RiQuestionLine,
+} from 'react-icons/ri'
+
+import { IoAccessibility, MdKeyboard } from 'react-icons/io5'
 
 import { useTranslation } from 'react-i18next' // Translations
 const Interface = React.lazy(() => import('../components/settings/Interface'))
@@ -22,7 +32,6 @@ function Settings() {
 	const { t } = useTranslation()
 	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
 
-	// TODO: add icons
 	/*
 	 All settings pages with their names
 	 * name = their name in settings (eg. setting.interface)
@@ -33,41 +42,49 @@ function Settings() {
 		{
 			name: 'interface',
 			content: Interface,
+			icon: <RiLayoutLeftLine />,
 		},
 		{
 			name: 'appearance',
 			content: Appearance,
+			icon: <RiBrushLine />,
 		},
 		{
 			name: 'accessibility',
 			content: Accessibility,
+			icon: <IoAccessibility />,
 		},
 		{
 			name: 'advanced',
 			content: Advanced,
+			icon: <RiToolsFill />,
 		},
 		{
 			name: 'about',
+			content: About,
+			icon: <RiQuestionLine />,
 			vars: {
 				app_name: 'var',
 			},
-			content: About,
 		},
 	]
 
 	return (
 		<Tabs
 			orientation="vertical"
-			variant="unstyled"
+			variant="solid-rounded"
+			flexBasis="100%" // Allow to fill empty space
 			isLazy
 			lazyBehavior
-			flexBasis="100%" // Allow to fill empty space
 		>
 			<TabList bg={bgColor} borderRadius="md" p={3}>
 				<Text fontSize="xl">{t('buttons.settings')}</Text>
 				{settings.map((page, key) => {
 					return (
-						<Tab key={key}>
+						<Tab key={key} justifyContent="left">
+							<Box as="span" mr={2}>
+								{page.icon}
+							</Box>
 							{t('settings.' + page.name, page.vars ? page.vars : null)}
 						</Tab>
 					)
