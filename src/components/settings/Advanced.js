@@ -35,8 +35,6 @@ export default function Advanced() {
 		// If user accepted, clear ALL stored data (local,session,etc) excluded SW cache
 		try {
 			clearData()
-			window.localStorage.clear()
-			window.sessionStorage.clear()
 		} catch (err) {
 			Logger.log(['Settings', 'error'], 'Error trying to clear Page Storages')
 		} finally {
@@ -100,23 +98,23 @@ export default function Advanced() {
 		<>
 			<Heading size="md">{t('settings.service_worker')}</Heading>
 			<br />
-			<Heading size="sm">Use Service Worker</Heading>
 			<Stack direction="row">
-				<Text>Allows faster load and offline use of the page.</Text>
+				<Heading size="sm">Use service worker</Heading>
 				<Spacer />
 				<Switch onChange={toggleSW} isChecked={useSW} />
 			</Stack>
+			<Text>Allows faster load and offline usage of the page.</Text>
 			<br />
 			<Divider />
 			<br />
 			<Heading size="md">{t('settings.debugging')}</Heading>
 			<br />
-			<Heading size="sm">Debug Logging</Heading>
 			<Stack direction="row">
-				<Text>Print debug messages in console</Text>
+				<Heading size="sm">Debug Logging</Heading>
 				<Spacer />
 				<Switch onChange={toggleDebugMode} isChecked={useDebug} />
 			</Stack>
+			<Text>Print debug messages in console</Text>
 			<br />
 			<br />
 			<Button colorScheme="red" variant="solid" onClick={onOpen}>
