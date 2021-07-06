@@ -4,9 +4,6 @@ import {
 	Box,
 	Text,
 	Divider,
-	Radio,
-	RadioGroup,
-	useColorMode,
 	Switch,
 	Stack,
 	Spacer,
@@ -18,14 +15,24 @@ import {
 import { useTranslation } from 'react-i18next'
 import { supportedLanguages } from '../../utils/supportedLanguages'
 
-// TODO: default page (normal or timed mode)
-
 function Interface() {
 	const { t, i18n } = useTranslation()
 
+	const [notifications, setNotifications] = useState(false)
+
+	const toggleNotify = () => {
+		if (typeof notifications === 'boolean') {
+			const newValue = !notifications
+			setNotifications(newValue)
+			setData('notify_enabled', newValue)
+		}
+	}
+
 	useEffect(() => {
 		;(async () => {
-			//a
+			await getData('notify_enabled').then((isEnabled) => {
+				setNotifications(isEnabled !== null ? isEnabled : false)
+			})
 		})()
 	}, [])
 
@@ -37,7 +44,10 @@ function Interface() {
 			<Box shadow="base" marginTop={2}>
 				<Select
 					variant="filled"
-					value={i18n.language}
+					value={
+						// Get current language without country code
+						i18n.languages[0]
+					}
 					onChange={(e) => i18n.changeLanguage(e.target.value)}
 				>
 					{
@@ -50,15 +60,19 @@ function Interface() {
 					}
 				</Select>
 			</Box>
+
 			<br />
 			<Divider />
 			<br />
-			<Box>
-				<Text>
-					HERE: Notifications (timer mode :D - mute notifications), Use
-					animations (?)
-				</Text>
-			</Box>
+
+			<Heading size="md">{t('settings.notifications')}</Heading>
+			<br />
+			<Stack direction="row">
+				<Heading size="sm">Send notification</Heading>
+				<Spacer />
+				<Switch onChange={toggleNotify} isChecked={notifications} />
+			</Stack>
+			<Text>Send a notification when a new set of words are generated</Text>
 		</>
 	)
 }
