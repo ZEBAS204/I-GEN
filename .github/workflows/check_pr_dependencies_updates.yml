@@ -9,6 +9,8 @@ on:
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
+    env:
+      CI: false
 
     strategy:
       matrix:
@@ -24,6 +26,6 @@ jobs:
       - name: Install project
         run: npm install
       - name: Build the project
-        run: CI='' npm run build --if-present
+        run: npm run build --if-present
       - name: Run tests
-        run: CI='' npm test --if-present
+        run: npm test --if-present
