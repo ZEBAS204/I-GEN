@@ -10,11 +10,11 @@ jobs:
   build_and_test:
     runs-on: ubuntu-latest
     env:
-      CI: ""
+      CI: false
 
     strategy:
       matrix:
-        node: [12, 13, 14]
+        node: [10, 12, 14]
 
     steps:
       - name: Checkout
