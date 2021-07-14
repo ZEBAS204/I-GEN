@@ -5,6 +5,7 @@ on:
     branches: ['update_dependencies']
   pull_request:
     branches: ['master', 'update_dependencies']
+  workflow_dispatch:
 
 jobs:
   build_and_test:
