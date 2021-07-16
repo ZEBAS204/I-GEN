@@ -2,10 +2,13 @@ name: Build and Test dependencies
 
 on:
   push:
-    branches: ['update_dependencies']
+    branches:
+    - 'update_dependencies'
   pull_request:
-    branches: ['master', 'update_dependencies']
-  workflow_dispatch:
+    branches:
+    - 'master'
+    - 'dependabot/update_dependencies/**'
+    - 'update_dependencies/**'
 
 jobs:
   build_and_test:
