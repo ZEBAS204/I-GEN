@@ -1,0 +1,36 @@
+name: Build and Test dependencies
+
+on:
+  push:
+    branches:
+    - 'update_dependencies'
+  pull_request:
+    branches:
+    - 'master'
+    - 'dependabot/update_dependencies/**'
+    - 'update_dependencies/**'
+  workflow_dispatch:
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    env:
+      CI: false
+
+    strategy:
+      matrix:
+        node: [12, 14, 16]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js v${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install project
+        run: npm install
+      - name: Build the project
+        run: npm run build --if-present
+      #- name: Run tests
+      #  run: npm test --if-present
