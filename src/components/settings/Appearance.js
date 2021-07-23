@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react'
+
+import { useDispatch } from 'react-redux'
+import { update } from '../../redux/reducer_updateUI'
+
 import { getData, setData } from '../../utils/appStorage'
 import {
 	Box,
 	Text,
-	Divider,
 	Radio,
 	RadioGroup,
 	useColorMode,
@@ -16,14 +19,19 @@ import {
 import { useTranslation } from 'react-i18next' // Translations
 
 // TODO: add option to use navbar as in darkmode for light mode (note: too many mode words)
-// TODO: update components when changing options
 // @see https://reactjs.org/docs/context.html#reactcreatecontext
 
 export default function Appearance() {
 	const { t } = useTranslation()
+
+	// This functions bind to the useDispatch
+	// and allows to send a signal to update other UI components
+	const dispatch = useDispatch()
+	const updateUI = () => dispatch(update())
+
 	const [theme, toggleThemeValue] = useState(useColorMode().colorMode)
 	const { toggleTheme } = useColorMode()
-	const [showIcon, setGitIconVisibility] = useState(true)
+	const [darkNavbar, setDarkNavbar] = useState(false)
 
 	const changeTheme = (value) => {
 		toggleThemeValue(value ? value : 'dark')
@@ -32,21 +40,19 @@ export default function Appearance() {
 		console.log('New theme:', value)
 	}
 
-	const changeIconVis = () => {
-		if (typeof showIcon === 'boolean') {
-			const icon = !showIcon
+	const toggleNavbarDark = () => {
+		const darkEnabled = !darkNavbar
 
-			setData('github_icon', icon)
-			setGitIconVisibility(icon)
-		} else {
-			console.error('Component error, icon value should be a boolean!')
-		}
+		setData('side_nav_fill', darkEnabled)
+		setDarkNavbar(darkEnabled)
+
+		updateUI()
 	}
 
 	useEffect(() => {
 		;(async () => {
-			await getData('github_icon').then((icon) => {
-				setGitIconVisibility(icon !== null ? icon : true)
+			await getData('side_nav_fill').then((darkNavEnabled) => {
+				setDarkNavbar(darkNavEnabled !== null ? darkNavEnabled : false)
 			})
 		})()
 	}, [])
@@ -70,19 +76,7 @@ export default function Appearance() {
 			<Stack direction="row">
 				<Text>Dark sidebar</Text>
 				<Spacer />
-				<Switch
-					isChecked={theme === 'dark' ? false : true}
-					isDisabled={theme === 'light' ? false : true}
-				/>
-			</Stack>
-			<br />
-			<Divider />
-			<br />
-			<Heading size="md">Repository Icon</Heading>
-			<Stack direction="row">
-				<Text>Show Project repository quick link icon in navigation bar</Text>
-				<Spacer />
-				<Switch onChange={changeIconVis} isChecked={showIcon} />
+				<Switch value={darkNavbar} onChange={toggleNavbarDark} />
 			</Stack>
 			<br />
 			HERE: Use animations (?)

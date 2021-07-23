@@ -5,11 +5,6 @@
     "value": false
   },
   {
-    "key": "github_icon",
-    "type": "boolean",
-    "value": true
-  },
-  {
     "key": "notify_enabled",
     "type": "boolean",
     "value": false
@@ -20,7 +15,7 @@
     "value": true
   },
   {
-    "key": "side_nav_dark",
+    "key": "side_nav_fill",
     "type": "boolean",
     "value": false
   },

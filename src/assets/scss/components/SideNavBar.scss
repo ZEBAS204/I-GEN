@@ -9,10 +9,6 @@
 		text-align: center;
 		align-items: unset;
 		overflow: hidden auto; // Allow scrolling
-		padding: {
-			top: 1rem;
-			bottom: 1rem;
-		}
 
 		&-button {
 			list-style: none;
@@ -49,6 +45,9 @@
 		order: 1 !important; // Force order to the bottom of the window
 
 		& &-icons-row {
+			&-expand-button {
+				display: none !important;
+			}
 			flex-direction: row;
 			align-items: center;
 			justify-content: space-around;
