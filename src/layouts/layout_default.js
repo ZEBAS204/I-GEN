@@ -5,7 +5,7 @@ import { Flex } from '@chakra-ui/react' // chakra-ui Framework
 
 // App Components
 import SideNav from '../components/SideNavBar' // Import Side Navigation Bar
-import DownloadToastMessage from '../components/DownloadToast' // Download Message
+//! import DownloadToastMessage from '../components/DownloadToast' // Download Message
 
 // Pages
 import Home from '../pages/home'
@@ -21,16 +21,24 @@ class DefaultLayout extends Component {
 	// If isn't running on Electron nor User interacted before.
 	// Load Toast with Download Message
 	componentDidMount() {
-		DownloadToastMessage()
+		//! DownloadToastMessage()
 	}
 
 	render() {
 		return (
 			<BrowserRouter>
-				<Flex id="content" h="100%">
+				<Flex id="content" h="100%" overflow="hidden">
 					<SideNav />
 
-					<Flex id="content-container" grow={1} basis={'auto'} m={5}>
+					<Flex
+						id="content-container"
+						overflow="hidden auto"
+						grow={1}
+						basis={'auto'}
+						my={5}
+						mr={5}
+						ml={0}
+					>
 						<Switch>
 							<Route exact path="/" component={Home} />
 							<Route path="/settings" component={Settings} />

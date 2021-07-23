@@ -19,7 +19,7 @@ import './utils/i18n'
 import OS_MENU_BAR from './components/OS_Bar'
 
 // Import Default Page Layout
-import DefaultLayout from './layouts/default'
+import DefaultLayout from './layouts/layout_default'
 
 const theme = extendTheme({
 	config: {
