@@ -2,13 +2,13 @@ on: push
 name: Update dependencies branch on master branch update
 jobs:
   updateBranch:
-    name: Update staging branch
+    name: Update update_dependencies branch
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
     - uses: Embraser01/update-git-branch-action@v1.0.0
       if: github.ref == 'refs/heads/master'
       with:
-        branch: staging
+        branch: update_dependencies
         force: 1 # To push-force to the branch
         githubToken: ${{ secrets.PAT_TOKEN }} # Github Token
