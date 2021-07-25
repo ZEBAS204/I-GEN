@@ -2,6 +2,7 @@
 
 // FIXME: wrong colours if is using 'dark sidebar enabled'
 // FIXME: expand arrow button wrong colour if is using 'dark sidebar enabled'
+// FIXME: expand arrow button wrong direction if is using navbar order
 
 //import Electron from 'electron';
 import React, { useState, useEffect } from 'react'
@@ -42,7 +43,7 @@ function SideNav() {
 
 	const navButtons = [
 		{
-			location: 'button.link',
+			location: 'buttons.home',
 			navlink: {
 				to: '/',
 				exact: true,
@@ -50,14 +51,14 @@ function SideNav() {
 			icon: <RiCloudyFill />,
 		},
 		{
-			location: 'button.timermode',
+			location: 'buttons.timermode',
 			navlink: {
 				to: '/timer',
 			},
 			icon: <RiTimerFlashFill />,
 		},
 		{
-			location: 'button.settings',
+			location: 'buttons.settings',
 			navlink: {
 				to: '/settings',
 				exact: true,
@@ -68,6 +69,7 @@ function SideNav() {
 
 	const [NavDirection, setNavDirection] = useState(0) // (0 left; 1 right)
 	const [navExpanded, setNavExpanded] = useState(false)
+	const [useTooltips, setUseTooltips] = useState(true)
 
 	const [showThemeSwapIcon, setThemeSwapVisibility] = useState(true)
 	const [darkNavbar, setDarkNavbar] = useState(false) // If navbar will be dark mode in lightmode
@@ -99,37 +101,14 @@ function SideNav() {
 				await getData('theme_swap_icon').then((display) => {
 					setThemeSwapVisibility(display !== null ? display : true)
 				})
+				await getData('side_nav_tooltips').then((isEnabled) => {
+					setUseTooltips(isEnabled !== null ? isEnabled : true)
+				})
 			})()
 		},
 		// This will allows us to manually force re-render of this component
 		[dummy]
 	)
-
-	// Allow creating tooltips and disabled them if user wants
-	const Tooltips = React.forwardRef((props, ref) => {
-		// TODO: add user preference
-
-		// FIXME: ChakraUI needs {ref}. Currently ref is undefined.
-		const dev = true
-
-		console.log('BTN REF: ', ref)
-
-		/*
-		 * If user disabled tooltips or navbar is expanded,
-		 * return child object without tooltip
-		 */
-		if (!dev || navExpanded) {
-			return <>{props.children}</>
-		}
-
-		// return buttons with tooltips
-		return (
-			/*React.forwardRef((props, ref) =>*/
-			<Tooltip {...props} ref={ref}>
-				<>{props.children}</>
-			</Tooltip>
-		)
-	})
 
 	return (
 		<chakra.nav
@@ -142,39 +121,39 @@ function SideNav() {
 					// Load all navigation buttons
 					navButtons.map((btn, key) => {
 						return (
-							// Custom <Tooltips> element
-							<Tooltips
+							<Tooltip
 								key={key}
-								ref={React.useRef}
 								label={t(btn.location)}
 								placement="auto-start"
 								openDelay={500}
 								closeOnClick={true}
 								gutter="0"
-								children={
-									<div>
-										{
-											// If navlink exist, create a link and copy attributes
-											btn.navlink ? (
-												<NavLink {...btn.navlink}>
-													<IconButton
-														className="navbar-icons-row-button"
-														icon={btn.icon}
-														{...btn.buttonAttributes}
-													/>
-												</NavLink>
-											) : (
-												// If not, just create an icon button
-												<IconButton
-													className="navbar-icons-row-button"
-													icon={btn.icon}
-													{...btn.buttonAttributes}
-												/>
-											)
-										}
-									</div>
+								isDisabled={
+									// If nav is expanded, will not use tooltips
+									// Else, if are enabled by user (default) will be displayed
+									navExpanded ? true : useTooltips ? false : true
 								}
-							/>
+							>
+								{
+									// If navlink exist, create a link and copy attributes
+									btn.navlink ? (
+										<NavLink {...btn.navlink}>
+											<IconButton
+												className="navbar-icons-row-button"
+												icon={btn.icon}
+												{...btn.buttonAttributes}
+											/>
+										</NavLink>
+									) : (
+										// If not, just create an icon button
+										<IconButton
+											className="navbar-icons-row-button"
+											icon={btn.icon}
+											{...btn.buttonAttributes}
+										/>
+									)
+								}
+							</Tooltip>
 						)
 					})
 				}
