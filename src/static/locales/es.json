@@ -13,6 +13,12 @@
     "accessibility": "Accesibilidad",
     "keybinds": "Atajos de teclado",
     "advanced": "Avanzado",
-    "about": "Acerca de {{app_name}}"
+    "about": "Acerca de {{app_name}}",
+    
+    "language": "Idioma",
+    "theme": "Tema",
+    "tts": "Texto a voz",
+    "service_worker": "Service worker",
+    "debugging": "Debugging"
   }
 }
