@@ -27,12 +27,12 @@ class DefaultLayout extends Component {
 	render() {
 		return (
 			<BrowserRouter>
-				<Flex id="content" h="100%" overflow="hidden">
+				<Flex id="content" h="100%" className="container">
 					<SideNav />
 
 					<Flex
 						id="content-container"
-						overflow="hidden auto"
+						className="container"
 						grow={1}
 						basis={'auto'}
 						my={5}

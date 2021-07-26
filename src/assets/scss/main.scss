@@ -7,6 +7,14 @@ body,
 	flex-direction: column;
 }
 
+.container {
+	overflow: hidden;
+}
+
+.scrollable {
+	overflow: hidden auto;
+}
+
 // Main container
 @media screen and (max-width: 500px) {
 	#content {
@@ -16,3 +24,4 @@ body,
 }
 
 // TODO: add scrollbar style
+// TODO: UI in Settings doesn't work properly when zoomed-in

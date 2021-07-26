@@ -30,7 +30,7 @@ const Keybinds = React.lazy(() => import('../components/settings/Keybinds'))
 const Advanced = React.lazy(() => import('../components/settings/Advanced'))
 const About = React.lazy(() => import('../components/settings/About'))
 
-function Settings() {
+export default function Settings() {
 	const { t } = useTranslation()
 	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
 
@@ -78,6 +78,7 @@ function Settings() {
 
 	return (
 		<Tabs
+			className="scrollable"
 			orientation="vertical"
 			variant="solid-rounded"
 			flexBasis="100%" // Allow to fill empty space
@@ -98,7 +99,13 @@ function Settings() {
 				})}
 			</TabList>
 
-			<TabPanels bg={bgColor} borderRadius="md" ml={5} p={3}>
+			<TabPanels
+				className="scrollable"
+				bg={bgColor}
+				borderRadius="md"
+				ml={5}
+				p={3}
+			>
 				{settings.map((page, key) => {
 					return (
 						<TabPanel key={key}>
@@ -117,5 +124,3 @@ function Settings() {
 		</Tabs>
 	)
 }
-
-export default Settings
