@@ -8,7 +8,7 @@ localforage.config({
 /* If in development environment, use localstorage (will allow modifying saved values)
  * Also `dev` is used to return values as objects
  */
-const dev = process.env.NODE_ENV === 'development'
+const dev = true // process.env.NODE_ENV === 'development'
 const storage = dev ? localStorage : localforage
 
 /**
