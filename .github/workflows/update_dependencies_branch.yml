@@ -5,15 +5,20 @@ on:
       - master
 
 jobs:
-  update_dependencies_branch:
+  sync-branches:
     runs-on: ubuntu-latest
+    name: Syncing branches
     steps:
-      - name: Setup environment
+      - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Create update pull request
-        uses: LucasRuy/sync-branch-action@v1.1.0
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Opening pull request
+        id: pull
+        uses: tretuna/sync-branches@1.2.0
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          SOURCE_BRANCH: 'master'
-          DESTINATION_BRANCH: 'update_dependencies'
+          FROM_BRANCH: "master"
+          TO_BRANCH: "update_dependencies"
