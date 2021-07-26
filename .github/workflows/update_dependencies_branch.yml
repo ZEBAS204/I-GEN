@@ -1,0 +1,19 @@
+name: Sync dependencies branch with master
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  update_dependencies_branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup environment
+        uses: actions/checkout@v2
+
+      - name: Create update pull request
+        uses: LucasRuy/sync-branch-action@v1.1.0
+        with:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          SOURCE_BRANCH: 'master'
+          DESTINATION_BRANCH: 'update_dependencies'

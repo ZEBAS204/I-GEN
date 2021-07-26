@@ -4,10 +4,10 @@ on:
   push:
     branches:
     - 'update_dependencies'
+    - 'update_dependencies/**'
   pull_request:
     branches:
     - 'master'
-    - 'dependabot/update_dependencies/**'
     - 'update_dependencies/**'
   workflow_dispatch:
 
