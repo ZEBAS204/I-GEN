@@ -34,11 +34,11 @@ function OS_MENU_BAR() {
 			// TODO: don't add OS bar in mobile
 			// TODO: bind electron buttons
 			await getData('electron').then((e) => {
-				Logger.log(['OS'], 'Electron:', e)
+				Logger.log(['OS', 'info'], 'Electron: ' + e)
 				if (e) {
-					Logger.log(['OS'], 'Running on Electron, window menu bar')
+					Logger.log(['OS', 'info'], 'Running on Electron, window menu bar')
 				} else {
-					Logger.log(['OS'], 'Not running on Electron')
+					Logger.log(['OS', 'info'], 'Not running on Electron')
 				}
 				setElectronInstance(e)
 			})
