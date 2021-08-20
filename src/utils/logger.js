@@ -12,21 +12,24 @@ export default class Logger {
 	 * @static
 	 */
 	static async isLoggerEnabled(forced = false) {
-		if (process.env.NODE_ENV === 'development' || !forced) {
+		if (process.env.NODE_ENV === 'development' && !forced) {
 			// Will always be logging in development environment
 			Logger._enabled = true
+			console.info(
+				'[Logger] Development environment running, logger is enabled by default.'
+			)
 		}
 
 		if (Logger._enabled === undefined || forced) {
 			await getData('dev_mode').then((enabled) => {
 				Logger._enabled = enabled !== null ? enabled : false
+
+				// Let know if the Logger is enabled
+				if (forced) {
+					console.info('[Logger] Enabled:', Logger._enabled)
+				}
 			})
 		}
-
-		// Let know if the Logger is enabled
-		Logger._enabled
-			? console.info('[Logger] Logging is enabled!')
-			: console.info('[Logger] Logging is disabled!')
 
 		return Logger._enabled
 	}
@@ -44,9 +47,11 @@ export default class Logger {
 		const _args = args || undefined
 
 		// Check if logging is enabled
-		if (
-			Logger._enabled !== undefined ? Logger._enabled : Logger.isLoggerEnabled()
-		) {
+		if (Logger._enabled === undefined || Logger._enabled === null) {
+			Logger.isLoggerEnabled()
+		}
+
+		if (Logger._enabled) {
 			// Check if there is any passed arguments to log
 			// If the aren't exit the call with a warning
 			if (!_args) {
@@ -78,8 +83,6 @@ export default class Logger {
 					console.log(log)
 					break
 			}
-		} else {
-			console.log('[Logger] Logger is not enabled')
 		}
 	}
 }
