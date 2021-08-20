@@ -221,7 +221,7 @@ export default function Accessibility() {
 				<Input
 					pl="4rem"
 					variant="outline"
-					value={readText}
+					type="text"
 					maxLength={140}
 					onChange={handleTextChange}
 					placeholder="Write anything you want the TTS to say here!"
