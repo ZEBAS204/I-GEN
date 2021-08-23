@@ -1,3 +1,12 @@
+:root {
+	// Firefox 63 compatibility
+	scrollbar-face-color: #63b3ed;
+	scrollbar-track-color: rgba(0, 0, 0, 0.1);
+	// Firefox 64 compatibility
+	scrollbar-color: #63b3ed rgba(0, 0, 0, 0.1) !important;
+	scrollbar-width: 10px !important;
+}
+
 html,
 body,
 #root {
@@ -23,5 +32,23 @@ body,
 	}
 }
 
-// TODO: add scrollbar style
+::-webkit-scrollbar {
+	width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #63b3ed;
+	border: 0;
+	border-radius: 30px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #48a6ea;
+}
+
+::-webkit-scrollbar-track {
+	background: rgba(0, 0, 0, 0.25);
+	border-radius: 0;
+}
+
 // TODO: UI in Settings doesn't work properly when zoomed-in
