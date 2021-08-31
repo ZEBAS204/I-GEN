@@ -35,6 +35,11 @@
     "value": false
   },
   {
+    "key": "tts_only_timermode",
+    "type": "boolean",
+    "value": false
+  },
+  {
     "key": "tts_speed",
     "type": "number",
     "value": 1
