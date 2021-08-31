@@ -38,13 +38,16 @@ export default function Accessibility() {
 
 	const handleTextChange = (event) => setReadText(event.target.value)
 
-	// TODO: bind only timer mode option to a config
-	// TODO: await until user end writing to update readText state
-
 	const toggleTTS = () => {
 		const newValue = !useTTS
 		setTTS(newValue)
 		setData('tts_enabled', newValue)
+	}
+
+	const toggleTimerModeOnly = () => {
+		const newValue = !onlyTimerTTS
+		toggleOnlyTimerTTS(newValue)
+		setData('tts_only_timermode', newValue)
 	}
 
 	const changeVoice = (voice) => {
@@ -73,6 +76,9 @@ export default function Accessibility() {
 		;(async () => {
 			await getData('tts_enabled').then((tts) => {
 				setTTS(tts !== null ? tts : false)
+			})
+			await getData('tts_only_timermode').then((ttOnly) => {
+				toggleOnlyTimerTTS(ttOnly !== null ? ttOnly : false)
 			})
 			await getData('tts_volume').then((vol) => {
 				setVolume(vol !== null && typeof vol === 'number' ? vol / 100 : 1)
@@ -115,7 +121,7 @@ export default function Accessibility() {
 				<Heading size="sm">Timer Mode ONLY</Heading>
 				<Spacer />
 				<Switch
-					onChange={toggleOnlyTimerTTS}
+					onChange={toggleTimerModeOnly}
 					isChecked={onlyTimerTTS}
 					isDisabled={!useTTS}
 				/>
@@ -159,7 +165,7 @@ export default function Accessibility() {
 						setVolume(val)
 						changeVolume(decVol)
 						TTS._volume = decVol // TTS class static var
-						console.log(`Showed vol: ${val}\nReal vol: ${decVol}`)
+						//* console.log(`Showed vol: ${val}\nReal vol: ${decVol}`)
 					}}
 					defaultValue={TTS._volume * 100}
 					min={1}
@@ -180,7 +186,7 @@ export default function Accessibility() {
 						setSpeed(vel)
 						changeSpeed(decVel)
 						TTS._rate = decVel // TTS class static var
-						console.log(`Showed vol: ${vel}\nReal vol: ${decVel}`)
+						//* console.log(`Showed vol: ${vel}\nReal vol: ${decVel}`)
 					}}
 					defaultValue={TTS._rate * 100}
 					min={1}
