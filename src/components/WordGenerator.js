@@ -11,9 +11,29 @@ import { IoAdd } from 'react-icons/io5' // + Icon
 import TTS from '../utils/tts' // TTS
 import { getData } from '../utils/appStorage'
 
+// Cache random element to improve performance
+const rnd = Math.random
+var nouns
+var adjs
+
+if (process.env.NODE_ENV === 'development') {
+	nouns = require('../static/wordsets/noun.json')
+	adjs = require('../static/wordsets/adj.json')
+} else {
+	fetch('./wordsets/noun.json')
+		.then((response) => response.json())
+		.then((data) => {
+			nouns = data
+		})
+	fetch('./wordsets/adj.json')
+		.then((response) => response.json())
+		.then((data) => {
+			adjs = data
+		})
+}
+
 function WordGenerator(_props, ref) {
 	const [useTTS, setTTS] = useState(false)
-	const [number, setNumber] = useState(1)
 	const [words, setWords] = useState({
 		noun: 'postcard',
 		adjective: 'thinking',
@@ -38,6 +58,21 @@ function WordGenerator(_props, ref) {
 	 * See https://stackoverflow.com/a/57006730
 	 */
 	//
+	const generateNewWordSets = async () => {
+		const noun = shuffleArray(nouns)
+		const adj = shuffleArray(adjs)
+
+		setWords({
+			noun,
+			adjective: adj,
+		})
+
+		// If user enabled TTS, speak
+		if (useTTS) {
+			new TTS(`${adj} ${noun}`).say()
+		}
+	}
+
 	const genREF = useRef()
 	// Get a random word from both lists (is called from outside)
 	useImperativeHandle(ref, () => ({
@@ -46,34 +81,7 @@ function WordGenerator(_props, ref) {
 			setTTS(false)
 		},
 		regenerateWord: () => {
-			//! Hardcoded but do the work for debugging purposes
-			if (number === 1) {
-				setNumber(2)
-				setWords({ noun: 'zzzzzzzzzzz', adjective: 'zzzzzzzzzzz' })
-			}
-			if (number === 2) {
-				setNumber(3)
-				setWords({ noun: 'xxxxxcfzv', adjective: 'zdvzdsbhszjnx' })
-			}
-			if (number === 3) {
-				setNumber(4)
-				setWords({
-					noun: 'egad564ad56h4ad6h',
-					adjective: 'gjmz4556<h4w6efaaax :3',
-				})
-			}
-			if (number === 4) {
-				setNumber(1)
-				setWords({
-					noun: 'asasasas',
-					adjective: 'pppppppppppppppppppp',
-				})
-			}
-
-			// If user enabled TTS, speak
-			if (useTTS) {
-				new TTS(`${words.adjective} ${words.noun}`).say()
-			}
+			generateNewWordSets()
 		},
 	}))
 
@@ -94,6 +102,20 @@ function WordGenerator(_props, ref) {
 			</Flex>
 		</Stack>
 	)
+}
+
+/**
+ * Randomize array in-place using Durstenfeld shuffle algorithm
+ * @see https://stackoverflow.com/a/12646864
+ */
+function shuffleArray(array) {
+	for (var i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(rnd() * (i + 1))
+		var temp = array[i]
+		array[i] = array[j]
+		array[j] = temp
+	}
+	return temp
 }
 
 // Allow to take a ref
