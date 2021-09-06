@@ -5,7 +5,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Flex, Box, Spacer, Text } from '@chakra-ui/react'
 
-// Default remaining time to add if no saved time is provided by the parent
+// Default remaining time to add if no saved time is provided by the parent (10min)
 const DEF_TIME = 10000
 
 export default function CountDown({ savedTime, parentRunning, speak }) {

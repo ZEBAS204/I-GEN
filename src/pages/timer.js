@@ -23,7 +23,7 @@ import TTS from '../utils/tts'
 
 // Name of the key to use in session storage
 const SS_NAME = 'countdown_time'
-const DEF_TIME = 10000 // 10 min
+const DEF_TIME = 600 // 10 min
 const MIN_TIME = 0
 const MAX_TIME = 215999
 
