@@ -51,9 +51,8 @@ export default function CountDownControls({ parentCallback, savedTime }) {
 					parentCallback(newTime.current)
 			}
 		},
-		[
-			//* Only run on unmount
-		]
+		//* Only run on unmount
+		[] // eslint-disable-line
 	)
 
 	// Editable controls object
