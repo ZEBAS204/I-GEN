@@ -1,13 +1,12 @@
-.ghost_background {
-	height: 100%;
-	width: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
-	background: url(../../icons/ghost.svg) 0 0 repeat;
+.ghost-background {
+	background: url('../../icons/ghost.svg') 0 0 repeat;
 	background-size: 8em;
-	//transform: rotate(21deg);
+	height: 100%;
+	left: 0;
 	opacity: 0.1;
 	pointer-events: none; // Allow clicking through element
+	position: fixed;
+	top: 0;
+	width: 100%;
 	z-index: -1; // Prevent overlapping menus
 }

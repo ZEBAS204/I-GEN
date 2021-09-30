@@ -20,7 +20,7 @@ const NotFoundPage = () => (
 				</Button>
 			</Link>
 		</Stack>
-		<div className="ghost_background" />
+		<div className="ghost-background" />
 	</Center>
 )
 
