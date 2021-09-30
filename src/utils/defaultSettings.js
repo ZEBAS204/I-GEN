@@ -45,35 +45,44 @@ export default async function defaultSettings() {
 
 		// Loop all the settings from the default json and compare
 		// with the stored ones if they exist and their type match
-		let int = 0
 		defaults.forEach(async (def) => {
-			int++
-			// Get stored value from user
-			const storedValue = await getData(def.key)
+			let isEmpty = false
+
+			if (!def) isEmpty = true
+			if (!('key' in def) || def.key === undefined) isEmpty = true
+			if (!('type' in def) || def.type === undefined) isEmpty = true
+			if (!('value' in def) || def.value === undefined) isEmpty = true
 
 			// Compare the user value with the default ones
-			if (storedValue !== null) {
-				if (typeof storedValue === def.type) {
-					Logger.log(
-						[`DS-${int}`, 'info'],
-						`Expected value of key "${def.key}"`
-					)
+			if (!isEmpty) {
+				// Get stored value from user
+				const storedValue = await getData(def.key)
+
+				if (storedValue !== null) {
+					if (typeof storedValue === def.type) {
+						Logger.log(['DS', 'info'], `Expected value of key "${def.key}"`)
+					} else {
+						// Key is stored but the expected type is wrong
+						// Set key to default value
+						Logger.log(
+							['DS', 'info'],
+							`Value type of key "${def.key}" is unexpected! Restoring key default value.`
+						)
+						setData(def.key, def.value)
+					}
 				} else {
-					// They key is stored but the expected type is wrong
-					// Set key to default value
+					// Key not exist
 					Logger.log(
-						[`DS-${int}`, 'info'],
-						`Value of key "${def.key}" is unexpected! Restoring key default value.`
+						['DS', 'info'],
+						`"${def.key}" key not found. Creating a new one...`
 					)
 					setData(def.key, def.value)
 				}
 			} else {
-				// Key not exist
 				Logger.log(
-					[`DS-${int}`, 'info'],
-					`"${def.key}" key not found. Creating a new one...`
+					['DS', 'warn'],
+					'Unexpected object passed in defaults settings'
 				)
-				setData(def.key, def.value)
 			}
 		})
 	}
