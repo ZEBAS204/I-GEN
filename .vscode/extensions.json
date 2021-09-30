@@ -1,7 +1,9 @@
 {
-  "recommendations": [
-    "firefox-devtools.vscode-firefox-debug",
-    "dsznajder.es7-react-js-snippets",
-    "dbaeumer.vscode-eslint"
-  ]
+	"recommendations": [
+		"firefox-devtools.vscode-firefox-debug",
+		"dsznajder.es7-react-js-snippets",
+		"dbaeumer.vscode-eslint",
+		"stylelint.vscode-stylelint",
+		"esbenp.prettier-vscode"
+	]
 }
