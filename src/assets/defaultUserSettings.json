@@ -15,16 +15,6 @@
     "value": true
   },
   {
-    "key": "side_nav_fill",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "key": "side_nav_direction",
-    "type": "number",
-    "value": 0
-  },
-  {
     "key": "theme_swap_icon",
     "type": "boolean",
     "value": true
