@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom' // Page Handler
 import { Stack, Text, Button, Center } from '@chakra-ui/react'
 

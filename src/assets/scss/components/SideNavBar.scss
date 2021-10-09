@@ -1,64 +1,220 @@
-.navbar {
-	width: 64px;
-	height: 100%;
+// TODO: calculate position of outside rounded borders with min-height
 
-	& &-icons-row {
-		height: 100%; // Fixes icons focus border cuts
-		display: flex;
-		flex-direction: column;
-		text-align: center;
-		align-items: unset;
-		overflow: hidden auto; // Allow scrolling
+$navbar-width: 100px;
+$navbar-item-min-height: 50px;
 
-		&-button {
-			list-style: none;
-			border: 3px solid transparent;
+$media-navbar-mobile: 500px;
 
+// Support reduced motion
+@media (prefers-reduced-motion: reduce) {
+	.navbar-item-label {
+		transform: none;
+		transition: none;
+	}
+}
+
+@mixin themify(
+	$theme-name,
+	$saturation,
+	$background-color,
+	$background-color-mobile,
+	$main-color
+) {
+	body.#{$theme-name} {
+		nav,
+		.navbar {
+			display: flex;
+			flex-shrink: 0;
+		}
+
+		.navbar-item {
+			align-items: center;
+			border: 0;
+			// Override tag component style
+			box-shadow: none;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			padding: 0;
+			text-align: center;
+			text-decoration: none;
+
+			&.active,
+			&:focus,
 			&:hover {
-				background-color: var(--chakra-colors-whiteAlpha-300);
+				outline: none;
+				-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+				-webkit-tap-highlight-color: transparent;
+
+				.navbar-item-icon,
+				.navbar-item-icon-active,
+				.navbar-item-label {
+					@if $saturation {
+						// Only fix for the low color saturation of tags...
+						filter: saturate(3);
+					}
+					color: inherit;
+				}
+			}
+
+			&-icon,
+			&-icon-active {
+				color: $main-color;
+				font-size: 26px;
+				transition: 0.25s ease;
+			}
+
+			&-icon {
+				display: inline-flex;
+				visibility: visible;
+
+				&-active {
+					display: none;
+					visibility: hidden;
+				}
+			}
+
+			&-label {
+				color: $main-color;
+				display: block;
+				font-size: 13px;
+				transition: 0.25s ease;
 			}
 		}
 
-		& a {
-			text-decoration: none;
+		@media (min-width: $media-navbar-mobile + 1px) {
+			nav,
+			.navbar {
+				flex-direction: column;
+				height: 100%;
+				order: 0;
+				overflow-x: hidden;
+				overflow-y: auto;
+				padding: 20px 0 20px 10px;
+				width: $navbar-width;
+			}
 
-			&.active {
-				& .navbar-icons-row-button {
-					border-color: var(--chakra-colors-blue-300) !important;
-					color: var(--chakra-colors-blue-300) !important;
+			.navbar-item {
+				margin-bottom: 0;
+				margin-inline-end: 0;
+				margin-inline-start: 0;
+				margin-top: 1rem;
+				min-height: $navbar-item-min-height;
 
-					&:hover {
-						background-color: #0099ff17;
+				&.active {
+					&.navbar-item {
+						background: $background-color;
+						border-radius: 5px 0 0 5px;
+
+						// Outside rounded paths
+						// Awesome tutorial! https://segmentfault.com/a/1190000040372386/en
+						&::before,
+						&::after {
+							background-image: radial-gradient(
+								circle at 15px 0,
+								rgba(0, 0, 0, 0) 15px,
+								$background-color 0
+							);
+							background-position: -15px bottom, left top, center bottom,
+								center bottom;
+							background-repeat: repeat-x, repeat-x, no-repeat, no-repeat;
+							background-size: 100% 15px;
+							content: '';
+							height: 10px;
+							position: relative;
+							right: -55%;
+							width: 35px;
+						}
+						&::before {
+							top: -12px;
+						}
+						//! Will show a slight line in chromium based browsers. Sorry there's nothing I can do...
+						&::after {
+							top: 12px;
+							transform: rotate(180deg);
+						}
+					}
+					.navbar-item-icon {
+						display: none;
+						visibility: hidden;
+						&-active {
+							display: block;
+							visibility: visible;
+						}
+					}
+
+					.navbar-item-label {
+						height: 0;
+						opacity: 0;
+						position: relative;
+						transform: scale(0);
+						transition: opacity 0.25s ease 0, transform 0.25s;
 					}
 				}
 			}
 		}
-	}
-}
 
-@media screen and (max-width: 500px) {
-	.navbar {
-		width: 100%;
-		height: 5rem;
-		//box-shadow: 0 0 5px 0 black;
-		// TODO: add user property order for mobile (display menu at top/bottom)
-		order: 1 !important; // Force order to the bottom of the window
-
-		& &-icons-row {
-			&-expand-button {
-				display: none !important;
+		@media (max-width: $media-navbar-mobile + 0.9px) {
+			nav,
+			.navbar {
+				background: $background-color-mobile;
+				border-radius: 12px 12px 0 0;
+				bottom: 0;
+				box-shadow: 0 15px 30px 0 #000;
+				height: 72px;
+				left: 0;
+				overflow: hidden;
+				position: fixed;
+				width: 100%;
 			}
-			flex-direction: row;
-			align-items: center;
-			justify-content: space-around;
-			padding: 0 1rem;
-			overflow: hidden;
 
-			& a,
-			& div,
-			&-button {
-				margin: 0;
+			.navbar-item {
+				flex-basis: 80px;
+				flex-grow: 1;
+				flex-shrink: 1;
+
+				&.active {
+					.navbar-item-icon {
+						display: none;
+						visibility: hidden;
+						&-active {
+							display: block;
+							visibility: visible;
+						}
+					}
+
+					.navbar-item-label {
+						height: 0;
+						opacity: 0;
+						position: relative;
+						transform: translateY(100px) scale(0);
+						transition: opacity 0.25s ease 0, transform 0.25s;
+					}
+				}
+			}
+
+			.navbar-spacer,
+			.navbar-swap-button {
+				display: none;
+				visibility: hidden;
 			}
 		}
 	}
 }
+
+//* Light Theme
+@include themify(
+	chakra-ui-light,
+	false,
+	var(--chakra-colors-blackAlpha-200),
+	var(--chakra-colors-white),
+	#1a202c
+);
+//* Dark Theme
+@include themify(
+	chakra-ui-dark,
+	true,
+	var(--chakra-colors-whiteAlpha-200),
+	var(--chakra-colors-gray-800),
+	#fff
+);

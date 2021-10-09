@@ -1,4 +1,3 @@
-import React from 'react'
 import {
 	useColorModeValue,
 	Heading,
@@ -14,7 +13,9 @@ export default function Keybinds() {
 	const { t } = useTranslation()
 	const lineBG = useColorModeValue('blackAlpha.100', 'whiteAlpha.100')
 
-	const BindLine = (props) => (
+	const BindsButtons = ({ children }) => <Text w="90px" align="center">{children}</Text>
+
+	const BindLine = ({ children }) => (
 		<Stack
 			m={3}
 			direction="row"
@@ -23,7 +24,7 @@ export default function Keybinds() {
 			spacing={6}
 			p={3}
 		>
-			{props.children}
+			{children}
 		</Stack>
 	)
 	const SectionDivider = () => <Divider marginY={6} />
@@ -41,62 +42,62 @@ export default function Keybinds() {
 
 			<Heading size="sm">Navigation</Heading>
 			<BindLine>
-				<Text as="samp">Main page</Text>
-				<span>
+				<BindsButtons>
 					<Kbd>SHIFT</Kbd> + <Kbd>1</Kbd>
-				</span>
+				</BindsButtons>
+				<Text as="samp">Main page</Text>
 			</BindLine>
 			<BindLine>
-				<Text as="samp">Timer mode</Text>
-				<span>
+				<BindsButtons>
 					<Kbd>SHIFT</Kbd> + <Kbd>2</Kbd>
-				</span>
+				</BindsButtons>
+				<Text as="samp">Timer mode</Text>
 			</BindLine>
 			<BindLine>
-				<Text as="samp">Settings</Text>
-				<span>
+				<BindsButtons>
 					<Kbd>SHIFT</Kbd> + <Kbd>3</Kbd>
-				</span>
+				</BindsButtons>
+				<Text as="samp">Settings</Text>
 			</BindLine>
 
 			<SectionDivider />
 
 			<Heading size="sm">Appearance</Heading>
 			<BindLine>
-				<Text as="samp">Toggle light/dark color mode</Text>
-				<span>
+				<BindsButtons>
 					<Kbd>SHIFT</Kbd> + <Kbd>C</Kbd>
-				</span>
+				</BindsButtons>
+				<Text as="samp">Toggle light/dark color mode</Text>
 			</BindLine>
 
 			<SectionDivider />
 
 			<Heading size="sm">Home page</Heading>
 			<BindLine>
-				<Text as="samp">Generate new pair of words</Text>
-				<span>
+				<BindsButtons>
 					<Kbd>SPACE</Kbd>
-				</span>
+				</BindsButtons>
+				<Text as="samp">Generate new pair of words</Text>
 			</BindLine>
 
 			<SectionDivider />
 
 			<Heading size="sm">Timer mode</Heading>
 			<BindLine>
-				<Text as="samp">Pause/Unpause timer</Text>
-				<span>
+				<BindsButtons>
 					<Kbd>SPACE</Kbd>
-				</span>
+				</BindsButtons>
+				<Text as="samp">Pause/Unpause timer</Text>
 			</BindLine>
 
 			<SectionDivider />
 
 			<Heading size="sm">Settings</Heading>
 			<BindLine>
-				<Text as="samp">Navigate through different pages</Text>
-				<span>
+				<BindsButtons>
 					<Kbd>↓</Kbd> <Kbd>↑</Kbd>
-				</span>
+				</BindsButtons>
+				<Text as="samp">Navigate through different pages</Text>
 			</BindLine>
 		</>
 	)

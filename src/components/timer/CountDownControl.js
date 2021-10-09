@@ -1,14 +1,12 @@
 /**
  * Used with CountDown.js
  */
-
-import React, { useState, useEffect, useRef } from 'react'
-
+import { useState, useEffect, useRef } from 'react'
 import {
-	Flex,
-	Box,
+	useColorModeValue,
+	Grid,
 	Text,
-	// Number counter
+	// Number Input
 	NumberInput,
 	NumberInputField,
 	NumberInputStepper,
@@ -17,6 +15,7 @@ import {
 } from '@chakra-ui/react'
 
 export default function CountDownControls({ parentCallback, savedTime }) {
+	const NumBoxBG = useColorModeValue('blackAlpha.100', 'whiteAlpha.100')
 	const [seconds, setSeconds] = useState(() =>
 		savedTime ? Math.floor((savedTime % 3600) % 60) : 0
 	)
@@ -29,8 +28,8 @@ export default function CountDownControls({ parentCallback, savedTime }) {
 
 	/*
 	 * Will save the last converted time.
-	 *	Without this, whe force React to allways get the last
-	 *	updated states. Nice trick eh?
+	 * Whe force React to allways get the last
+	 * updated states. Nice trick eh?
 	 */
 	const newTime = useRef(null)
 
@@ -46,7 +45,7 @@ export default function CountDownControls({ parentCallback, savedTime }) {
 	useEffect(
 		() => {
 			return () => {
-				// Callback new time set to parent only on component dismount
+				// Send the new time to parent only on component dismount
 				if (newTime.current && newTime.current !== savedTime)
 					parentCallback(newTime.current)
 			}
@@ -55,63 +54,52 @@ export default function CountDownControls({ parentCallback, savedTime }) {
 		[] // eslint-disable-line
 	)
 
-	// Editable controls object
+	const NumberInputBox = ({ defValue, onBlur, bottomText }) => (
+		<NumberInput
+			size="lg"
+			shadow="md"
+			maxW={32}
+			min={0}
+			max={59}
+			defaultValue={defValue}
+			onBlur={onBlur}
+			inputMode="numeric"
+			allowMouseWheel
+		>
+			<NumberInputField bg={NumBoxBG} fontSize="30px" textAlign="center" />
+			<NumberInputStepper>
+				<NumberIncrementStepper />
+				<NumberDecrementStepper />
+			</NumberInputStepper>
+		</NumberInput>
+	)
+
 	return (
-		<Flex direction="row">
-			<Box shadow="md">
-				<NumberInput
-					size="lg"
-					maxW={32}
-					min={0}
-					max={59}
-					defaultValue={hours}
-					onBlur={(e) => setHours(e.target.value)}
-					allowMouseWheel
-				>
-					<NumberInputField />
-					<NumberInputStepper>
-						<NumberIncrementStepper />
-						<NumberDecrementStepper />
-					</NumberInputStepper>
-				</NumberInput>
-				<Text align="center">HS</Text>
-			</Box>
-			<Box shadow="md">
-				<NumberInput
-					size="lg"
-					maxW={32}
-					min={0}
-					max={59}
-					defaultValue={minutes}
-					onBlur={(e) => setMinutes(e.target.value)}
-					allowMouseWheel
-				>
-					<NumberInputField />
-					<NumberInputStepper>
-						<NumberIncrementStepper />
-						<NumberDecrementStepper />
-					</NumberInputStepper>
-				</NumberInput>
-				<Text align="center">MIN</Text>
-			</Box>
-			<Box shadow="md">
-				<NumberInput
-					size="lg"
-					maxW={32}
-					min={0}
-					max={59}
-					defaultValue={seconds}
-					onBlur={(e) => setSeconds(e.target.value)}
-					allowMouseWheel
-				>
-					<NumberInputField />
-					<NumberInputStepper>
-						<NumberIncrementStepper />
-						<NumberDecrementStepper />
-					</NumberInputStepper>
-				</NumberInput>
-				<Text align="center">SEC</Text>
-			</Box>
-		</Flex>
+		<Grid
+			templateColumns="1fr 1fr 1fr"
+			templateRows="1fr auto"
+			fontFamily="consolas"
+			gap={3}
+			alignItems="center"
+			textAlign="center"
+		>
+			<NumberInputBox
+				defValue={hours}
+				onBlur={(e) => setHours(e.target.value)}
+			/>
+			<NumberInputBox
+				defValue={minutes}
+				onBlur={(e) => setMinutes(e.target.value)}
+				bottomText="Minutes"
+			/>
+			<NumberInputBox
+				defValue={seconds}
+				onBlur={(e) => setSeconds(e.target.value)}
+				bottomText="Seconds"
+			/>
+			<Text align="center">Hours</Text>
+			<Text align="center">Minutes</Text>
+			<Text align="center">Seconds</Text>
+		</Grid>
 	)
 }

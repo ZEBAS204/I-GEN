@@ -1,42 +1,48 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { getData, setData } from '../../utils/appStorage'
 import {
 	Box,
-	SimpleGrid,
+	Grid,
 	Text,
 	Divider,
 	Switch,
 	Stack,
 	Spacer,
 	Heading,
+	Button,
+	Select,
+	// Sliders
+	Tooltip,
 	Slider,
 	SliderTrack,
 	SliderFilledTrack,
 	SliderThumb,
-	Button,
-	Select,
 	// Input
 	Input,
 	InputGroup,
 	InputLeftElement,
 } from '@chakra-ui/react'
 
-import { RiVoiceprintFill, RiSpeedFill } from 'react-icons/ri'
-
-import { useTranslation } from 'react-i18next' // Translations
-import TTS from '../../utils/tts' // TTS Class
+import { useTranslation } from 'react-i18next'
+import TTS from '../../utils/tts'
 
 export default function Accessibility() {
 	const { t } = useTranslation()
 
 	const [useTTS, setTTS] = useState(false)
 	const [onlyTimerTTS, toggleOnlyTimerTTS] = useState(false)
-	const [, setVolume] = useState(1)
-	const [, setSpeed] = useState(1)
+	const [volume, setVolume] = useState(TTS._volume * 100)
+	const [speed, setSpeed] = useState(TTS._speed * 100)
 	const [speaking, setSpeaking] = useState(false)
 	const [readText, setReadText] = useState('')
 
-	const handleTextChange = (event) => setReadText(event.target.value)
+	const [displayVolumeTooltip, setDisplayVolumeTooltip] = useState(false)
+	const [displaySpeedTooltip, setDisplaySpeedTooltip] = useState(false)
+
+	const handleTTStest = (event) => setReadText(event.target.value)
+
+	const changeVolume = (newVol) => setData('tts_volume', newVol)
+	const changeSpeed = (newSpeed) => setData('tts_speed', newSpeed)
 
 	const toggleTTS = () => {
 		const newValue = !useTTS
@@ -51,47 +57,22 @@ export default function Accessibility() {
 	}
 
 	const changeVoice = (voice) => {
-		// TODO: storage converts it into an empty object
-		console.log(
-			'Changed voice to: ',
-			TTS._voices[voice],
-			JSON.stringify(Object.assign({}, TTS._voices[voice]))
-		)
-
-		// Save selected voice in storage as object
-		// * setData('tts_voice', TTS.getVoices()[voice])
-
+		if (!voice) return // If placeholder is selected, voice = empty string
+		// Save selected voice index
+		voice = Number(voice)
+		setData('tts_voice', voice)
 		TTS.changeVoice(voice)
-	}
-
-	const changeSpeed = (newSpeed) => {
-		setData('tts_speed', newSpeed)
-	}
-
-	const changeVolume = (newVol) => {
-		setData('tts_volume', newVol)
 	}
 
 	useEffect(() => {
 		;(async () => {
-			await getData('tts_enabled').then((tts) => {
-				setTTS(tts !== null ? tts : false)
-			})
-			await getData('tts_only_timermode').then((ttOnly) => {
-				toggleOnlyTimerTTS(ttOnly !== null ? ttOnly : false)
-			})
-			await getData('tts_volume').then((vol) => {
-				setVolume(vol !== null && typeof vol === 'number' ? vol / 100 : 1)
-			})
-			await getData('tts_speed').then((vel) => {
-				setSpeed(vel !== null && typeof vel === 'number' ? vel / 100 : 1)
-			})
+			await getData('tts_enabled').then((tts) => setTTS(tts ?? false))
+
+			await getData('tts_only_timermode').then((ttOnly) =>
+				toggleOnlyTimerTTS(ttOnly ?? false)
+			)
 		})()
 
-		/*
-		 * returned function will be called on component unmount
-		 * https://stackoverflow.com/a/53465182
-		 */
 		return () => {
 			// Just stop TTS if speaking, already has check inside the class function
 			TTS.stop()
@@ -135,13 +116,15 @@ export default function Accessibility() {
 			<Divider />
 			<br />
 
-			<Box shadow="base">
-				<Select variant="filled" onChange={(e) => changeVoice(e.target.value)}>
+			<Box shadow="base" borderRadius="md">
+				<Select
+					variant="filled"
+					placeholder="Selected Text-to-Speech voice"
+					onChange={(e) => changeVoice(e.target.value)}
+				>
 					{
 						// Get all available voices from the OS
 						// As the default value will use the first voice item in array
-						// FIXME: doesn't return anything on Chrome if is the first time opening the page
-						//! AFAIK this issue only happeds on windows 10.
 						TTS._voices.map((voice, val) => {
 							val-- // We need to remove one so start from -1
 							val++ // Now val is 0
@@ -157,79 +140,113 @@ export default function Accessibility() {
 
 			<br />
 
-			<SimpleGrid columns={2} spacing={10}>
-				<Slider
-					focusThumbOnChange={false} // Prevent stealing focus when using the input from bellow
-					onChangeEnd={(val) => {
-						const decVol = val / 100 // The real value goes from 0 to 1
-						setVolume(val)
-						changeVolume(decVol)
-						TTS._volume = decVol // TTS class static var
-						//* console.log(`Showed vol: ${val}\nReal vol: ${decVol}`)
-					}}
-					defaultValue={TTS._volume * 100}
-					min={1}
-					max={100}
-					step={1}
-				>
-					<SliderTrack>
-						<SliderFilledTrack />
-					</SliderTrack>
-					<SliderThumb boxSize={6}>
-						<Box color="cornflowerblue" as={RiVoiceprintFill} />
-					</SliderThumb>
-				</Slider>
-				<Slider
-					focusThumbOnChange={false} // Prevent stealing focus when using the input from bellow
-					onChangeEnd={(vel) => {
-						const decVel = vel / 100 // The real value goes from 0 to 1
-						setSpeed(vel)
-						changeSpeed(decVel)
-						TTS._rate = decVel // TTS class static var
-						//* console.log(`Showed vol: ${vel}\nReal vol: ${decVel}`)
-					}}
-					defaultValue={TTS._rate * 100}
-					min={1}
-					max={100}
-					step={1}
-				>
-					<SliderTrack>
-						<SliderFilledTrack />
-					</SliderTrack>
-					<SliderThumb boxSize={6}>
-						<Box color="cornflowerblue" as={RiSpeedFill} />
-					</SliderThumb>
-				</Slider>
-			</SimpleGrid>
+			<Grid
+				gap={[4, null, 8, null, 20]}
+				gridTemplateColumns="repeat(auto-fit, minmax(250px, 1fr))"
+			>
+				<Stack direction="column">
+					<Heading size="sm">Volume</Heading>
+					<Slider
+						focusThumbOnChange={false} // Prevent stealing focus when using the input from bellow
+						onChange={(val) => setVolume(val)}
+						onChangeStart={() => setDisplayVolumeTooltip(true)}
+						onChangeEnd={(val) => {
+							const decVol = val / 100 // The real value goes from 0 to 1
+							changeVolume(decVol)
+							TTS._volume = decVol // TTS class static var
+							setDisplayVolumeTooltip(false)
+						}}
+						defaultValue={TTS._volume * 100}
+						min={1}
+						max={100}
+						step={1}
+					>
+						<SliderTrack>
+							<SliderFilledTrack />
+						</SliderTrack>
+						<Tooltip
+							isOpen={displayVolumeTooltip}
+							label={volume}
+							placement="top"
+							hasArrow
+						>
+							<SliderThumb />
+						</Tooltip>
+					</Slider>
+					<Stack color="gray.400" direction="row">
+						<Heading size="xs">Lower</Heading>
+						<Spacer />
+						<Heading size="xs">Higher</Heading>
+					</Stack>
+				</Stack>
+				<Stack direction="column">
+					<Heading size="sm">Rate</Heading>
+					<Slider
+						onChange={(vel) => setSpeed(vel)}
+						onChangeStart={() => setDisplaySpeedTooltip(true)}
+						onChangeEnd={(vel) => {
+							const decVel = vel / 100 // The real value goes from 0 to 1
+							changeSpeed(decVel)
+							TTS._rate = decVel // TTS class static var
+							setDisplaySpeedTooltip(false)
+						}}
+						defaultValue={TTS._rate * 100}
+						min={1}
+						max={100}
+						step={1}
+					>
+						<SliderTrack>
+							<SliderFilledTrack />
+						</SliderTrack>
+						<Tooltip
+							isOpen={displaySpeedTooltip}
+							label={speed}
+							placement="top"
+							hasArrow
+						>
+							<SliderThumb />
+						</Tooltip>
+					</Slider>
+					<Stack color="gray.400" direction="row">
+						<Heading size="xs">Slower</Heading>
+						<Spacer />
+						<Heading size="xs">Faster</Heading>
+					</Stack>
+				</Stack>
+			</Grid>
 
 			<br />
 
 			<InputGroup>
 				<InputLeftElement width="4rem">
 					<Button
-						isLoading={speaking ? true : false}
-						onClick={async () => {
+						w="53px"
+						variant="solid"
+						size="sm"
+						onClick={() => {
+							if (speaking) {
+								setSpeaking(false)
+								TTS.stop()
+								return
+							}
+
 							setSpeaking(true)
-							//! I don't see any danger here, React already cares about this
 							new TTS(readText.length >= 1 ? readText : undefined, true).say(
 								() => {
 									setSpeaking(false)
 								}
 							)
 						}}
-						colorScheme="blue"
-						variant="solid"
-						size="sm"
 					>
-						Test
+						{speaking ? 'Stop' : 'Test'}
 					</Button>
 				</InputLeftElement>
 				<Input
 					pl="4rem"
-					variant="outline"
+					variant="filled"
 					type="text"
 					maxLength={140}
-					onChange={handleTextChange}
+					onChange={handleTTStest}
 					placeholder="Write anything you want the TTS to say here!"
 				/>
 			</InputGroup>

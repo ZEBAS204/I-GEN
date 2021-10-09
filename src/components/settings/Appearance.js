@@ -1,25 +1,30 @@
-import React, { useState, useEffect } from 'react'
+/**
+ ** Current limitations of this method to allow user to change themes:
+ ** ChakraUI trade-off in term of performance footprint can be easy visualized
+ ** when changing themes. This performance drop is a noticeable in low-spec devices
+ !! With React Developer Tools, this component will take a tiny more to load
+ */
 
+import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { update } from '../../redux/reducer_updateUI'
 
+import { useTranslation } from 'react-i18next'
 import { getData, setData } from '../../utils/appStorage'
+import defaultThemes from '../../assets/defaultThemes.json'
 import {
+	chakra,
 	Box,
 	Text,
 	Radio,
 	RadioGroup,
+	Checkbox,
 	useColorMode,
-	Switch,
 	Stack,
-	Spacer,
+	Grid,
+	Divider,
 	Heading,
 } from '@chakra-ui/react'
-
-import { useTranslation } from 'react-i18next' // Translations
-
-// TODO: add option to use navbar as in darkmode for light mode (note: too many mode words)
-// @see https://reactjs.org/docs/context.html#reactcreatecontext
 
 export default function Appearance() {
 	const { t } = useTranslation()
@@ -29,32 +34,48 @@ export default function Appearance() {
 	const dispatch = useDispatch()
 	const updateUI = () => dispatch(update())
 
-	const [theme, toggleThemeValue] = useState(useColorMode().colorMode)
-	const { toggleTheme } = useColorMode()
-	const [darkNavbar, setDarkNavbar] = useState(false)
+	const { colorMode, toggleColorMode } = useColorMode()
+	const [systemSync, setSystemSync] = useState(false)
 
-	const changeTheme = (value) => {
-		toggleThemeValue(value ? value : 'dark')
+	const [theme, toggleThemeValue] = useState(0)
 
-		console.log('Old theme:', theme)
-		console.log('New theme:', value)
+	const toggleSystemSync = (val) => {
+		setSystemSync(val)
+		setData('useSystemColorMode', val)
 	}
 
-	const toggleNavbarDark = () => {
-		const darkEnabled = !darkNavbar
-
-		setData('side_nav_fill', darkEnabled)
-		setDarkNavbar(darkEnabled)
-
+	const handleTheme = (color) => {
+		setData('colorScheme', color)
 		updateUI()
 	}
 
 	useEffect(() => {
+		// Prevents annoying unmounted warning. Safe to ignore
+		let isMounted = true
+
 		;(async () => {
-			await getData('side_nav_fill').then((darkNavEnabled) => {
-				setDarkNavbar(darkNavEnabled !== null ? darkNavEnabled : false)
+			await getData('colorScheme').then((theme) => {
+				//* Default themes: https://chakra-ui.com/docs/theming/theme
+				if (
+					typeof theme === 'string' &&
+					defaultThemes instanceof Array &&
+					defaultThemes.includes(theme)
+				) {
+					if (!isMounted) return
+
+					toggleThemeValue(theme)
+				}
+			})
+			await getData('useSystemColorMode').then((sync) => {
+				if (!isMounted) return
+
+				setSystemSync(sync ? true : false)
 			})
 		})()
+
+		return () => {
+			isMounted = false
+		}
 	}, [])
 
 	return (
@@ -63,23 +84,57 @@ export default function Appearance() {
 			<br />
 			<Heading size="sm">Change theme</Heading>
 			<Text>Blind or not blind. That's the question</Text>
-			<Box padding="4">
-				<RadioGroup onChange={(toggleTheme, changeTheme)} value={theme}>
+			<Box padding={4}>
+				<RadioGroup onChange={toggleColorMode} value={colorMode}>
 					<Stack>
 						<Radio value="light">Light</Radio>
 						<Radio value="dark">Dark</Radio>
-						<Radio value="auto">Sync with computer</Radio>
 					</Stack>
 				</RadioGroup>
+				<br />
+				<Checkbox
+					isChecked={systemSync}
+					onChange={(e) => toggleSystemSync(e.target.checked)}
+				>
+					Sync with computer
+				</Checkbox>{' '}
+				(Applied on restart)
 			</Box>
 			<br />
-			<Stack direction="row">
-				<Text>Dark sidebar</Text>
-				<Spacer />
-				<Switch value={darkNavbar} onChange={toggleNavbarDark} />
-			</Stack>
+			<Divider />
 			<br />
-			HERE: Use animations (?)
+			<Heading size="sm">🌟 Colorify 🌟</Heading>
+			<Text>Pick your favorite color!</Text>
+			<Grid
+				gap={5}
+				marginY={4}
+				gridTemplateColumns="repeat(auto-fit, minmax(50px, 1fr))"
+			>
+				{defaultThemes.map((themeName, key) => {
+					const isSelectedTheme = theme === themeName
+
+					return (
+						<chakra.button
+							key={key}
+							onClick={() => handleTheme(themeName)}
+							title={t(`themes.${themeName}`)}
+							aria-label={isSelectedTheme ? 'Selected' : null}
+							cursor="pointer"
+							type="button"
+							w="3rem"
+							h="3rem"
+							bg={`var(--chakra-colors-${themeName}-500) content-box`}
+							border={isSelectedTheme ? '5px solid transparent' : null}
+							borderRadius="full"
+							boxShadow={
+								isSelectedTheme
+									? `0 0 0 3px var(--chakra-colors-${themeName}-300)`
+									: 'md'
+							}
+						/>
+					)
+				})}
+			</Grid>
 		</>
 	)
 }

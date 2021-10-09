@@ -4,50 +4,58 @@
  *		* components/timer/CountDown.js
  *		* components/timer/CountDownControls.js
  */
-import React, { useRef, useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next' // Translations
-
+import { useRef, useState, useEffect, lazy, Suspense } from 'react'
+import { useHotkeys } from 'react-hotkeys-hook'
 import {
 	useColorModeValue,
 	Center,
-	Flex,
+	Box,
 	Button,
 	ButtonGroup,
 	IconButton,
 } from '@chakra-ui/react'
-import { RiPlayFill, RiPauseFill, RiEditBoxFill } from 'react-icons/ri' // Icons
-import WordGenerator from '../components/WordGenerator'
+import {
+	RiPlayFill,
+	RiPauseFill,
+	RiEditBoxFill,
+	RiRefreshLine,
+} from 'react-icons/ri'
+import { useTranslation } from 'react-i18next'
 import CountDown from '../components/timer/CountDown'
 import CountDownControls from '../components/timer/CountDownControl'
 import TTS from '../utils/tts'
 
-// Name of the key to use in session storage
-const SS_NAME = 'countdown_time'
+const WordGenerator = lazy(() => import('../components/WordGenerator'))
+
+const SS_NAME = 'countdown_time' // Name of the key to use in session storage
 const DEF_TIME = 600 // 10 min
 const MIN_TIME = 0
 const MAX_TIME = 215999
 
 export default function TimerMode() {
 	const { t } = useTranslation()
+	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
 
 	// Create a reference to generator component
 	const genREF = useRef(null)
-	const generator = () => genREF.current.regenerateWord()
+	const generator = () => genREF.current && genREF.current.regenerateWord()
 
-	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
+	// Bind SPACE to play/pause
+	const genButton = useRef(null)
+	useHotkeys('space', () => genButton.current?.click(), {
+		filterPreventDefault: false,
+	})
 
 	const [running, setRunning] = useState(false)
+	const [resetSignal, setReset] = useState(0)
 	const [showEditable, setEditableVisib] = useState(false)
 	const [timeSettings, setTime] = useState(DEF_TIME)
 
 	// Get callback from CountDownControls(child) to update time
 	const handleChildCallback = (newTime) => {
-		//*console.log('[x] Child callback triggered!', newTime)
-
 		if (!checkTimeValue(newTime)) return false
 
 		setTime(newTime)
-
 		// Save countdown state in Session Storage
 		try {
 			window.sessionStorage.setItem(SS_NAME, JSON.stringify(newTime))
@@ -56,19 +64,16 @@ export default function TimerMode() {
 
 	const toggleRunning = () => setRunning(!running)
 
-	// CountDown ended
-	const countDownEND = () => {
-		// TTS
-		//* console.log('Countdown ended, received speak signal.')
-		generator()
+	const resetTimer = () => {
+		setReset(!resetSignal)
+		countDownEND()
 	}
 
-	// Show editable time
-	const showControls = () => {
-		// Pause if timer is running
-		setRunning(false)
+	// CountDown ended, received callback signal from child
+	const countDownEND = () => generator()
 
-		// Show or hide editable time controls
+	const showControls = () => {
+		setRunning(false)
 		setEditableVisib(!showEditable)
 	}
 
@@ -84,9 +89,7 @@ export default function TimerMode() {
 						setTime(parseInt(saved))
 					}
 				}
-			} catch (access_denied) {
-				//* console.error('Session Storage access denied', access_denied)
-			}
+			} catch (access_denied) {}
 		})()
 
 		// On dismount, send TTS signal to stop speaking
@@ -97,66 +100,60 @@ export default function TimerMode() {
 
 	return (
 		<Center
-			p={3}
 			bg={bgColor}
-			borderRadius="md"
-			flexBasis="100%" // Allow to fill empty space
+			p={3}
+			display="inline-flex"
+			flexDirection="column"
+			flexBasis="100%"
 		>
-			<div>
-				<Flex flexDirection="column">
-					<WordGenerator ref={genREF} />
-					<br />
-					<ButtonGroup
-						size="md"
-						colorScheme="blue"
-						alignSelf="center"
-						isAttached
-					>
-						{running ? (
-							<Button
-								variant="solid"
-								rightIcon={<RiPauseFill />}
-								onClick={toggleRunning}
-								alignSelf="center"
-							>
-								{t('buttons.stop_btn')}
-							</Button>
-						) : (
-							<Button
-								variant="solid"
-								rightIcon={<RiPlayFill />}
-								onClick={toggleRunning}
-							>
-								{t('buttons.play_btn')}
-							</Button>
-						)}
+			<Suspense fallback={<p>Loading word sets...</p>}>
+				<WordGenerator ref={genREF} />
+			</Suspense>
+			<Box marginY={5} />
+			{
+				/* Show timer control or countdown respectively
+				 * Editables need to be as function, so on update doesn't re-render
+				 */
+				showEditable ? (
+					<CountDownControls
+						parentCallback={handleChildCallback} // Allows to get time change
+						savedTime={timeSettings} // Send saved time
+					/>
+				) : (
+					<CountDown
+						savedTime={timeSettings} // Send saved time
+						parentRunning={running} // Send running status
+						speak={countDownEND} // Allows to send speak signal
+						reset={resetSignal}
+					/>
+				)
+			}
+			<ButtonGroup size="md" marginY={5} isAttached>
+				<IconButton
+					onClick={resetTimer}
+					icon={<RiRefreshLine />}
+					title={t('buttons.reset_btn')}
+					aria-label={t('buttons.reset_btn')}
+					fontSize="2rem"
+					rounded="full"
+				/>
 
-						<IconButton
-							variant="outline"
-							icon={<RiEditBoxFill />}
-							onClick={showControls}
-						/>
-					</ButtonGroup>
-				</Flex>
-				<br />
-				{
-					/* Show timer control or countdown respectively
-					 * Editables need to be as function, so on update doesn't re-render
-					 */
-					showEditable ? (
-						<CountDownControls
-							parentCallback={handleChildCallback} // Allows to get time change
-							savedTime={timeSettings} // Send saved time
-						/>
-					) : (
-						<CountDown
-							savedTime={timeSettings} // Send saved time
-							parentRunning={running} // Send running status
-							speak={countDownEND} // Allows to send speak signal
-						/>
-					)
-				}
-			</div>
+				<Button
+					ref={genButton}
+					onClick={toggleRunning}
+					rightIcon={running ? <RiPauseFill /> : <RiPlayFill />}
+					minW="115px"
+					variant="solid"
+					children={running ? t('buttons.stop_btn') : t('buttons.play_btn')}
+				/>
+
+				<IconButton
+					onClick={showControls}
+					variant="outline"
+					borderWidth="2px"
+					icon={<RiEditBoxFill />}
+				/>
+			</ButtonGroup>
 		</Center>
 	)
 }
@@ -168,11 +165,8 @@ export default function TimerMode() {
  */
 const checkTimeValue = (time) => {
 	// Check if stored state is invalid
-	if (!time || typeof time !== 'number' || time < MIN_TIME || time > MAX_TIME) {
-		// console.log('Saved number wrong', time)
+	if (!time || typeof time !== 'number' || time < MIN_TIME || time > MAX_TIME)
 		return false
-	}
 
-	// console.log('Saved time looks fine', time)
 	return true
 }

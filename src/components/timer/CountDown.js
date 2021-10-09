@@ -1,14 +1,15 @@
 /**
  * Used with CountDownControls.js
  */
-
-import React, { useState, useEffect, useRef } from 'react'
-import { Flex, Box, Spacer, Text } from '@chakra-ui/react'
+import { useState, useEffect, useRef } from 'react'
+import { useColorModeValue, Grid, GridItem, Text } from '@chakra-ui/react'
 
 // Default remaining time to add if no saved time is provided by the parent (10min)
 const DEF_TIME = 10000
 
-export default function CountDown({ savedTime, parentRunning, speak }) {
+export default function CountDown({ savedTime, parentRunning, speak, reset }) {
+	const NumBoxBG = useColorModeValue('blackAlpha.100', 'whiteAlpha.100')
+
 	const [totalTime, setTotalTime] = useState(DEF_TIME)
 	const [secondsRemaining, setSecondsRemaining] = useState(DEF_TIME)
 
@@ -17,14 +18,14 @@ export default function CountDown({ savedTime, parentRunning, speak }) {
 	const minutesToDisplay = minutesRemaining % 60
 	const hoursToDisplay = (minutesRemaining - minutesToDisplay) / 60
 
-	const resetTimer = () => {
-		setSecondsRemaining(totalTime)
-	}
+	const resetTimer = () => setSecondsRemaining(totalTime)
+	// Allow parent to reset timer
+	useEffect(() => resetTimer(), [reset]) // eslint-disable-line
+
 	useInterval(
 		() => {
-			if (secondsRemaining > 0) {
-				setSecondsRemaining(secondsRemaining - 1)
-			} else {
+			if (secondsRemaining > 0) setSecondsRemaining(secondsRemaining - 1)
+			else {
 				speak()
 				resetTimer()
 			}
@@ -40,29 +41,43 @@ export default function CountDown({ savedTime, parentRunning, speak }) {
 		}
 	}, [savedTime])
 
+	const fontSizeVariants = ['1rem', '1.5rem', '2rem', '2.5rem']
+	const NumBox = ({ children }) => (
+		<GridItem
+			bg={NumBoxBG}
+			minW={['30px', '62px']}
+			paddingY={2}
+			shadow="md"
+			borderRadius="md"
+			textShadow="0 0 1px black"
+		>
+			<TxtNum>{children}</TxtNum>
+		</GridItem>
+	)
+	const TxtNum = ({ children }) => (
+		<Text fontSize={fontSizeVariants}>{children || ':'}</Text>
+	)
+
 	return (
-		<>
-			<Flex spacing={4} direction="row">
-				<Box shadow="md">
-					<Text>HS</Text>
-					<Text>{twoDigits(hoursToDisplay)}</Text>
-				</Box>
-				<Spacer />
-				<Box shadow="md">
-					<Text>MIN</Text>
-					<Text>{twoDigits(minutesToDisplay)}</Text>
-				</Box>
-				<Spacer />
-				<Box shadow="md">
-					<Text>SEC</Text>
-					<Text>{twoDigits(secondsToDisplay)}</Text>
-				</Box>
-			</Flex>
-			<br />
-			<button onClick={resetTimer} type="button">
-				Reset
-			</button>
-		</>
+		<Grid
+			templateColumns="1fr auto 1fr auto 1fr"
+			templateRows="1fr auto"
+			fontFamily="consolas"
+			gap={3}
+			alignItems="center"
+			textAlign="center"
+		>
+			<NumBox children={twoDigits(hoursToDisplay)} />
+			<TxtNum />
+			<NumBox children={twoDigits(minutesToDisplay)} />
+			<TxtNum />
+			<NumBox children={twoDigits(secondsToDisplay)} />
+			<Text>Hours</Text>
+			<div />
+			<Text>Minutes</Text>
+			<div />
+			<Text>Seconds</Text>
+		</Grid>
 	)
 }
 
@@ -85,7 +100,7 @@ function useInterval(callback, delay) {
 		const tick = () => savedCallback.current()
 
 		if (delay !== null) {
-			let id = setInterval(tick, delay)
+			const id = setInterval(tick, delay)
 			return () => clearInterval(id)
 		}
 	}, [delay])

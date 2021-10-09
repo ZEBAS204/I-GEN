@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { getData, setData, clearData } from '../../utils/appStorage'
+import { useTranslation } from 'react-i18next'
 import Logger from '../../utils/logger'
 import {
 	Text,
@@ -19,80 +20,101 @@ import {
 	useDisclosure,
 } from '@chakra-ui/react'
 
-import { useTranslation } from 'react-i18next' // Translations
+const modalsIds = {
+	resetConfig: 1,
+	sw: 2,
+}
 
 export default function Advanced() {
 	const { t } = useTranslation()
 
 	const [useDebug, setDebug] = useState(false)
-	const [useSW, setSW] = useState(true)
+	const [useSW, setSW] = useState(false)
 
-	// Restore default settings
-	const { isOpen, onOpen, onClose } = useDisclosure()
-	const cancelRef = React.useRef()
+	const [selectedModal, setOpenModal] = useState(0)
+	const { isOpen, onOpen, onClose } = useDisclosure({
+		onClose: () => setOpenModal(0),
+	})
+	const openModal = (modal = 0) => {
+		setOpenModal(modal)
+		onOpen()
+	}
 
-	const restoreSettings = () => {
+	const restoreSettings = async () =>
 		// If user accepted, clear ALL stored data (local,session,etc) excluded SW cache
-		try {
-			clearData()
-		} catch (err) {
-			Logger.log(['Settings', 'error'], 'Error trying to clear Page Storages')
-		} finally {
-			// Then just redirect to the main page path
-			document.location.href = '/'
-		}
-	}
+		await clearData()
+			.then((document.location.href = '/'))
+			.catch(() => {})
 
-	const toggleDebugMode = () => {
-		const use = !useDebug
-		setDebug(use)
-		setData('dev_mode', use)
+	const toggleDebugMode = () =>
+		setDebug((prevVal) => {
+			const enabled = !prevVal
+			setData('dev_mode', enabled)
+			Logger.isLoggerEnabled(true) // Force update of logger
+			return enabled
+		})
 
-		// Force update of logger
-		Logger.isLoggerEnabled(true)
-	}
-
-	const toggleSW = () => {
+	const toggleSW = async () => {
 		// Save setting in a const so doesn't get overwrite when toggling
 		const enabled = !useSW
 		setSW(enabled)
 		setData('opt-in-serviceworker', enabled)
 
 		// If user op-out remove all registered service workers and remove saved cache
+		if (!navigator.serviceWorker || !window.caches) return
 		if (!enabled) {
-			;(async () => {
-				try {
-					// Unregister all registered service workers
-					const registrations = await navigator.serviceWorker.getRegistrations()
-					const unregisterPromises = registrations.map((registration) =>
-						registration.unregister()
-					)
+			await Promise.all([
+				// Remove all cache
+				caches.keys().then((c) => c.forEach((c) => caches.delete(c))),
 
-					// Remove saved cache
-					const allCaches = await caches.keys()
-					const cacheDeletionPromises = allCaches.map((cache) =>
-						caches.delete(cache)
-					)
-
-					await Promise.all([...unregisterPromises, ...cacheDeletionPromises])
-				} catch (err) {
-					console.error('[SW] ', err)
-				}
-			})()
+				// Unregister all service workers
+				navigator.serviceWorker
+					.getRegistrations()
+					.then((workers) => workers.forEach((sw) => sw.unregister())),
+			]).catch((err) => console.error(err))
 		}
 	}
 
 	useEffect(() => {
 		;(async () => {
-			await getData('opt-in-serviceworker').then((SW) => {
-				setSW(SW !== null ? SW : true)
-			})
-
-			await getData('dev_mode').then((dev) => {
-				setDebug(dev !== null ? dev : false)
-			})
+			await getData('opt-in-serviceworker').then((SW) =>
+				setSW(SW ? true : false)
+			)
+			await getData('dev_mode').then((dev) => setDebug(dev ? true : false))
 		})()
 	}, [])
+
+	const Prompt = ({ header, body, okOnClick = () => {} }) => (
+		<AlertDialog
+			motionPreset="slideInBottom"
+			onClose={onClose}
+			isOpen={isOpen}
+			isCentered
+		>
+			<AlertDialogOverlay />
+
+			<AlertDialogContent>
+				<AlertDialogHeader>{header}</AlertDialogHeader>
+				<AlertDialogBody>{body}</AlertDialogBody>
+				<AlertDialogFooter>
+					<Button colorScheme="gray" onClick={onClose}>
+						No
+					</Button>
+					<Button
+						colorScheme="red"
+						bg="red.400"
+						ml={3}
+						onClick={() => {
+							okOnClick()
+							onClose()
+						}}
+					>
+						Yes
+					</Button>
+				</AlertDialogFooter>
+			</AlertDialogContent>
+		</AlertDialog>
+	)
 
 	return (
 		<>
@@ -101,7 +123,7 @@ export default function Advanced() {
 			<Stack direction="row">
 				<Heading size="sm">Use service worker</Heading>
 				<Spacer />
-				<Switch onChange={toggleSW} isChecked={useSW} />
+				<Switch onChange={() => openModal(modalsIds.sw)} isChecked={useSW} />
 			</Stack>
 			<Text>Allows faster load and offline usage of the page.</Text>
 			<br />
@@ -116,38 +138,49 @@ export default function Advanced() {
 			</Stack>
 			<Text>Print debug messages in console</Text>
 			<br />
+			<Divider />
 			<br />
-			<Button colorScheme="red" variant="solid" onClick={onOpen}>
-				Restore default settings
-			</Button>
-			<AlertDialog
-				motionPreset="slideInBottom"
-				leastDestructiveRef={cancelRef}
-				onClose={onClose}
-				isOpen={isOpen}
-				isCentered
+			<Button
+				colorScheme="red"
+				bg="red.400"
+				variant="solid"
+				onClick={() => openModal(modalsIds.resetConfig)}
 			>
-				<AlertDialogOverlay />
-
-				<AlertDialogContent>
-					<AlertDialogHeader>Restore default settings</AlertDialogHeader>
-					<AlertDialogBody>
-						<Text>
-							Are you sure you want to reset to default all of your settings?
-							every single one of them?
-						</Text>
-						<Text color="red.400">* Note: This will make the page refresh</Text>
-					</AlertDialogBody>
-					<AlertDialogFooter>
-						<Button ref={cancelRef} onClick={onClose}>
-							No
-						</Button>
-						<Button colorScheme="red" ml={3} onClick={restoreSettings}>
-							Yes
-						</Button>
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialog>
+				<Text>Restore default settings</Text>
+			</Button>
+			{selectedModal === modalsIds.resetConfig ? (
+				<Prompt
+					header="Restore default settings"
+					body={
+						<>
+							<Text>
+								Are you sure you want to reset to default all of your settings?
+								every single one of them?
+							</Text>
+							<Text color="red.400">
+								* Note: This will make the page refresh
+							</Text>
+						</>
+					}
+					okOnClick={restoreSettings}
+				/>
+			) : selectedModal === modalsIds.sw ? (
+				<Prompt
+					header="Disable Service Worker Usage"
+					body={
+						<>
+							<Text>Are you sure you want to disable the service worker?</Text>
+							<Text color="red.400">
+								* Disabling it will make the page load slower and will not be
+								able to work without internet connection
+							</Text>
+						</>
+					}
+					okOnClick={toggleSW}
+				/>
+			) : (
+				<></>
+			)}
 		</>
 	)
 }

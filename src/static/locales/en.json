@@ -5,7 +5,9 @@
     "timermode": "Timer Mode",
     "settings": "Settings",
     "play_btn": "Play",
-    "stop_btn": "Stop"
+    "stop_btn": "Stop",
+    "reset_btn": "Reset",
+    "selected": "Selected"
   },
   "settings": {
     "interface": "Interface",
@@ -14,11 +16,25 @@
     "keybinds": "Keybinds",
     "advanced": "Advanced",
     "about": "About {{app_name}}",
-    
     "language": "Language",
     "theme": "Theme",
     "tts": "Text To Speech",
     "service_worker": "Service worker",
     "debugging": "Debugging"
+  },
+  "themes": {
+    "blue": "Blue",
+    "gray": "Gray",
+    "red": "Red",
+    "green": "Green",
+    "purple": "Purple",
+    "pink": "Pink",
+    "yellow": "Yellow",
+    "orange": "Orange",
+    "cyan": "Cyan",
+    "teal": "Teal",
+    "whatsapp": "Whorapp",
+    "twitter": "Twitha",
+    "telegram": "Telegram"
   }
 }

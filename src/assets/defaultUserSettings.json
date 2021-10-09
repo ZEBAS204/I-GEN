@@ -1,5 +1,10 @@
 [
   {
+    "key": "colorScheme",
+    "type": "string",
+    "value": "blue"
+  },
+  {
     "key": "dev_mode",
     "type": "boolean",
     "value": false
@@ -38,5 +43,10 @@
     "key": "tts_volume",
     "type": "number",
     "value": 1
+  },
+  {
+    "key": "useSystemColorMode",
+    "type": "boolean",
+    "value": false
   }
 ]

@@ -1,76 +1,116 @@
-import React from 'react'
+import { StrictMode, Suspense, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
+import * as serviceWorker from './serviceWorkerRegistration'
+
 // Redux
-import { Provider } from 'react-redux'
+import { Provider, useSelector } from 'react-redux'
 import store from './redux/store'
 
-import { ChakraProvider, ColorModeScript, extendTheme } from '@chakra-ui/react'
-
-import * as serviceWorker from './serviceWorkerRegistration'
-import Logger from './utils/logger'
-
-import defaultSettings from './utils/defaultSettings' // Default Configuration
-import { getData } from './utils/appStorage' // UserSettings data
-
-// Translations
 import './utils/i18n'
+import Logger from './utils/logger'
+import { getData } from './utils/appStorage'
+import defaultSettings from './utils/defaultSettings'
+import defaultThemes from './assets/defaultThemes.json'
 
-// Import Electron OS Menu Bar
-import OS_MENU_BAR from './components/OS_Bar'
-
-// Import Default Page Layout
 import DefaultLayout from './layouts/layout_default'
+import {
+	ChakraProvider,
+	ColorModeScript,
+	extendTheme,
+	withDefaultColorScheme,
+} from '@chakra-ui/react'
 
-const theme = extendTheme({
-	config: {
-		initialColorMode: 'dark',
-		// FIXME: fix not using user prefer color mode
-		useSystemColorMode: false, //! Ignores saved user config
-	},
-})
+/**
+ ** DEFAULT THEME OVERRIDE
+ ** If you want to set your own custom theme colors, uncomment next line
+ ** and the commented line extendTheme inside App()
+ */
+// import { customTheme } from './utils/theme'
 
 // Set Default User Settings if they are not defined
-defaultSettings().then(() => {
+defaultSettings().then(async () => {
 	//Enable Service Worker if user opt in.
-	if ('serviceWorker' in navigator) {
-		// If you want your app to work offline and load faster, you can change
-		// unregister() to register() below. Note this comes with some pitfalls.
-		// Learn more about service workers:
-		// https://github.com/facebook/create-react-app/blob/master/packages/cra-template/template/README.md
-		let swEnabled = getData('opt-in-serviceworker')
-		if (swEnabled === null) {
-			swEnabled = true
-		}
 
-		if (swEnabled) {
-			Logger.log(['SW', 'info'], 'Registering Service Worker...')
-			try {
-				// Will not register in dev environment
-				serviceWorker.register()
-			} catch (err) {
-				Logger.log(['SW', 'error'], err)
-			}
-		} else {
-			Logger.log(['SW', 'info'], 'User opt-out of service worker.')
-		}
+	const swEnabled = await getData('opt-in-serviceworker').then(
+		(isEnabled) => isEnabled ?? true
+	)
+
+	if (swEnabled) {
+		Logger.log(['SW', 'info'], 'Registering Service Worker...')
+		serviceWorker.register()
 	} else {
-		Logger.log(['SW', 'warn'], 'Service Workers not supported by the browser')
+		Logger.log(['SW', 'info'], 'User opt-out of service worker.')
 	}
 })
+
+function App() {
+	// Allow forcing update from Redux signal
+	const dummy = useSelector((state) => state.updateUI.value)
+
+	const [theme, setTheme] = useState('blue')
+	const [systemSync, setSystemSync] = useState(false)
+	const currentTheme = extendTheme(
+		extendTheme({
+			//* Uncomment next line for theme override
+			// ...customTheme,
+			config: {
+				initialColorMode: 'dark',
+				useSystemColorMode: systemSync,
+			},
+		}),
+		withDefaultColorScheme({ colorScheme: theme })
+	)
+
+	useEffect(() => {
+		;(async () => {
+			await getData('useSystemColorMode').then((sync) => {
+				if (sync && typeof sync === 'boolean') {
+					Logger.log(['APP', 'info'], `Is using system color mode?: ${sync}`)
+					setSystemSync(sync)
+				}
+			})
+		})()
+	}, [])
+
+	useEffect(() => {
+		;(async () => {
+			await getData('colorScheme').then((theme) => {
+				//* Default themes: https://chakra-ui.com/docs/theming/theme
+				if (
+					theme &&
+					typeof theme === 'string' &&
+					defaultThemes.includes(theme)
+				) {
+					Logger.log(['APP', 'info'], `Theme: ${theme}`)
+					setTheme(theme)
+				}
+			})
+		})()
+	}, [dummy])
+
+	return (
+		<>
+			<ColorModeScript initialColorMode={'dark'} />
+			<ChakraProvider resetCSS theme={currentTheme}>
+				<DefaultLayout />
+			</ChakraProvider>
+		</>
+	)
+}
+
+// Change document title if in dev environment
+if (process.env.NODE_ENV === 'development')
+	document.title = '[DEV] ' + document.title
 
 // <React.Suspense> allows asynchronously load translations using backend
 // but will increase a tiny the loading time..
 ReactDOM.render(
-	<React.StrictMode>
-		<React.Suspense fallback="">
+	<StrictMode>
+		<Suspense fallback={<></>}>
 			<Provider store={store}>
-				<ColorModeScript initialColorMode={theme.config.initialColorMode} />
-				<ChakraProvider resetCSS theme={theme}>
-					<OS_MENU_BAR />
-					<DefaultLayout />
-				</ChakraProvider>
+				<App />
 			</Provider>
-		</React.Suspense>
-	</React.StrictMode>,
+		</Suspense>
+	</StrictMode>,
 	document.getElementById('root')
 )

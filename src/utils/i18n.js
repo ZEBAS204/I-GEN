@@ -36,8 +36,10 @@ backendEnabled
 		nonExplicitSupportedLngs: true,
 
 		// Overwrite defaults and order from where language should be detected
-		detection: ['localStorage', 'sessionStorage', 'navigator', 'htmlTag'],
-		order: ['localStorage', 'sessionStorage', 'navigator', 'htmlTag'],
+		detection: {
+			order: ['localStorage', 'querystring', 'navigator', 'htmlTag'],
+			caches: ['localStorage'],
+		},
 
 		// Add supported languages from ./supportedLanguages
 		supportedLngs: supportedLanguages.map((lang) => lang.code),

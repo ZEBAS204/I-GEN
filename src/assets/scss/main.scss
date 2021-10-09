@@ -1,23 +1,39 @@
 :root {
-	// Firefox 63 compatibility
-	scrollbar-face-color: #63b3ed;
-	scrollbar-track-color: rgba(0, 0, 0, 0.1);
 	// Firefox 64 compatibility
-	scrollbar-color: #63b3ed rgba(0, 0, 0, 0.1) !important;
-	scrollbar-width: 10px !important;
+	scrollbar-color: #858688 rgba(0, 0, 0, 0.25);
+	// Firefox 63 compatibility
+	scrollbar-face-color: #858688;
+	scrollbar-track-color: rgba(0, 0, 0, 0.25);
+	scrollbar-width: thin;
 }
 
 html,
 body,
 #root {
-	// Fixes flexbox
-	height: 100%;
 	display: flex;
 	flex-direction: column;
+	// Fixes flexbox
+	height: 100%;
+	overflow: hidden;
 }
 
 .container {
 	overflow: hidden;
+	overscroll-behavior: contain;
+}
+
+#content {
+	height: 100%;
+}
+
+#content-container {
+	border-radius: var(--chakra-radii-md);
+	flex-basis: auto;
+	flex-grow: 1;
+	margin-bottom: var(--chakra-space-5);
+	margin-left: 0;
+	margin-right: var(--chakra-space-5);
+	margin-top: var(--chakra-space-5);
 }
 
 .scrollable {
@@ -25,30 +41,28 @@ body,
 }
 
 // Main container
-@media screen and (max-width: 500px) {
-	#content {
-		// So the Side navbar can be displayed on the bottom of the page
-		flex-direction: column;
+@media screen and (max-width: 501px) {
+	#content-container {
+		border-radius: 0 !important;
+		margin: 0;
 	}
 }
 
 ::-webkit-scrollbar {
-	width: 12px;
+	width: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-	background: #63b3ed;
+	background: #85868873;
 	border: 0;
 	border-radius: 30px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: #48a6ea;
+	background: #858688;
 }
 
 ::-webkit-scrollbar-track {
-	background: rgba(0, 0, 0, 0.25);
-	border-radius: 0;
+	background: rgba(0, 0, 0, 0.1);
+	border-radius: inherit;
 }
-
-// TODO: UI in Settings doesn't work properly when zoomed-in

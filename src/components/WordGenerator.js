@@ -1,49 +1,81 @@
-import React, {
+import {
 	useState,
 	useEffect,
-	useRef,
 	useImperativeHandle,
 	forwardRef,
+	useCallback,
 } from 'react'
-import { Box, Flex, Spacer, Icon, Text, Stack } from '@chakra-ui/react'
-import { IoAdd } from 'react-icons/io5' // + Icon
-
-import TTS from '../utils/tts' // TTS
+import { useColorModeValue, Grid, Box, Text, Skeleton } from '@chakra-ui/react'
+import { ReactComponent as GhostIcon } from '../assets/icons/ghost.svg'
+import TTS from '../utils/tts'
 import { getData } from '../utils/appStorage'
 
-// Cache random element to improve performance
+// Global variables: cache responses and prevent refetching when its not needed
 const rnd = Math.random
-var nouns
-var adjs
+let wasRendered = false
+let fetched = false
+let nouns
+let adjs
 
-if (process.env.NODE_ENV === 'development') {
-	nouns = require('../static/wordsets/noun.json')
-	adjs = require('../static/wordsets/adj.json')
-} else {
-	fetch('./wordsets/noun.json')
-		.then((response) => response.json())
-		.then((data) => {
-			nouns = data
-		})
-	fetch('./wordsets/adj.json')
-		.then((response) => response.json())
-		.then((data) => {
-			adjs = data
-		})
+async function fetchWordSets() {
+	if (fetched && nouns && adjs) return
+
+	if (process.env.NODE_ENV === 'development') {
+		nouns = require('../static/wordsets/noun.json')
+		adjs = require('../static/wordsets/adj.json')
+	} else {
+		await Promise.all([
+			fetch('./wordsets/noun.json')
+				.then((res) => res.json())
+				.then((e) => (nouns = e)),
+			fetch('./wordsets/adj.json')
+				.then((res) => res.json())
+				.then((e) => (adjs = e)),
+		])
+			.then((fetched = true))
+			.catch((err) => console.error(err))
+	}
 }
 
 function WordGenerator(_props, ref) {
+	const boxBG = useColorModeValue('blackAlpha.100', 'whiteAlpha.100')
+	const [firstRender, setFirstRender] = useState(wasRendered)
 	const [useTTS, setTTS] = useState(false)
-	const [words, setWords] = useState({
-		noun: 'postcard',
-		adjective: 'thinking',
-	})
+	const [words, setWords] = useState({})
+
+	/**
+	 * Create a ref so regenerateWord() can be called from outside the component
+	 * See https://stackoverflow.com/a/57006730
+	 */
+	const generateNewWordSets = useCallback(
+		(firstRun = false) => {
+			if (!nouns || !adjs) return
+
+			const noun = shuffleArray(nouns)
+			const adj = shuffleArray(adjs)
+			setWords({ noun, adj })
+
+			// If user enabled TTS, speak
+			if (useTTS && !firstRun) new TTS(`${adj} ${noun}`).say()
+		},
+		[useTTS]
+	)
+
+	// Expose functions
+	useImperativeHandle(ref, () => ({
+		disableTTS: () => setTTS(false),
+		regenerateWord: () => generateNewWordSets(),
+	}))
 
 	useEffect(() => {
 		;(async () => {
-			await getData('tts_enabled').then((tts) => {
-				setTTS(tts !== null ? tts : false)
-			})
+			await getData('tts_enabled').then((tts) => setTTS(tts ? true : false))
+			fetchWordSets()
+				.then(() => generateNewWordSets(true)) // true to prevent TTS from speaking
+				.then(() => {
+					setFirstRender(true)
+					wasRendered = true // Prevent checking for render in future page changes
+				})
 		})()
 
 		return () => {
@@ -51,56 +83,41 @@ function WordGenerator(_props, ref) {
 			// Just stop TTS if speaking, already has check inside the class function
 			TTS.stop()
 		}
-	}, [])
+	}, [generateNewWordSets])
 
-	/**
-	 * Create a ref so "regenerateWord" can be called from outside
-	 * See https://stackoverflow.com/a/57006730
-	 */
-	//
-	const generateNewWordSets = async () => {
-		const noun = shuffleArray(nouns)
-		const adj = shuffleArray(adjs)
+	const WordBox = ({ children }) => (
+		<Box bg={boxBG} boxShadow="md" p={[3, 6]} rounded="md">
+			{!firstRender ? <Skeleton w="90px" h="24px" /> : <Text>{children}</Text>}
+		</Box>
+	)
 
-		setWords({
-			noun,
-			adjective: adj,
-		})
+	const ContentError = () => (
+		<Grid justifyItems="center" textAlign="center">
+			<Box as={GhostIcon} w="6rem" h="6rem" />
+			<Text>Looks like the word sets have not yet loaded!</Text>
+			<Text>
+				This could be because of a slow internet connection or something is
+				blocking the data load of the sets files.
+			</Text>
+		</Grid>
+	)
 
-		// If user enabled TTS, speak
-		if (useTTS) {
-			new TTS(`${adj} ${noun}`).say()
-		}
-	}
-
-	const genREF = useRef()
-	// Get a random word from both lists (is called from outside)
-	useImperativeHandle(ref, () => ({
-		//* Allows to disable TTS
-		disableTTS: () => {
-			setTTS(false)
-		},
-		regenerateWord: () => {
-			generateNewWordSets()
-		},
-	}))
+	//* Prevent showing the ContentError Message on first renders
+	//* Without this, the error message will be shown before the word set
+	//* have been fetched or shuffled
+	if ((!nouns || !adjs) && firstRender) return <ContentError />
 
 	return (
-		<Stack ref={genREF}>
-			<Flex align="center">
-				<Box boxShadow="md" p="6" rounded="md">
-					<Text>{words.adjective}</Text>
-				</Box>
-				<Spacer />
-				<Box rounded="md">
-					<Icon as={IoAdd} fontSize="20px" />
-				</Box>
-				<Spacer />
-				<Box boxShadow="md" p="6" maxW="3xl" rounded="md">
-					<Text>{words.noun}</Text>
-				</Box>
-			</Flex>
-		</Stack>
+		<Grid
+			templateColumns="1fr auto 1fr "
+			alignItems="center"
+			textAlign="center"
+			gap={3}
+		>
+			<WordBox children={words.adj} />
+			<Text fontSize="20px">+</Text>
+			<WordBox children={words.noun} />
+		</Grid>
 	)
 }
 
@@ -109,13 +126,11 @@ function WordGenerator(_props, ref) {
  * @see https://stackoverflow.com/a/12646864
  */
 function shuffleArray(array) {
-	for (var i = array.length - 1; i > 0; i--) {
+	for (let i = array.length - 1; i > 0; i--) {
 		const j = Math.floor(rnd() * (i + 1))
-		var temp = array[i]
-		array[i] = array[j]
-		array[j] = temp
+		;[array[i], array[j]] = [array[j], array[i]]
+		return array[j]
 	}
-	return temp
 }
 
 // Allow to take a ref

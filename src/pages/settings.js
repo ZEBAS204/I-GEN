@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import { Suspense, lazy } from 'react'
 import {
 	Tabs,
 	TabList,
@@ -8,8 +8,15 @@ import {
 	useColorModeValue,
 	Text,
 	Box,
+	// Mobile
+	useDisclosure,
+	useMediaQuery,
+	Drawer,
+	DrawerOverlay,
+	DrawerBody,
+	DrawerContent,
+	DrawerCloseButton,
 } from '@chakra-ui/react'
-
 import {
 	RiLayoutLeftLine,
 	RiBrushLine,
@@ -21,24 +28,28 @@ import { MdAccessibility, MdKeyboard } from 'react-icons/md'
 import { useTranslation } from 'react-i18next' // Translations
 
 // Settings Pages
-const Interface = React.lazy(() => import('../components/settings/Interface'))
-const Appearance = React.lazy(() => import('../components/settings/Appearance'))
-const Accessibility = React.lazy(() =>
-	import('../components/settings/Accessibility')
-)
-const Keybinds = React.lazy(() => import('../components/settings/Keybinds'))
-const Advanced = React.lazy(() => import('../components/settings/Advanced'))
-const About = React.lazy(() => import('../components/settings/About'))
+const Interface = lazy(() => import('../components/settings/Interface'))
+const Appearance = lazy(() => import('../components/settings/Appearance'))
+const Accessibility = lazy(() => import('../components/settings/Accessibility'))
+const Keybinds = lazy(() => import('../components/settings/Keybinds'))
+const Advanced = lazy(() => import('../components/settings/Advanced'))
+const About = lazy(() => import('../components/settings/About'))
 
 export default function Settings() {
 	const { t } = useTranslation()
+
+	// Use for mobile view
+	// TODO: use global constant variables for Media Query
+	const [isInMobileView] = useMediaQuery('(max-width: 650px)')
+	const { isOpen, onOpen, onClose } = useDisclosure()
+
 	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
 
 	/*
 	 All settings pages with their names
 	 * name = their name in settings (eg. setting.interface)
 	 * content = imported page (can be required() + .default )
-	 * vars = if name needs a vars to be passed for translation, here will be
+	 * vars = if name needs a variable to be passed for translation, here will go
 	 */
 	const settings = [
 		{
@@ -57,14 +68,14 @@ export default function Settings() {
 			icon: <MdAccessibility />,
 		},
 		{
-			name: 'advanced',
-			content: Advanced,
-			icon: <RiToolsFill />,
-		},
-		{
 			name: 'keybinds',
 			content: Keybinds,
 			icon: <MdKeyboard />,
+		},
+		{
+			name: 'advanced',
+			content: Advanced,
+			icon: <RiToolsFill />,
 		},
 		{
 			name: 'about',
@@ -76,6 +87,18 @@ export default function Settings() {
 		},
 	]
 
+	const SettingsTabContents = (props) => (
+		<TabPanels {...props}>
+			{settings.map((page, key) => (
+				<TabPanel key={key}>
+					<Suspense fallback={<></>}>
+						<page.content />
+					</Suspense>
+				</TabPanel>
+			))}
+		</TabPanels>
+	)
+
 	return (
 		<Tabs
 			className="scrollable"
@@ -85,11 +108,27 @@ export default function Settings() {
 			isLazy
 			lazyBehavior
 		>
-			<TabList bg={bgColor} borderRadius="md" p={3}>
-				<Text fontSize="xl">{t('buttons.settings')}</Text>
+			<TabList
+				className="scrollable"
+				flexShrink="0"
+				bg={bgColor}
+				p={3}
+				borderRadius={isInMobileView ? '0' : 'md'}
+				width={isInMobileView ? '100%' : 'auto'}
+			>
+				<Text fontSize="xl" mb={2}>
+					{t('buttons.settings')}
+				</Text>
 				{settings.map((page, key) => {
 					return (
-						<Tab key={key} justifyContent="left">
+						<Tab
+							key={key}
+							justifyContent="left"
+							onClick={onOpen}
+							_selected={
+								isInMobileView ? { color: 'inherit', bg: 'none' } : null
+							}
+						>
 							<Box as="span" mr={2}>
 								{page.icon}
 							</Box>
@@ -98,29 +137,25 @@ export default function Settings() {
 					)
 				})}
 			</TabList>
-
-			<TabPanels
-				className="scrollable"
-				bg={bgColor}
-				borderRadius="md"
-				ml={5}
-				p={3}
-			>
-				{settings.map((page, key) => {
-					return (
-						<TabPanel key={key}>
-							<Suspense fallback="">
-								{
-									/* Creates a new dinamic element
-									 * https://stackoverflow.com/questions/29875869/react-jsx-dynamic-component-name
-									 */
-									React.createElement(page.content)
-								}
-							</Suspense>
-						</TabPanel>
-					)
-				})}
-			</TabPanels>
+			{isInMobileView ? (
+				<Drawer isOpen={isOpen} onClose={onClose} size="full" placement="right">
+					<DrawerOverlay />
+					<DrawerContent>
+						<DrawerCloseButton />
+						<DrawerBody>
+							<SettingsTabContents />
+						</DrawerBody>
+					</DrawerContent>
+				</Drawer>
+			) : (
+				<SettingsTabContents
+					className="scrollable"
+					bg={bgColor}
+					borderRadius="md"
+					ml={5}
+					p={3}
+				/>
+			)}
 		</Tabs>
 	)
 }
