@@ -63,13 +63,15 @@ function WordGenerator(_props, ref) {
 
 	// Expose functions
 	useImperativeHandle(ref, () => ({
-		disableTTS: () => setTTS(false),
 		regenerateWord: () => generateNewWordSets(),
 	}))
 
 	useEffect(() => {
 		;(async () => {
-			await getData('tts_enabled').then((tts) => setTTS(tts ? true : false))
+			if (typeof _props.overrideTTS === 'boolean') setTTS(_props.overrideTTS)
+			else
+				await getData('tts_enabled').then((tts) => setTTS(tts ? true : false))
+
 			fetchWordSets()
 				.then(() => generateNewWordSets(true)) // true to prevent TTS from speaking
 				.then(() => {
@@ -83,7 +85,7 @@ function WordGenerator(_props, ref) {
 			// Just stop TTS if speaking, already has check inside the class function
 			TTS.stop()
 		}
-	}, [generateNewWordSets])
+	}, [_props.overrideTTS, generateNewWordSets])
 
 	const WordBox = ({ children }) => (
 		<Box bg={boxBG} boxShadow="md" p={[3, 6]} rounded="md">

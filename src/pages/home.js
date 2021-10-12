@@ -1,4 +1,4 @@
-import { useRef, useEffect, lazy, Suspense } from 'react'
+import { useState, useRef, useEffect, lazy, Suspense } from 'react'
 import { useColorModeValue, Center, Button } from '@chakra-ui/react'
 import { RiRefreshLine } from 'react-icons/ri' // Icons
 
@@ -11,12 +11,13 @@ const WordGenerator = lazy(() => import('../components/WordGenerator'))
 export default function Home() {
 	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
 	const { t } = useTranslation()
+	const [ttsDisabled, setTTSDisabled] = useState(false)
 
 	// https://stackoverflow.com/a/37950970
 	// Create a reference to the generator component, so we can gain
 	// access and call their methods
 	const genREF = useRef(null)
-	const generator = () => genREF.current && genREF.current.regenerateWord()
+	const generator = () => genREF.current?.regenerateWord()
 
 	// Bind SPACE to generator
 	const genButton = useRef(null)
@@ -26,15 +27,15 @@ export default function Home() {
 
 	useEffect(() => {
 		;(async () =>
-			await getData('tts_only_timermode').then((ttOnly) => {
-				if (ttOnly) genREF.current.disableTTS()
-			}))()
+			await getData('tts_only_timermode').then(
+				(ttOnly) => ttOnly && setTTSDisabled(true)
+			))()
 	}, [])
 
 	return (
 		<Center bg={bgColor} p={3} flexBasis="100%" flexDirection="column">
 			<Suspense fallback={<p>Loading word sets...</p>}>
-				<WordGenerator ref={genREF} />
+				<WordGenerator ref={genREF} overrideTTS={!ttsDisabled} />
 			</Suspense>
 			<Button
 				variant="solid"
