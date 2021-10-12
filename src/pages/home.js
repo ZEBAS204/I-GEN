@@ -35,7 +35,7 @@ export default function Home() {
 	return (
 		<Center bg={bgColor} p={3} flexBasis="100%" flexDirection="column">
 			<Suspense fallback={<p>Loading word sets...</p>}>
-				<WordGenerator ref={genREF} overrideTTS={!ttsDisabled} />
+				<WordGenerator ref={genREF} disableTTS={ttsDisabled} />
 			</Suspense>
 			<Button
 				variant="solid"

@@ -68,7 +68,7 @@ function WordGenerator(_props, ref) {
 
 	useEffect(() => {
 		;(async () => {
-			if (typeof _props.overrideTTS === 'boolean') setTTS(_props.overrideTTS)
+			if (_props.disableTTS) setTTS(false)
 			else
 				await getData('tts_enabled').then((tts) => setTTS(tts ? true : false))
 
@@ -85,7 +85,7 @@ function WordGenerator(_props, ref) {
 			// Just stop TTS if speaking, already has check inside the class function
 			TTS.stop()
 		}
-	}, [_props.overrideTTS, generateNewWordSets])
+	}, [_props.disableTTS, generateNewWordSets])
 
 	const WordBox = ({ children }) => (
 		<Box bg={boxBG} boxShadow="md" p={[3, 6]} rounded="md">
