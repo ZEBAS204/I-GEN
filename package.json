@@ -21,7 +21,7 @@
     "@emotion/styled": "^11.3.0",
     "@reduxjs/toolkit": "^1.6.0",
     "framer-motion": "^4.1.17",
-    "i18next": "^20.3.2",
+    "i18next": "^21.3.2",
     "i18next-browser-languagedetector": "^6.1.2",
     "i18next-http-backend": "^1.2.6",
     "localforage": "^1.9.0",
