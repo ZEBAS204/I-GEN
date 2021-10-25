@@ -44,10 +44,8 @@ export default function Appearance() {
 		setData('useSystemColorMode', val)
 	}
 
-	const handleTheme = (color) => {
-		setData('colorScheme', color)
-		updateUI()
-	}
+	const handleTheme = (color) =>
+		setData('colorScheme', color).then(() => updateUI())
 
 	useEffect(() => {
 		// Prevents annoying unmounted warning. Safe to ignore
@@ -96,7 +94,7 @@ export default function Appearance() {
 					isChecked={systemSync}
 					onChange={(e) => toggleSystemSync(e.target.checked)}
 				>
-					Sync with computer
+					Sync with system
 				</Checkbox>{' '}
 				(Applied on restart)
 			</Box>
