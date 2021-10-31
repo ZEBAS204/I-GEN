@@ -124,6 +124,7 @@ export default function Appearance() {
 									? `0 0 0 3px var(--chakra-colors-${themeName}-300)`
 									: 'md'
 							}
+							disabled={isSelectedTheme}
 						/>
 					)
 				})}
