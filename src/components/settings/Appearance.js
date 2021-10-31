@@ -26,6 +26,8 @@ import {
 	Heading,
 } from '@chakra-ui/react'
 
+var prevSelectedTheme = null
+
 export default function Appearance() {
 	const { t } = useTranslation()
 
@@ -37,7 +39,7 @@ export default function Appearance() {
 	const { colorMode, toggleColorMode } = useColorMode()
 	const [systemSync, setSystemSync] = useState(false)
 
-	const [theme, toggleThemeValue] = useState(0)
+	const [theme, toggleThemeValue] = useState(prevSelectedTheme ?? 0)
 
 	const toggleSystemSync = (val) => {
 		setSystemSync(val)
@@ -45,12 +47,12 @@ export default function Appearance() {
 	}
 
 	const handleTheme = (color) =>
-		setData('colorScheme', color).then(() => updateUI())
+		setData('colorScheme', color)
+			.then(() => (prevSelectedTheme = color))
+			.then(() => updateUI())
 
 	useEffect(() => {
-		// Prevents annoying unmounted warning. Safe to ignore
-		let isMounted = true
-
+		if (prevSelectedTheme !== null) return
 		;(async () => {
 			await getData('colorScheme').then((theme) => {
 				//* Default themes: https://chakra-ui.com/docs/theming/theme
@@ -59,21 +61,14 @@ export default function Appearance() {
 					defaultThemes instanceof Array &&
 					defaultThemes.includes(theme)
 				) {
-					if (!isMounted) return
-
+					prevSelectedTheme = theme
 					toggleThemeValue(theme)
 				}
 			})
 			await getData('useSystemColorMode').then((sync) => {
-				if (!isMounted) return
-
 				setSystemSync(sync ? true : false)
 			})
 		})()
-
-		return () => {
-			isMounted = false
-		}
 	}, [])
 
 	return (
