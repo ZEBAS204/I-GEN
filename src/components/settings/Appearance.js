@@ -27,6 +27,7 @@ import {
 } from '@chakra-ui/react'
 
 var prevSelectedTheme = null
+var prevSelectedSync = null
 
 export default function Appearance() {
 	const { t } = useTranslation()
@@ -37,12 +38,13 @@ export default function Appearance() {
 	const updateUI = () => dispatch(update())
 
 	const { colorMode, toggleColorMode } = useColorMode()
-	const [systemSync, setSystemSync] = useState(false)
+	const [systemSync, setSystemSync] = useState(prevSelectedSync ?? false)
 
 	const [theme, toggleThemeValue] = useState(prevSelectedTheme ?? 0)
 
 	const toggleSystemSync = (val) => {
 		setSystemSync(val)
+		prevSelectedSync = val
 		setData('useSystemColorMode', val)
 	}
 
@@ -52,22 +54,24 @@ export default function Appearance() {
 			.then(() => updateUI())
 
 	useEffect(() => {
-		if (prevSelectedTheme !== null) return
 		;(async () => {
-			await getData('colorScheme').then((theme) => {
-				//* Default themes: https://chakra-ui.com/docs/theming/theme
-				if (
-					typeof theme === 'string' &&
-					defaultThemes instanceof Array &&
-					defaultThemes.includes(theme)
-				) {
-					prevSelectedTheme = theme
-					toggleThemeValue(theme)
-				}
-			})
-			await getData('useSystemColorMode').then((sync) => {
-				setSystemSync(sync ? true : false)
-			})
+			prevSelectedTheme === null &&
+				(await getData('colorScheme').then((theme) => {
+					//* Default themes: https://chakra-ui.com/docs/theming/theme
+					if (
+						typeof theme === 'string' &&
+						defaultThemes instanceof Array &&
+						defaultThemes.includes(theme)
+					) {
+						prevSelectedTheme = theme
+						toggleThemeValue(theme)
+					}
+				}))
+			prevSelectedSync === null &&
+				(await getData('useSystemColorMode').then((sync) => {
+					prevSelectedSync = sync
+					setSystemSync(sync ? true : false)
+				}))
 		})()
 	}, [])
 
