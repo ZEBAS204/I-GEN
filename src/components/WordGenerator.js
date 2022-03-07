@@ -1,3 +1,5 @@
+// FIXME: will always return `unsaponified || ??? + September` on first load
+
 import {
 	useState,
 	useEffect,
@@ -11,7 +13,6 @@ import TTS from '../utils/tts'
 import { getData } from '../utils/appStorage'
 
 // Global variables: cache responses and prevent refetching when its not needed
-const rnd = Math.random
 let wasRendered = false
 let fetched = false
 let nouns
@@ -20,21 +21,16 @@ let adjs
 async function fetchWordSets() {
 	if (fetched && nouns && adjs) return
 
-	if (process.env.NODE_ENV === 'development') {
-		nouns = require('../static/wordsets/noun.json')
-		adjs = require('../static/wordsets/adj.json')
-	} else {
-		await Promise.all([
-			fetch('./wordsets/noun.json')
-				.then((res) => res.json())
-				.then((e) => (nouns = e)),
-			fetch('./wordsets/adj.json')
-				.then((res) => res.json())
-				.then((e) => (adjs = e)),
-		])
-			.then((fetched = true))
-			.catch((err) => console.error(err))
-	}
+	await Promise.all([
+		fetch(`${process.env.PUBLIC_URL}/static/wordsets/noun.json`)
+			.then((res) => res.json())
+			.then((e) => (nouns = e)),
+		fetch(`${process.env.PUBLIC_URL}/static/wordsets/adj.json`)
+			.then((res) => res.json())
+			.then((e) => (adjs = e)),
+	])
+		.then((fetched = true))
+		.catch((err) => console.error(err))
 }
 
 function WordGenerator(_props, ref) {
@@ -129,7 +125,7 @@ function WordGenerator(_props, ref) {
  */
 function shuffleArray(array) {
 	for (let i = array.length - 1; i > 0; i--) {
-		const j = Math.floor(rnd() * (i + 1))
+		const j = Math.floor(Math.random() * (i + 1))
 		;[array[i], array[j]] = [array[j], array[i]]
 		return array[j]
 	}

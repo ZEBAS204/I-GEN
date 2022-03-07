@@ -5,7 +5,7 @@ import { mode } from '@chakra-ui/theme-tools'
  ** For example here, I used Nord Color Palette
 
  ** If you want to use a custom theme
- ** see index.js comments
+ ** see App.js comments
  */
 const customTheme = {
 	/**

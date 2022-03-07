@@ -28,7 +28,7 @@ const modalsIds = {
 export default function Advanced() {
 	const { t } = useTranslation()
 
-	const [useDebug, setDebug] = useState(false)
+	const [useDebug, setDebug] = useState(Logger.getLevel() === 0 ? true : false)
 	const [useSW, setSW] = useState(false)
 
 	const [selectedModal, setOpenModal] = useState(0)
@@ -40,18 +40,18 @@ export default function Advanced() {
 		onOpen()
 	}
 
-	const restoreSettings = async () =>
+	const restoreSettings = () =>
 		// If user accepted, clear ALL stored data (local,session,etc) excluded SW cache
-		await clearData()
+		clearData()
 			.then((document.location.href = '/'))
 			.catch(() => {})
 
 	const toggleDebugMode = () =>
 		setDebug((prevVal) => {
-			const enabled = !prevVal
-			setData('dev_mode', enabled)
-			Logger.isLoggerEnabled(true) // Force update of logger
-			return enabled
+			const lvl = !prevVal ? 0 : 3
+			Logger.setLevel(lvl, true)
+
+			return !prevVal
 		})
 
 	const toggleSW = async () => {
@@ -80,7 +80,6 @@ export default function Advanced() {
 			await getData('opt-in-serviceworker').then((SW) =>
 				setSW(SW ? true : false)
 			)
-			await getData('dev_mode').then((dev) => setDebug(dev ? true : false))
 		})()
 	}, [])
 
@@ -123,7 +122,10 @@ export default function Advanced() {
 			<Stack direction="row">
 				<Heading size="sm">Use service worker</Heading>
 				<Spacer />
-				<Switch onChange={() => openModal(modalsIds.sw)} isChecked={useSW} />
+				<Switch
+					onChange={() => (useSW ? openModal(modalsIds.sw) : toggleSW())}
+					isChecked={useSW}
+				/>
 			</Stack>
 			<Text>Allows faster load and offline usage of the page.</Text>
 			<br />

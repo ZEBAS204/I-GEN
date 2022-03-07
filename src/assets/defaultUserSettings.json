@@ -5,11 +5,6 @@
     "value": "blue"
   },
   {
-    "key": "dev_mode",
-    "type": "boolean",
-    "value": false
-  },
-  {
     "key": "notify_enabled",
     "type": "boolean",
     "value": false

@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 // Import Reducers
-import updateUIReducer from './reducer_updateUI'
+import updateUIReducer from './updateUI.reducer'
 
 // Add reducers
 export default configureStore({

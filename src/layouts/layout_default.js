@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Switch } from 'react-router-dom' // Page Handler
+import { HashRouter, Route, Routes } from 'react-router-dom'
 
 import { Flex } from '@chakra-ui/react'
 
@@ -12,24 +12,23 @@ import Settings from '../pages/settings'
 import NotFoundPage from '../pages/404'
 
 // Style
-// import 'normalize.css'
 import '../assets/scss/main.scss'
 
 export default function DefaultLayout() {
 	return (
-		<BrowserRouter>
+		<HashRouter>
 			<Flex id="content" className="container">
 				<SideNav />
 
 				<Flex id="content-container" className="container">
-					<Switch>
-						<Route exact path="/" component={Home} />
-						<Route path="/settings" component={Settings} />
-						<Route path="/timer" component={TimerMode} />
-						<Route path="*" exact={true} component={NotFoundPage} />
-					</Switch>
+					<Routes>
+						<Route exact path="/" element={<Home />} />
+						<Route path="/settings" element={<Settings />} />
+						<Route path="/timer" element={<TimerMode />} />
+						<Route exact path="*" element={<NotFoundPage />} />
+					</Routes>
 				</Flex>
 			</Flex>
-		</BrowserRouter>
+		</HashRouter>
 	)
 }

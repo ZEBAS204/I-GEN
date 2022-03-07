@@ -1,3 +1,8 @@
+// FIXME: If first load in setting page, and open Accessibility before page load correctly. Will raise a memory leak warning.
+// ^ cause of this could be TTS check button
+
+// TODO: if not voices available add a message saying its unsupported in your browser
+
 import { useState, useEffect } from 'react'
 import { getData, setData } from '../../utils/appStorage'
 import {
@@ -232,9 +237,7 @@ export default function Accessibility() {
 
 							setSpeaking(true)
 							new TTS(readText.length >= 1 ? readText : undefined, true).say(
-								() => {
-									setSpeaking(false)
-								}
+								() => setSpeaking(false)
 							)
 						}}
 					>

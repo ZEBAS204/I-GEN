@@ -48,6 +48,13 @@ body,
 	}
 }
 
+@media screen and (max-width: 500px) {
+	// Increase font size in mobile devices
+	html {
+		font-size: 18px;
+	}
+}
+
 ::-webkit-scrollbar {
 	width: 8px;
 }

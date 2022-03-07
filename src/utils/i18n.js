@@ -9,13 +9,8 @@ import { supportedLanguages } from './supportedLanguages'
 // shortband for if-else later
 const dev = process.env.NODE_ENV === 'development'
 
-/* Registering the back-end plugin
- * Will allow asynchronous load of translations
- * Also, in production the locales will be cached by the service worker
- */
-const backendEnabled = dev ? i18n : i18n.use(HttpApi)
-
-backendEnabled
+i18n
+	.use(HttpApi)
 	// detect user language
 	// learn more: https://github.com/i18next/i18next-browser-languageDetector
 	.use(LanguageDetector)
@@ -35,6 +30,9 @@ backendEnabled
 		// Allows (eg."en-US" and "en-UK") to be implicitly supported when "en"
 		nonExplicitSupportedLngs: true,
 
+		// Locales will be fully lowercased
+		lowerCaseLng: true,
+
 		// Overwrite defaults and order from where language should be detected
 		detection: {
 			order: ['localStorage', 'querystring', 'navigator', 'htmlTag'],
@@ -44,29 +42,15 @@ backendEnabled
 		// Add supported languages from ./supportedLanguages
 		supportedLngs: supportedLanguages.map((lang) => lang.code),
 
-		// Resources are defined only for development
-		// On releases, will use backend defined path bellow
-		resources: dev
-			? {
-					en: {
-						translation: require('../static/locales/en.json'),
-					},
-					es: {
-						translation: require('../static/locales/es.json'),
-					},
-			  }
-			: undefined,
-
 		// Back-end path. Will be used in release to asynchronously load translations
 		// eg. www.example.com/locates/es.json
-		backend: dev
-			? undefined
-			: {
-					// {{lng}} = language = en / es
-					// {{ns}} = translation = translation.json
-					// {{lng}}/{{ns}}.json = /en/translation.json
-					loadPath: '/locales/{{lng}}.json',
-			  },
+		backend: {
+			// {{lng}} = language = en / es
+			// {{ns}} = translation = translation.json
+			// {{lng}}/{{ns}}.json = /en/translation.json
+			loadPath: '/static/locales/{{lng}}.json',
+			allowMultiLoading: false,
+		},
 
 		keySeparator: '.', // Allow nesting keys with dots (def dot)
 		interpolation: {

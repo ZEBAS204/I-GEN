@@ -1,4 +1,6 @@
-import { Suspense, lazy } from 'react'
+// FIXME: bottom part of drawer is hide bellow the URL in mobile (edge)
+
+import { Suspense, lazy, useState } from 'react'
 import {
 	Tabs,
 	TabList,
@@ -25,7 +27,8 @@ import {
 } from 'react-icons/ri'
 
 import { MdAccessibility, MdKeyboard } from 'react-icons/md'
-import { useTranslation } from 'react-i18next' // Translations
+import { useTranslation } from 'react-i18next'
+import { useBlocker } from '../utils/useBlocker'
 
 // Settings Pages
 const Interface = lazy(() => import('../components/settings/Interface'))
@@ -35,57 +38,78 @@ const Keybinds = lazy(() => import('../components/settings/Keybinds'))
 const Advanced = lazy(() => import('../components/settings/Advanced'))
 const About = lazy(() => import('../components/settings/About'))
 
+/*
+	 All settings pages with their names
+	 * name = their name in settings (eg. setting.interface)
+	 * content = imported page (can be required() + .default )
+	 * vars = if name needs a variable to be passed for translation, here will go
+	 */
+const settings = [
+	{
+		name: 'interface',
+		content: Interface,
+		icon: <RiLayoutLeftLine />,
+	},
+	{
+		name: 'appearance',
+		content: Appearance,
+		icon: <RiBrushLine />,
+	},
+	{
+		name: 'accessibility',
+		content: Accessibility,
+		icon: <MdAccessibility />,
+	},
+	{
+		name: 'keybinds',
+		content: Keybinds,
+		icon: <MdKeyboard />,
+	},
+	{
+		name: 'advanced',
+		content: Advanced,
+		icon: <RiToolsFill />,
+	},
+	{
+		name: 'about',
+		content: About,
+		icon: <RiQuestionLine />,
+		vars: {
+			app_name: 'var',
+		},
+	},
+]
+
 export default function Settings() {
 	const { t } = useTranslation()
 
 	// Use for mobile view
 	// TODO: use global constant variables for Media Query
 	const [isInMobileView] = useMediaQuery('(max-width: 650px)')
-	const { isOpen, onOpen, onClose } = useDisclosure()
+	const [isBackBTNBlock, blockBackBTN] = useState(false)
+	const [isOpen, setOpenModal] = useState(false)
+	const { onOpen, onClose } = useDisclosure({
+		onOpen: () => {
+			setOpenModal(true)
+			blockBackBTN(true)
+		},
+		onClose: () => {
+			setOpenModal(false)
+			blockBackBTN(false)
+		},
+	})
 
 	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
 
-	/*
-	 All settings pages with their names
-	 * name = their name in settings (eg. setting.interface)
-	 * content = imported page (can be required() + .default )
-	 * vars = if name needs a variable to be passed for translation, here will go
+	/**
+	 ** Only in mobile view, back button will be disabled if the
+	 ** drawer is active to prevent user from changing page
 	 */
-	const settings = [
-		{
-			name: 'interface',
-			content: Interface,
-			icon: <RiLayoutLeftLine />,
-		},
-		{
-			name: 'appearance',
-			content: Appearance,
-			icon: <RiBrushLine />,
-		},
-		{
-			name: 'accessibility',
-			content: Accessibility,
-			icon: <MdAccessibility />,
-		},
-		{
-			name: 'keybinds',
-			content: Keybinds,
-			icon: <MdKeyboard />,
-		},
-		{
-			name: 'advanced',
-			content: Advanced,
-			icon: <RiToolsFill />,
-		},
-		{
-			name: 'about',
-			content: About,
-			icon: <RiQuestionLine />,
-			vars: {
-				app_name: 'var',
-			},
-		},
-	]
+	useBlocker(() => {
+		setOpenModal(false)
+		blockBackBTN(false)
+		return ''
+	}, isInMobileView && isBackBTNBlock)
 
 	const SettingsTabContents = (props) => (
 		<TabPanels {...props}>
@@ -140,7 +164,7 @@ export default function Settings() {
 			{isInMobileView ? (
 				<Drawer isOpen={isOpen} onClose={onClose} size="full" placement="right">
 					<DrawerOverlay />
-					<DrawerContent>
+					<DrawerContent py={3}>
 						<DrawerCloseButton />
 						<DrawerBody>
 							<SettingsTabContents />

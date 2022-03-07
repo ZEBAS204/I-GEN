@@ -12,6 +12,7 @@ import { ExpirationPlugin } from 'workbox-expiration'
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching'
 import { registerRoute } from 'workbox-routing'
 import { StaleWhileRevalidate } from 'workbox-strategies'
+import { BroadcastUpdatePlugin } from 'workbox-broadcast-update'
 
 clientsClaim()
 
@@ -41,6 +42,10 @@ registerRoute(
 			return false
 		} // Return true to signal that we want to use the handler.
 
+		if (url.pathname.startsWith('/service-worker.js')) {
+			return false
+		} // Prevent the service worker from catching itself
+
 		return true
 	},
 	createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
@@ -64,15 +69,28 @@ registerRoute(
 
 // Cache translations
 registerRoute(
-	({ request, url }) =>
+	({ url }) =>
 		url.origin === self.location.origin && url.pathname.startsWith('/locales/'),
 
 	new StaleWhileRevalidate({
 		cacheName: 'locales',
 		plugins: [
-			// Will only save the last 5 locales used
+			// Will only save the last 5 used locales
 			new ExpirationPlugin({ maxEntries: 5 }),
+			new BroadcastUpdatePlugin(),
 		],
+	})
+)
+
+// Cache word sets
+registerRoute(
+	({ url }) =>
+		url.origin === self.location.origin &&
+		url.pathname.startsWith('/wordsets/'),
+
+	new StaleWhileRevalidate({
+		cacheName: 'wordsets',
+		plugins: [new BroadcastUpdatePlugin()],
 	})
 )
 

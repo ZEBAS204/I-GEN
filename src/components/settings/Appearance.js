@@ -7,7 +7,7 @@
 
 import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { update } from '../../redux/reducer_updateUI'
+import { update } from '../../redux/updateUI.reducer'
 
 import { useTranslation } from 'react-i18next'
 import { getData, setData } from '../../utils/appStorage'

@@ -61,7 +61,7 @@ export default function SideNav() {
 				className="navbar-item"
 				ref={hotkeys.home}
 				to="/"
-				exact={true}
+				exact
 			>
 				<RiCloudyFill className="navbar-item-icon-active" />
 				<RiCloudyLine className="navbar-item-icon" />
@@ -84,7 +84,7 @@ export default function SideNav() {
 				className="navbar-item"
 				ref={hotkeys.settings}
 				to="/settings"
-				exact={true}
+				exact
 			>
 				<RiSettings3Fill className="navbar-item-icon-active" />
 				<RiSettings3Line className="navbar-item-icon" />

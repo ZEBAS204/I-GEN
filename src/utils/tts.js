@@ -18,7 +18,7 @@ const synth = window.speechSynthesis
  * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance
  */
 export default class TTS {
-	static _lang = synth.lang || 'en-US' // Chrome on Android requires an initial language
+	static _lang = 'en-US' // Chrome on Android requires an initial language
 	static _voices = []
 	static _voice = null
 	static _volume = 1
@@ -68,8 +68,6 @@ export default class TTS {
 		if (TTS._voices.length) {
 			voices = TTS._voices
 		} else {
-			if (!isSupported) return
-
 			const voices = synth.getVoices()
 			for (let i = 0; i < voices.length; i++) {
 				const voice = voices[i]
@@ -124,7 +122,7 @@ export default class TTS {
 		const tts = new SpeechSynthesisUtterance(this.text)
 		if (TTS._voice) tts.voice = TTS._voice
 		tts.volume = TTS._volume
-		tts.lang = TTS._lang
+		tts.lang = tts.lang ?? TTS._lang
 		tts.rate = TTS._rate
 		tts.pitch = TTS._pitch
 		synth.speak(tts)
@@ -164,6 +162,7 @@ export default class TTS {
 			}
 			tries--
 
+			// FIXME: DuckDuckGo android error undefined error..?
 			if (synth.getVoices().length) {
 				resolve()
 				clearInterval(int)

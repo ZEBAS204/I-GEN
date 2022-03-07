@@ -1,3 +1,5 @@
+// TODO: allow child flex items to grow=1 and center with align-items: center;
+
 import {
 	useColorModeValue,
 	Heading,

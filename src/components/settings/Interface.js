@@ -1,3 +1,5 @@
+// TODO: add notifications
+
 import { useState, useEffect } from 'react'
 import { getData, setData } from '../../utils/appStorage'
 import {
