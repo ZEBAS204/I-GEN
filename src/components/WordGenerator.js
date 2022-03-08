@@ -123,7 +123,7 @@ function WordGenerator(_props, ref) {
  */
 function shuffleArray(array) {
 	for (let i = array.length - 1; i > 0; i--) {
-		const j = Math.floor(Math.random() * (i + 1))
+		const j = ~~(Math.random() * (i + 1)) // ~~ is the same as Math.floor but faster
 		;[array[i], array[j]] = [array[j], array[i]]
 	}
 	return array[0]
