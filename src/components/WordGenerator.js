@@ -1,5 +1,3 @@
-// FIXME: will always return `unsaponified || ??? + September` on first load
-
 import {
 	useState,
 	useEffect,
@@ -127,8 +125,8 @@ function shuffleArray(array) {
 	for (let i = array.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1))
 		;[array[i], array[j]] = [array[j], array[i]]
-		return array[j]
 	}
+	return array[0]
 }
 
 // Allow to take a ref
