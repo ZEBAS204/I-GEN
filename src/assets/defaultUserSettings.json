@@ -1,23 +1,13 @@
 [
   {
-    "key": "colorScheme",
-    "type": "string",
-    "value": "blue"
+    "key": "useSystemColorMode",
+    "type": "boolean",
+    "value": false
   },
   {
     "key": "notify_enabled",
     "type": "boolean",
     "value": false
-  },
-  {
-    "key": "opt-in-serviceworker",
-    "type": "boolean",
-    "value": true
-  },
-  {
-    "key": "theme_swap_icon",
-    "type": "boolean",
-    "value": true
   },
   {
     "key": "tts_enabled",
@@ -38,10 +28,5 @@
     "key": "tts_volume",
     "type": "number",
     "value": 1
-  },
-  {
-    "key": "useSystemColorMode",
-    "type": "boolean",
-    "value": false
   }
 ]

@@ -6,14 +6,10 @@
  */
 
 import { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { update } from '../../redux/updateUI.reducer'
 
 import { useTranslation } from 'react-i18next'
 import { getData, setData } from '../../utils/appStorage'
-import defaultThemes from '../../assets/defaultThemes.json'
 import {
-	chakra,
 	Box,
 	Text,
 	Radio,
@@ -21,12 +17,9 @@ import {
 	Checkbox,
 	useColorMode,
 	Stack,
-	Grid,
-	Divider,
 	Heading,
 } from '@chakra-ui/react'
 
-var prevSelectedTheme = null
 var prevSelectedSync = null
 
 export default function Appearance() {
@@ -34,13 +27,9 @@ export default function Appearance() {
 
 	// This functions bind to the useDispatch
 	// and allows to send a signal to update other UI components
-	const dispatch = useDispatch()
-	const updateUI = () => dispatch(update())
 
 	const { colorMode, toggleColorMode } = useColorMode()
 	const [systemSync, setSystemSync] = useState(prevSelectedSync ?? false)
-
-	const [theme, toggleThemeValue] = useState(prevSelectedTheme ?? 0)
 
 	const toggleSystemSync = (val) => {
 		setSystemSync(val)
@@ -48,25 +37,8 @@ export default function Appearance() {
 		setData('useSystemColorMode', val)
 	}
 
-	const handleTheme = (color) =>
-		setData('colorScheme', color)
-			.then(() => (prevSelectedTheme = color))
-			.then(() => updateUI())
-
 	useEffect(() => {
 		;(async () => {
-			prevSelectedTheme === null &&
-				(await getData('colorScheme').then((theme) => {
-					//* Default themes: https://chakra-ui.com/docs/theming/theme
-					if (
-						typeof theme === 'string' &&
-						defaultThemes instanceof Array &&
-						defaultThemes.includes(theme)
-					) {
-						prevSelectedTheme = theme
-						toggleThemeValue(theme)
-					}
-				}))
 			prevSelectedSync === null &&
 				(await getData('useSystemColorMode').then((sync) => {
 					prevSelectedSync = sync
@@ -97,42 +69,6 @@ export default function Appearance() {
 				</Checkbox>{' '}
 				(Applied on restart)
 			</Box>
-			<br />
-			<Divider />
-			<br />
-			<Heading size="sm">🌟 Colorify 🌟</Heading>
-			<Text>Pick your favorite color!</Text>
-			<Grid
-				gap={5}
-				marginY={4}
-				gridTemplateColumns="repeat(auto-fit, minmax(50px, 1fr))"
-			>
-				{defaultThemes.map((themeName, key) => {
-					const isSelectedTheme = theme === themeName
-
-					return (
-						<chakra.button
-							key={key}
-							onClick={() => handleTheme(themeName)}
-							title={t(`themes.${themeName}`)}
-							aria-label={isSelectedTheme ? 'Selected' : null}
-							cursor="pointer"
-							type="button"
-							w="3rem"
-							h="3rem"
-							bg={`var(--chakra-colors-${themeName}-500) content-box`}
-							border={isSelectedTheme ? '5px solid transparent' : null}
-							borderRadius="full"
-							boxShadow={
-								isSelectedTheme
-									? `0 0 0 3px var(--chakra-colors-${themeName}-300)`
-									: 'md'
-							}
-							disabled={isSelectedTheme}
-						/>
-					)
-				})}
-			</Grid>
 		</>
 	)
 }

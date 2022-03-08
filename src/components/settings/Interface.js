@@ -1,19 +1,4 @@
-// TODO: add notifications
-
-import { useState, useEffect } from 'react'
-import { getData, setData } from '../../utils/appStorage'
-import {
-	Box,
-	Text,
-	Link,
-	Icon,
-	Divider,
-	Switch,
-	Stack,
-	Spacer,
-	Heading,
-	Select,
-} from '@chakra-ui/react'
+import { Box, Text, Link, Icon, Heading, Select } from '@chakra-ui/react'
 import { RiExternalLinkLine } from 'react-icons/ri'
 
 import { useTranslation } from 'react-i18next'
@@ -21,21 +6,6 @@ import { supportedLanguages } from '../../utils/supportedLanguages'
 
 export default function Interface() {
 	const { t, i18n } = useTranslation()
-
-	const [notifications, setNotifications] = useState(false)
-
-	const toggleNotify = () => {
-		const newValue = !notifications
-		setNotifications(newValue)
-		setData('notify_enabled', newValue)
-	}
-
-	useEffect(() => {
-		;(async () =>
-			await getData('notify_enabled').then((isEnabled) =>
-				setNotifications(isEnabled ? true : false)
-			))()
-	}, [])
 
 	return (
 		<>
@@ -72,19 +42,6 @@ export default function Interface() {
 					click here <Icon as={RiExternalLinkLine} />
 				</Link>
 			</Text>
-
-			<br />
-			<Divider />
-			<br />
-
-			<Heading size="md">{t('settings.notifications')}</Heading>
-			<br />
-			<Stack direction="row">
-				<Heading size="sm">Send notification</Heading>
-				<Spacer />
-				<Switch onChange={toggleNotify} isChecked={notifications} />
-			</Stack>
-			<Text>Send a notification when a new set of words are generated</Text>
 		</>
 	)
 }

@@ -2,12 +2,8 @@ import { StrictMode, Suspense, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import * as serviceWorker from './serviceWorkerRegistration'
 
-// Redux
-import { Provider } from 'react-redux'
-import store from './redux/store'
-
 import Logger from './utils/logger'
-import { localforage, getData } from './utils/appStorage'
+import { localforage } from './utils/appStorage'
 
 import './utils/i18n'
 import defaultSettings from './utils/defaultSettings'
@@ -19,28 +15,19 @@ function EnsureDataLoad() {
 	const [swUpdate, setSWUpdate] = useState(false)
 	const [waitingWorker, setWaitingWorker] = useState(null)
 
-	// FIXME: not properly registered on load event
 	useEffect(() => {
 		Logger.log(['SW', 'info'], 'Registering Service Worker...')
+
+		serviceWorker.register({
+			onUpdate: (registration) => {
+				setSWUpdate(true)
+				setWaitingWorker(registration.waiting)
+			},
+		})
 
 		// Set Default User Settings if they are not defined
 		localforage
 			.ready()
-			.then(async () => {
-				//Enable Service Worker if user opt in.
-				getData('opt-in-serviceworker').then((isEnabled) => {
-					if (isEnabled ?? true) {
-						serviceWorker.register({
-							onUpdate: (registration) => {
-								setSWUpdate(true)
-								setWaitingWorker(registration.waiting)
-							},
-						})
-					} else {
-						Logger.log(['SW', 'info'], 'User opt-out of service worker.')
-					}
-				})
-			})
 			.then(() => defaultSettings())
 			.catch((err) => console.error(err))
 			.finally(setLoaded(true))
@@ -62,9 +49,7 @@ if (process.env.NODE_ENV === 'development')
 ReactDOM.render(
 	<StrictMode>
 		<Suspense fallback={<></>}>
-			<Provider store={store}>
-				<EnsureDataLoad />
-			</Provider>
+			<EnsureDataLoad />
 		</Suspense>
 	</StrictMode>,
 	document.getElementById('root')

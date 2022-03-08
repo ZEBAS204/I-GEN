@@ -1,10 +1,4 @@
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-
-import './utils/i18n'
-import Logger from './utils/logger'
-import { getData } from './utils/appStorage'
-
+import { useState, useEffect } from 'react'
 import {
 	ChakraProvider,
 	ColorModeScript,
@@ -12,8 +6,10 @@ import {
 	withDefaultColorScheme,
 } from '@chakra-ui/react'
 
+import './utils/i18n'
+import { getData } from './utils/appStorage'
+import Logger from './utils/logger'
 import DefaultLayout from './layouts/layout_default'
-import defaultThemes from './assets/defaultThemes.json'
 import UpdateNotification from './components/UpdateNotification'
 
 /**
@@ -24,11 +20,8 @@ import UpdateNotification from './components/UpdateNotification'
 // import { customTheme } from './utils/theme'
 
 export default function App({ swUpdate, registration }) {
-	// Allow forcing update from Redux signal
-	const dummy = useSelector((state) => state.updateUI.value)
-
-	const [theme, setTheme] = useState('blue')
 	const [systemSync, setSystemSync] = useState(false)
+
 	const currentTheme = extendTheme(
 		extendTheme({
 			//* Uncomment next line for theme override
@@ -38,7 +31,7 @@ export default function App({ swUpdate, registration }) {
 				useSystemColorMode: systemSync,
 			},
 		}),
-		withDefaultColorScheme({ colorScheme: theme })
+		withDefaultColorScheme({ colorScheme: 'blue' })
 	)
 
 	useEffect(() => {
@@ -51,22 +44,6 @@ export default function App({ swUpdate, registration }) {
 			})
 		})()
 	}, [])
-
-	useEffect(() => {
-		;(async () => {
-			await getData('colorScheme').then((theme) => {
-				//* Default themes: https://chakra-ui.com/docs/theming/theme
-				if (
-					theme &&
-					typeof theme === 'string' &&
-					defaultThemes.includes(theme)
-				) {
-					Logger.log(['APP', 'info'], `Theme: ${theme}`)
-					setTheme(theme)
-				}
-			})
-		})()
-	}, [dummy])
 
 	return (
 		<>
