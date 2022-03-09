@@ -10,9 +10,6 @@
 html,
 body,
 #root {
-	display: flex;
-	flex-direction: column;
-	// Fixes flexbox
 	height: 100%;
 	overflow: hidden;
 }
@@ -30,10 +27,8 @@ body,
 	border-radius: var(--chakra-radii-md);
 	flex-basis: auto;
 	flex-grow: 1;
-	margin-bottom: var(--chakra-space-5);
-	margin-left: 0;
-	margin-right: var(--chakra-space-5);
-	margin-top: var(--chakra-space-5);
+	flex-direction: column;
+	margin: var(--chakra-space-5);
 }
 
 .scrollable {
