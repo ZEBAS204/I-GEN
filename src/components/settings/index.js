@@ -1,6 +1,8 @@
 // FIXME: bottom part of drawer is hide bellow the URL in mobile (edge)
 
 import { Suspense, lazy, useState } from 'react'
+import { useAppContext } from '../../layouts/AppContext'
+
 import {
 	Tabs,
 	TabList,
@@ -28,15 +30,15 @@ import {
 
 import { MdAccessibility, MdKeyboard } from 'react-icons/md'
 import { useTranslation } from 'react-i18next'
-import { useBlocker } from '../utils/useBlocker'
+import { useBlocker } from '../../utils/useBlocker'
 
 // Settings Pages
-const Interface = lazy(() => import('../components/settings/Interface'))
-const Appearance = lazy(() => import('../components/settings/Appearance'))
-const Accessibility = lazy(() => import('../components/settings/Accessibility'))
-const Keybinds = lazy(() => import('../components/settings/Keybinds'))
-const Advanced = lazy(() => import('../components/settings/Advanced'))
-const About = lazy(() => import('../components/settings/About'))
+const Interface = lazy(() => import('./Interface'))
+const Appearance = lazy(() => import('./Appearance'))
+const Accessibility = lazy(() => import('./Accessibility'))
+const Keybinds = lazy(() => import('./Keybinds'))
+const Advanced = lazy(() => import('./Advanced'))
+const About = lazy(() => import('./About'))
 
 /*
 	 All settings pages with their names
@@ -82,6 +84,7 @@ const settings = [
 
 export default function Settings() {
 	const { t } = useTranslation()
+	const { isSettingVisible } = useAppContext()
 
 	// Use for mobile view
 	// TODO: use global constant variables for Media Query
@@ -122,6 +125,8 @@ export default function Settings() {
 			))}
 		</TabPanels>
 	)
+
+	if (!isSettingVisible) return <></>
 
 	return (
 		<Tabs

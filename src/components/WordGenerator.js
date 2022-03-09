@@ -104,12 +104,7 @@ function WordGenerator(_props, ref) {
 	if ((!nouns || !adjs) && firstRender) return <ContentError />
 
 	return (
-		<Grid
-			templateColumns="1fr auto 1fr "
-			alignItems="center"
-			textAlign="center"
-			gap={3}
-		>
+		<Grid textAlign="center" alignSelf="center" gap={3}>
 			<WordBox children={words.adj} />
 			<Text fontSize="20px">+</Text>
 			<WordBox children={words.noun} />

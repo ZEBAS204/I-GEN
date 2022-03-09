@@ -4,16 +4,9 @@
  *		* components/timer/CountDown.js
  *		* components/timer/CountDownControls.js
  */
-import { useRef, useState, useEffect, lazy, Suspense } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
-import {
-	useColorModeValue,
-	Center,
-	Box,
-	Button,
-	ButtonGroup,
-	IconButton,
-} from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, IconButton } from '@chakra-ui/react'
 import {
 	RiPlayFill,
 	RiPauseFill,
@@ -25,8 +18,6 @@ import CountDown from '../components/timer/CountDown'
 import CountDownControls from '../components/timer/CountDownControl'
 import TTS from '../utils/tts'
 
-const WordGenerator = lazy(() => import('../components/WordGenerator'))
-
 const SS_NAME = 'countdown_time' // Name of the key to use in session storage
 const DEF_TIME = 600 // 10 min
 const MIN_TIME = 0
@@ -34,7 +25,6 @@ const MAX_TIME = 215999
 
 export default function TimerMode() {
 	const { t } = useTranslation()
-	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
 
 	// Create a reference to generator component
 	const genREF = useRef(null)
@@ -99,16 +89,8 @@ export default function TimerMode() {
 	}, [])
 
 	return (
-		<Center
-			bg={bgColor}
-			p={3}
-			display="inline-flex"
-			flexDirection="column"
-			flexBasis="100%"
-		>
-			<Suspense fallback={<p>Loading word sets...</p>}>
-				<WordGenerator ref={genREF} />
-			</Suspense>
+		<>
+			<h1>Timer Mode</h1>
 			<Box marginY={5} />
 			{
 				/* Show timer control or countdown respectively
@@ -154,7 +136,7 @@ export default function TimerMode() {
 					icon={<RiEditBoxFill />}
 				/>
 			</ButtonGroup>
-		</Center>
+		</>
 	)
 }
 
