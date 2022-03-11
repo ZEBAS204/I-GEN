@@ -1,10 +1,4 @@
-import {
-	useState,
-	useEffect,
-	useImperativeHandle,
-	forwardRef,
-	useCallback,
-} from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useColorModeValue, Grid, Box, Text, Skeleton } from '@chakra-ui/react'
 import { ReactComponent as GhostIcon } from '../assets/icons/ghost.svg'
 import TTS from '../utils/tts'
@@ -31,7 +25,7 @@ async function fetchWordSets() {
 		.catch((err) => console.error(err))
 }
 
-function WordGenerator(_props, ref) {
+export default function WordGenerator({ disableTTS }) {
 	const boxBG = useColorModeValue('blackAlpha.100', 'whiteAlpha.100')
 	const [firstRender, setFirstRender] = useState(wasRendered)
 	const [useTTS, setTTS] = useState(false)
@@ -55,14 +49,9 @@ function WordGenerator(_props, ref) {
 		[useTTS]
 	)
 
-	// Expose functions
-	useImperativeHandle(ref, () => ({
-		regenerateWord: () => generateNewWordSets(),
-	}))
-
 	useEffect(() => {
 		;(async () => {
-			if (_props.disableTTS) setTTS(false)
+			if (disableTTS) setTTS(false)
 			else
 				await getData('tts_enabled').then((tts) => setTTS(tts ? true : false))
 
@@ -79,7 +68,7 @@ function WordGenerator(_props, ref) {
 			// Just stop TTS if speaking, already has check inside the class function
 			TTS.stop()
 		}
-	}, [_props.disableTTS, generateNewWordSets])
+	}, [disableTTS, generateNewWordSets])
 
 	const WordBox = ({ children }) => (
 		<Box bg={boxBG} boxShadow="md" p={[3, 6]} rounded="md">
@@ -123,6 +112,3 @@ function shuffleArray(array) {
 	}
 	return array[0]
 }
-
-// Allow to take a ref
-export default forwardRef(WordGenerator)
