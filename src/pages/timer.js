@@ -5,7 +5,6 @@
  *		* components/timer/CountDownControls.js
  */
 import { useRef, useState, useEffect } from 'react'
-import { useHotkeys } from 'react-hotkeys-hook'
 import { Box, Button, ButtonGroup, IconButton } from '@chakra-ui/react'
 import {
 	RiPlayFill,
@@ -29,12 +28,6 @@ export default function TimerMode() {
 	// Create a reference to generator component
 	const genREF = useRef(null)
 	const generator = () => genREF.current && genREF.current.regenerateWord()
-
-	// Bind SPACE to play/pause
-	const genButton = useRef(null)
-	useHotkeys('space', () => genButton.current?.click(), {
-		filterPreventDefault: false,
-	})
 
 	const [running, setRunning] = useState(false)
 	const [resetSignal, setReset] = useState(0)
@@ -121,7 +114,6 @@ export default function TimerMode() {
 				/>
 
 				<Button
-					ref={genButton}
 					onClick={toggleRunning}
 					rightIcon={running ? <RiPauseFill /> : <RiPlayFill />}
 					minW="115px"
