@@ -3,6 +3,8 @@
 import { Suspense, lazy, useState } from 'react'
 import { useAppContext } from '../../layouts/AppContext'
 
+import { mobileViewMQ } from '../../utils/constants'
+
 import {
 	Tabs,
 	TabList,
@@ -88,7 +90,7 @@ export default function Settings() {
 
 	// Use for mobile view
 	// TODO: use global constant variables for Media Query
-	const [isInMobileView] = useMediaQuery('(max-width: 650px)')
+	const [isInMobileView] = useMediaQuery(mobileViewMQ)
 	const [isBackBTNBlock, blockBackBTN] = useState(false)
 	const [isOpen, setOpenModal] = useState(false)
 	const { onOpen, onClose } = useDisclosure({
