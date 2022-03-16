@@ -25,6 +25,7 @@ $media-navbar-mobile: 500px;
 		.navbar {
 			display: flex;
 			flex-shrink: 0;
+			align-items: center;
 		}
 
 		.navbar-item {
