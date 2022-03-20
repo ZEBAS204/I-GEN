@@ -2,6 +2,7 @@
 
 import { Suspense, lazy, useState } from 'react'
 
+import { useAppContext } from '../../layouts/AppContext'
 import { mobileViewMQ } from '../../utils/constants'
 
 import {
@@ -13,6 +14,7 @@ import {
 	useColorModeValue,
 	Text,
 	Box,
+	CloseButton,
 	// Mobile
 	useDisclosure,
 	useMediaQuery,
@@ -85,6 +87,7 @@ const settings = [
 
 export default function SettingsPage() {
 	const { t } = useTranslation()
+	const { toggleSettingVisible } = useAppContext()
 	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
 
 	// Use for mobile view
@@ -175,6 +178,14 @@ export default function SettingsPage() {
 					</DrawerContent>
 				</Drawer>
 			) : (
+				<>
+					<CloseButton
+						onClick={toggleSettingVisible}
+						position="absolute"
+						top={5}
+						right={7}
+						size="lg"
+					/>
 				<SettingsTabContents
 					className="scrollable"
 					bg={bgColor}
@@ -182,6 +193,7 @@ export default function SettingsPage() {
 					ml={5}
 					p={3}
 				/>
+				</>
 			)}
 		</Tabs>
 	)
