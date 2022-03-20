@@ -69,7 +69,7 @@ export default function SideNav() {
 			<Tag
 				variant="outline"
 				className="navbar-item"
-				onclick={toggleTimerVisible}
+				onClick={toggleTimerVisible}
 			>
 				{isTimerVisible ? (
 					<RiTimerFlashFill className="navbar-item-icon" />
