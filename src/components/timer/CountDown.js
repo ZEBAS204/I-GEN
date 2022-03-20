@@ -11,6 +11,7 @@ import {
 	Progress,
 } from '@chakra-ui/react'
 import { mobileViewMQ } from '../../utils/constants'
+import { useAppContext } from '../../layouts/AppContext'
 
 // Default remaining time to add if no saved time is provided by the parent (10min)
 const DEF_TIME = 10000
@@ -26,13 +27,15 @@ const ifExistsDisplay = (num, type) => (num ? num + type : null)
 
 const MobileCountDown = () => {
 	const [isInMobileView] = useMediaQuery(mobileViewMQ)
+	const { isTimerVisible } = useAppContext()
+
 	const { hoursToDisplay, minutesToDisplay, secondsToDisplay } = {
 		hoursToDisplay: 1,
 		minutesToDisplay: 26,
 		secondsToDisplay: 5,
 	}
 
-	if (!isInMobileView) return <></>
+	if (!isInMobileView || !isTimerVisible) return <></>
 
 	return (
 		<Flex
@@ -43,7 +46,7 @@ const MobileCountDown = () => {
 		>
 			<Progress id="mobile-countdown-progress" value={20} size="xs" />
 			<div>
-				<Text fontWeight="bold" fontSize="2xl">
+				<Text fontWeight="bold" fontSize="2xl" lineHeight="20px">
 					{toTwoDigits(hoursToDisplay)}:{toTwoDigits(minutesToDisplay)}:
 					{toTwoDigits(secondsToDisplay)}
 				</Text>
