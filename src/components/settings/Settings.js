@@ -133,7 +133,7 @@ export default function SettingsPage() {
 			variant="solid-rounded"
 			flexBasis="100%" // Allow to fill empty space
 			isLazy
-			lazyBehavior="keepMounted"
+			lazyBehavior="unmount"
 		>
 			<TabList
 				className="scrollable"
