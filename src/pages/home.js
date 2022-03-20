@@ -1,7 +1,8 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
-import { Flex, Center } from '@chakra-ui/react'
+import { Flex, Center, useMediaQuery } from '@chakra-ui/react'
 
 import { getData } from '../utils/appStorage'
+import { mobileViewMQ } from '../utils/constants'
 
 import { useAppContext } from '../layouts/AppContext'
 import TimerMode from './timer'
@@ -12,6 +13,7 @@ export default function Home() {
 	const [ttsDisabled, setTTSDisabled] = useState(false)
 
 	const { isTimerVisible } = useAppContext()
+	const [isInMobileView] = useMediaQuery(mobileViewMQ)
 
 	useEffect(() => {
 		;(async () =>
@@ -26,7 +28,7 @@ export default function Home() {
 				<Suspense fallback={<p>Loading word sets...</p>}>
 					<WordGenerator disableTTS={ttsDisabled} />
 				</Suspense>
-				{isTimerVisible && (
+				{!isInMobileView && isTimerVisible && (
 					<Center flexDirection="column">
 						<TimerMode />
 					</Center>
