@@ -85,6 +85,7 @@ const settings = [
 
 export default function SettingsPage() {
 	const { t } = useTranslation()
+	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
 
 	// Use for mobile view
 	// TODO: use global constant variables for Media Query
@@ -101,8 +102,6 @@ export default function SettingsPage() {
 			blockBackBTN(false)
 		},
 	})
-
-	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
 
 	/**
 	 ** Only in mobile view, back button will be disabled if the
@@ -134,7 +133,7 @@ export default function SettingsPage() {
 			variant="solid-rounded"
 			flexBasis="100%" // Allow to fill empty space
 			isLazy
-			lazyBehavior
+			lazyBehavior="keepMounted"
 		>
 			<TabList
 				className="scrollable"
