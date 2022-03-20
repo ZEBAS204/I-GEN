@@ -13,7 +13,7 @@ import {
 	RiRefreshLine,
 } from 'react-icons/ri'
 import { useTranslation } from 'react-i18next'
-import CountDown from '../components/timer/CountDown'
+import { CountDown } from '../components/timer/CountDown'
 import CountDownControls from '../components/timer/CountDownControl'
 import TTS from '../utils/tts'
 

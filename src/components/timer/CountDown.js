@@ -1,13 +1,65 @@
-/**
- * Used with CountDownControls.js
- */
 import { useState, useEffect, useRef } from 'react'
-import { useColorModeValue, Grid, GridItem, Text } from '@chakra-ui/react'
+import {
+	useMediaQuery,
+	useColorModeValue,
+	Grid,
+	GridItem,
+	Text,
+	Flex,
+	Spacer,
+	Button,
+	Progress,
+} from '@chakra-ui/react'
+import { mobileViewMQ } from '../../utils/constants'
 
 // Default remaining time to add if no saved time is provided by the parent (10min)
 const DEF_TIME = 10000
 
-export default function CountDown({ savedTime, parentRunning, speak, reset }) {
+/**
+ * Output numbers with leading zeros
+ * @param {number} num
+ * @returns {string}
+ */
+const toTwoDigits = (num) => String(num ?? 0).padStart(2, '0')
+
+const ifExistsDisplay = (num, type) => (num ? num + type : null)
+
+const MobileCountDown = () => {
+	const [isInMobileView] = useMediaQuery(mobileViewMQ)
+	const { hoursToDisplay, minutesToDisplay, secondsToDisplay } = {
+		hoursToDisplay: 1,
+		minutesToDisplay: 26,
+		secondsToDisplay: 5,
+	}
+
+	if (!isInMobileView) return <></>
+
+	return (
+		<Flex
+			id="mobile-countdown"
+			fontFamily="consolas"
+			alignItems="center"
+			textAlign="center"
+		>
+			<Progress id="mobile-countdown-progress" value={20} size="xs" />
+			<div>
+				<Text fontWeight="bold" fontSize="2xl">
+					{toTwoDigits(hoursToDisplay)}:{toTwoDigits(minutesToDisplay)}:
+					{toTwoDigits(secondsToDisplay)}
+				</Text>
+				<Text fontSize={15}>
+					Total {ifExistsDisplay(hoursToDisplay, 'h')}{' '}
+					{ifExistsDisplay(minutesToDisplay, 'm')}{' '}
+					{ifExistsDisplay(secondsToDisplay, 's')}
+				</Text>
+			</div>
+			<Spacer />
+			<Button colorScheme="red">STOP</Button>
+		</Flex>
+	)
+}
+
+const CountDown = ({ savedTime, parentRunning, speak, reset }) => {
 	const NumBoxBG = useColorModeValue('blackAlpha.100', 'whiteAlpha.100')
 
 	const [totalTime, setTotalTime] = useState(DEF_TIME)
@@ -18,8 +70,8 @@ export default function CountDown({ savedTime, parentRunning, speak, reset }) {
 	const minutesToDisplay = minutesRemaining % 60
 	const hoursToDisplay = (minutesRemaining - minutesToDisplay) / 60
 
-	const resetTimer = () => setSecondsRemaining(totalTime)
 	// Allow parent to reset timer
+	const resetTimer = () => setSecondsRemaining(totalTime)
 	useEffect(() => resetTimer(), [reset]) // eslint-disable-line
 
 	useInterval(
@@ -67,11 +119,11 @@ export default function CountDown({ savedTime, parentRunning, speak, reset }) {
 			alignItems="center"
 			textAlign="center"
 		>
-			<NumBox children={twoDigits(hoursToDisplay)} />
+			<NumBox children={toTwoDigits(hoursToDisplay)} />
 			<TxtNum />
-			<NumBox children={twoDigits(minutesToDisplay)} />
+			<NumBox children={toTwoDigits(minutesToDisplay)} />
 			<TxtNum />
-			<NumBox children={twoDigits(secondsToDisplay)} />
+			<NumBox children={toTwoDigits(secondsToDisplay)} />
 			<Text>Hours</Text>
 			<div />
 			<Text>Minutes</Text>
@@ -106,10 +158,4 @@ function useInterval(callback, delay) {
 	}, [delay])
 }
 
-/**
- * Output numbers with leading zeros
- * @param {Number} num
- * @returns {Number}
- * @see https://stackoverflow.com/a/2998874/1673761
- */
-const twoDigits = (num) => String(num).padStart(2, '0')
+export { CountDown, MobileCountDown }

@@ -42,7 +42,7 @@ body,
 // Fixes blur effect when running animations
 #animation-container {
 	position: fixed;
-	z-index: 2;
+	z-index: 3;
 }
 
 #blur-background {
@@ -51,7 +51,7 @@ body,
 	position: fixed;
 	top: 0;
 	left: 0;
-	z-index: 1;
+	z-index: 2;
 
 	// Blur background effect
 	-webkit-backdrop-filter: blur(10px);
@@ -100,4 +100,25 @@ body,
 ::-webkit-scrollbar-track {
 	background: rgba(0, 0, 0, 0.1);
 	border-radius: inherit;
+}
+
+#mobile-countdown {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	text-align: left;
+	background: #303b52;
+	padding: 10px;
+	padding-bottom: clamp(11vh, 3.5rem, 6rem);
+
+	&-progress {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 5px;
+		width: 100%;
+		color: #106798;
+		background: #106798;
+	}
 }
