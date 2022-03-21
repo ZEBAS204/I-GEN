@@ -35,7 +35,8 @@ i18n
 
 		// Overwrite defaults and order from where language should be detected
 		detection: {
-			order: ['localStorage', 'querystring', 'navigator', 'htmlTag'],
+			lookupQuerystring: 'lang', // default is lng
+			order: ['querystring', 'localStorage', 'navigator', 'htmlTag'],
 			caches: ['localStorage'],
 		},
 
