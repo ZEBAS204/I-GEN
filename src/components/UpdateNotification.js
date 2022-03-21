@@ -21,7 +21,7 @@ export default function ServiceWorkerUpdate({ registration }) {
 	}
 
 	return (
-		<Tag as={Flex} variant="solid" p={2} borderRadius={0}>
+		<Tag as={Flex} display="flex" variant="solid" p={2} borderRadius={0}>
 			<HStack spacing={3}>
 				<Icon as={RiRefreshLine} w={5} h={5} />
 				<Heading size={size}>A new version is available!</Heading>
