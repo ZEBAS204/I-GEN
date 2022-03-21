@@ -1,8 +1,8 @@
 import {useRef} from 'react'
 import { Button } from '@chakra-ui/react'
+import { useKeyPressEvent } from 'react-use'
 
 import { useTranslation } from 'react-i18next'
-import { useHotkeys } from 'react-hotkeys-hook'
 import { useAppContext } from '../../layouts/AppContext'
 
 
@@ -12,12 +12,9 @@ export default function GenerateButton() {
 
   // Bind SPACE to generator
   const genButton = useRef(null)
-  useHotkeys('space', () => {
-    console.log('SPACE!');
+  useKeyPressEvent('space',
     genButton.current?.click()
-  }, {
-    filterPreventDefault: true,
-  })
+  )
 
   return (
   <Button
