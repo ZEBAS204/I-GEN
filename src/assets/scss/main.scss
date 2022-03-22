@@ -56,10 +56,14 @@ body,
 	// Blur background effect
 	-webkit-backdrop-filter: blur(10px);
 	backdrop-filter: blur(20px);
+}
 
-	// Fallback background if not supported
-	@supports not ((backdrop-filter: none) or (-webkit-backdrop-filter: none)) {
-		/* Isolated code for non-support of grid */
+// Fallback background if blur is not supported
+@supports not ((backdrop-filter: none) or (-webkit-backdrop-filter: none)) {
+	body.chakra-ui-light #blur-background {
+		background-color: #fff;
+	}
+	body.chakra-ui-dark #blur-background {
 		background-color: #1a202c;
 	}
 }
