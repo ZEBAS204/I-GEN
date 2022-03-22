@@ -28,7 +28,7 @@ body,
 	flex-basis: auto;
 	flex-grow: 1;
 	flex-direction: column;
-	margin: var(--chakra-space-5);
+	padding: var(--chakra-space-5);
 }
 
 // Fixes blur effect when running animations
@@ -71,7 +71,7 @@ body,
 @media screen and (max-width: 501px) {
 	#content-container {
 		border-radius: 0 !important;
-		margin: 0;
+		padding: 0;
 	}
 }
 
