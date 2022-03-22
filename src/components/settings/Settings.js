@@ -1,6 +1,7 @@
 // FIXME: bottom part of drawer is hide bellow the URL in mobile (edge)
 
 import { Suspense, lazy, useState } from 'react'
+import { useKeyPressEvent } from 'react-use'
 
 import { useAppContext } from '../../layouts/AppContext'
 import { mobileViewMQ } from '../../utils/constants'
@@ -12,7 +13,7 @@ import {
 	TabPanels,
 	TabPanel,
 	useColorModeValue,
-	Text,
+	Heading,
 	Box,
 	CloseButton,
 	// Mobile
@@ -23,6 +24,7 @@ import {
 	DrawerBody,
 	DrawerContent,
 	DrawerCloseButton,
+	Flex,
 } from '@chakra-ui/react'
 import {
 	RiLayoutLeftLine,
@@ -89,6 +91,7 @@ export default function SettingsPage() {
 	const { t } = useTranslation()
 	const { toggleSettingVisible } = useAppContext()
 	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
+	const bgColorList = useColorModeValue('blackAlpha.300', 'whiteAlpha.300')
 
 	// Use for mobile view
 	// TODO: use global constant variables for Media Query
@@ -105,6 +108,19 @@ export default function SettingsPage() {
 			blockBackBTN(false)
 		},
 	})
+
+	/**
+	 ** Allows to close settings with ESC
+	 ** When Escape is pressed, check if the target of the event is
+	 ** one of the containers of settings before toggling the visibility
+	 */
+	useKeyPressEvent(
+		'Escape',
+		(event) =>
+			(event.target?.id.includes('settings-container') ||
+				event.target === document.body) &&
+			toggleSettingVisible()
+	)
 
 	/**
 	 ** Only in mobile view, back button will be disabled if the
@@ -130,39 +146,47 @@ export default function SettingsPage() {
 
 	return (
 		<Tabs
-			id="settings-container"
 			className="scrollable"
 			orientation="vertical"
 			variant="solid-rounded"
-			flexBasis="100%" // Allow to fill empty space
+			borderRadius={isInMobileView ? '0' : 'md'}
+			height="100%"
 			isLazy
 			lazyBehavior="unmount"
 		>
 			<TabList
+				as={Flex}
 				className="scrollable"
 				flexShrink="0"
-				bg={bgColor}
+				bg={bgColorList}
 				p={3}
-				borderRadius={isInMobileView ? '0' : 'md'}
-				width={isInMobileView ? '100%' : 'auto'}
+				pr="2rem"
+				gap={2}
+				width={isInMobileView ? '100%' : null}
+				height={isInMobileView ? '100vh' : null}
 			>
-				<Text fontSize="xl" mb={2}>
-					{t('buttons.settings')}
-				</Text>
+				<Heading size="md">{t('buttons.settings')}</Heading>
 				{settings.map((page, key) => {
 					return (
 						<Tab
 							key={key}
 							justifyContent="left"
 							onClick={onOpen}
+							borderRadius="lg"
+							minWidth="13rem"
+							fontWeight="normal"
 							_selected={
-								isInMobileView ? { color: 'inherit', bg: 'none' } : null
+								!isInMobileView && {
+									fontWeight: 'semibold',
+									background: 'blue.300',
+									color: 'gray.800',
+								}
 							}
 						>
-							<Box as="span" mr={2}>
+							<Box as="span" mr={3}>
 								{page.icon}
 							</Box>
-							{t('settings.' + page.name, page.vars ? page.vars : null)}
+							<p>{t('settings.' + page.name, page.vars ? page.vars : null)}</p>
 						</Tab>
 					)
 				})}
@@ -170,7 +194,7 @@ export default function SettingsPage() {
 			{isInMobileView ? (
 				<Drawer isOpen={isOpen} onClose={onClose} size="full" placement="right">
 					<DrawerOverlay />
-					<DrawerContent py={3}>
+					<DrawerContent>
 						<DrawerCloseButton />
 						<DrawerBody>
 							<SettingsTabContents />
@@ -186,13 +210,7 @@ export default function SettingsPage() {
 						right={7}
 						size="lg"
 					/>
-				<SettingsTabContents
-					className="scrollable"
-					bg={bgColor}
-					borderRadius="md"
-					ml={5}
-					p={3}
-				/>
+					<SettingsTabContents className="scrollable" bg={bgColor} />
 				</>
 			)}
 		</Tabs>

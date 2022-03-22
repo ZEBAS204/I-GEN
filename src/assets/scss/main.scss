@@ -31,18 +31,13 @@ body,
 	margin: var(--chakra-space-5);
 }
 
-#settings-container {
-	height: 100vh;
-	width: 100vw;
-	position: fixed;
-	top: 0;
-	left: 0;
-}
-
 // Fixes blur effect when running animations
 #animation-container {
 	position: fixed;
 	z-index: 3;
+	height: 100vh;
+	width: 100vw;
+	padding: 1rem;
 }
 
 #blur-background {
@@ -84,6 +79,11 @@ body,
 	// Increase font size in mobile devices
 	html {
 		font-size: 18px;
+	}
+
+	// Remove padding from the settings buttons
+	#animation-container {
+		padding: 0;
 	}
 }
 
