@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useColorModeValue, Grid, Box, Text, Skeleton } from '@chakra-ui/react'
-import { ReactComponent as GhostIcon } from '../assets/icons/ghost.svg'
+
 import TTS from '../utils/tts'
 import { getData } from '../utils/appStorage'
+import { useAppContext } from '../layouts/AppContext'
+import { ReactComponent as GhostIcon } from '../assets/icons/ghost.svg'
 
 // Global variables: cache responses and prevent refetching when its not needed
 let wasRendered = false
@@ -30,6 +32,10 @@ export default function WordGenerator({ disableTTS }) {
 	const [firstRender, setFirstRender] = useState(wasRendered)
 	const [useTTS, setTTS] = useState(false)
 	const [words, setWords] = useState({})
+
+	const { gen } = useAppContext()
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	useEffect(() => generateNewWordSets, [gen])
 
 	/**
 	 * Create a ref so regenerateWord() can be called from outside the component
@@ -79,8 +85,9 @@ export default function WordGenerator({ disableTTS }) {
 	const ContentError = () => (
 		<Grid justifyItems="center" textAlign="center">
 			<Box as={GhostIcon} w="6rem" h="6rem" />
-			<Text>Looks like the word sets have not yet loaded!</Text>
 			<Text>
+				Looks like the word sets have not yet loaded!
+				<br />
 				This could be because of a slow internet connection or something is
 				blocking the data load of the sets files.
 			</Text>
