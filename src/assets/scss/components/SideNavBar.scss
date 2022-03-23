@@ -1,9 +1,8 @@
 // TODO: calculate position of outside rounded borders with min-height
 
-$navbar-width: 100px;
 $navbar-item-min-height: 50px;
 
-$media-navbar-mobile: 500px;
+$media-navbar-mobile: 650px;
 
 // Support reduced motion
 @media (prefers-reduced-motion: reduce) {
@@ -85,7 +84,7 @@ $media-navbar-mobile: 500px;
 		}
 
 		// Desktop Styles
-		@media (min-width: $media-navbar-mobile + 1px) {
+		@media (min-width: $media-navbar-mobile) {
 			nav,
 			.navbar {
 				flex-direction: row;
@@ -157,7 +156,7 @@ $media-navbar-mobile: 500px;
 		}
 
 		// Mobile Styles
-		@media (max-width: $media-navbar-mobile + 0.9px) {
+		@media (max-width: $media-navbar-mobile) {
 			nav,
 			.navbar {
 				background: $background-color-mobile;
