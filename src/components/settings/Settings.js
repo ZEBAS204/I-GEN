@@ -117,7 +117,7 @@ export default function SettingsPage() {
 	useKeyPressEvent(
 		'Escape',
 		(event) =>
-			(event.target?.id.includes('settings-container') ||
+			(event.target.className?.includes('tabs') ||
 				event.target === document.body) &&
 			toggleSettingVisible()
 	)
@@ -182,6 +182,7 @@ export default function SettingsPage() {
 									color: 'gray.800',
 								}
 							}
+							transition={isInMobileView ? null : 'all 300ms'}
 						>
 							<Box as="span" mr={3}>
 								{page.icon}
