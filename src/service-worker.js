@@ -70,13 +70,14 @@ registerRoute(
 // Cache translations
 registerRoute(
 	({ url }) =>
-		url.origin === self.location.origin && url.pathname.startsWith('/locales/'),
+		url.origin === self.location.origin &&
+		url.pathname.startsWith('/static/locales/'),
 
 	new StaleWhileRevalidate({
 		cacheName: 'locales',
 		plugins: [
-			// Will only save the last 5 used locales
-			new ExpirationPlugin({ maxEntries: 5 }),
+			// Will only save the last 3 used locales
+			new ExpirationPlugin({ maxEntries: 3 }),
 			new BroadcastUpdatePlugin(),
 		],
 	})
