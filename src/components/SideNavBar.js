@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 
 import { mobileViewMQ } from '../utils/constants'
 import { useAppContext } from '../layouts/AppContext'
+import GenerateButton from './common/GenerateButton.jsx'
 
 import {
 	chakra,
@@ -79,9 +80,7 @@ export default function SideNav() {
 				<span className="navbar-item-label">TIMER</span>
 			</Tag>
 			<Spacer />
-			<Button>
-				<h1>GENERATE</h1>
-			</Button>
+			<GenerateButton />
 			<Spacer />
 			<SettingsButton />
 		</>
