@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import { Button } from '@chakra-ui/react'
 import { useKeyPressEvent } from 'react-use'
 
@@ -9,9 +8,11 @@ export default function GenerateButton() {
 	const { t } = useTranslation()
 	const { generateWord } = useAppContext()
 
-	// Bind SPACE to generator
-	const genButton = useRef(null)
-	useKeyPressEvent('space', genButton.current?.click())
+	// Bind SPACE to generator (yes, the selector is a space...)
+	useKeyPressEvent(
+		' ',
+		(event) => event.target === document.body && generateWord()
+	)
 
 	return (
 		<Button
