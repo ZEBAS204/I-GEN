@@ -33,7 +33,6 @@ import {
 
 import { MdAccessibility, MdKeyboard } from 'react-icons/md'
 import { useTranslation } from 'react-i18next'
-import { useBlocker } from '../../utils/useBlocker'
 
 // Settings Pages
 const Interface = lazy(() => import('./Interface'))
@@ -91,16 +90,13 @@ export default function SettingsPage() {
 	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
 	const bgColorList = useColorModeValue('blackAlpha.300', 'whiteAlpha.300')
 
-	const [isBackBTNBlock, blockBackBTN] = useState(false)
 	const [isOpen, setOpenModal] = useState(false)
 	const { onOpen, onClose } = useDisclosure({
 		onOpen: () => {
 			setOpenModal(true)
-			blockBackBTN(true)
 		},
 		onClose: () => {
 			setOpenModal(false)
-			blockBackBTN(false)
 		},
 	})
 
@@ -116,16 +112,6 @@ export default function SettingsPage() {
 				event.target === document.body) &&
 			toggleSettingVisible()
 	)
-
-	/**
-	 ** Only in mobile view, back button will be disabled if the
-	 ** drawer is active to prevent user from changing page
-	 */
-	useBlocker(() => {
-		setOpenModal(false)
-		blockBackBTN(false)
-		return ''
-	}, isInMobileView && isBackBTNBlock)
 
 	const SettingsTabContents = (props) => (
 		<TabPanels {...props}>

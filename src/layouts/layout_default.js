@@ -1,4 +1,3 @@
-import { HashRouter, Route, Routes } from 'react-router-dom'
 import { Flex } from '@chakra-ui/react'
 
 // App Components
@@ -9,28 +8,22 @@ import { MobileCountDown } from '../components/timer/CountDown'
 
 // Pages
 import Home from '../pages/home'
-import NotFoundPage from '../pages/404'
 
 // Style
 import '../assets/scss/main.scss'
 
 export default function DefaultLayout() {
 	return (
-		<HashRouter>
-			<AppContextProvider>
-				<Settings />
-				<Flex id="content" direction="column" className="container">
-					<SideNav />
-					<MobileCountDown />
+		<AppContextProvider>
+			<Settings />
+			<Flex id="content" direction="column" className="container">
+				<SideNav />
+				<MobileCountDown />
 
-					<Flex id="content-container" className="container">
-						<Routes>
-							<Route exact path="/" element={<Home />} />
-							<Route exact path="*" element={<NotFoundPage />} />
-						</Routes>
-					</Flex>
+				<Flex id="content-container" className="container">
+					<Home />
 				</Flex>
-			</AppContextProvider>
-		</HashRouter>
+			</Flex>
+		</AppContextProvider>
 	)
 }
