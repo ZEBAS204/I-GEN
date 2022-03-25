@@ -4,7 +4,6 @@ import { Suspense, lazy, useState } from 'react'
 import { useKeyPressEvent } from 'react-use'
 
 import { useAppContext } from '../../layouts/AppContext'
-import { mobileViewMQ } from '../../utils/constants'
 
 import {
 	Tabs,
@@ -18,7 +17,6 @@ import {
 	CloseButton,
 	// Mobile
 	useDisclosure,
-	useMediaQuery,
 	Drawer,
 	DrawerOverlay,
 	DrawerBody,
@@ -89,13 +87,10 @@ const settings = [
 
 export default function SettingsPage() {
 	const { t } = useTranslation()
-	const { toggleSettingVisible } = useAppContext()
+	const { isInMobileView, toggleSettingVisible } = useAppContext()
 	const bgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
 	const bgColorList = useColorModeValue('blackAlpha.300', 'whiteAlpha.300')
 
-	// Use for mobile view
-	// TODO: use global constant variables for Media Query
-	const [isInMobileView] = useMediaQuery(mobileViewMQ)
 	const [isBackBTNBlock, blockBackBTN] = useState(false)
 	const [isOpen, setOpenModal] = useState(false)
 	const { onOpen, onClose } = useDisclosure({
