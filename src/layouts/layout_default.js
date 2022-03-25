@@ -4,7 +4,7 @@ import { Flex } from '@chakra-ui/react'
 import { AppContextProvider } from './AppContext'
 import SideNav from '../components/SideNavBar'
 import Settings from '../components/settings'
-import { MobileCountDown } from '../components/timer/CountDown'
+import MobileTimer from '../components/timer/MobileTimer'
 
 // Pages
 import Home from '../pages/home'
@@ -18,7 +18,7 @@ export default function DefaultLayout() {
 			<Settings />
 			<Flex id="content" direction="column" className="container">
 				<SideNav />
-				<MobileCountDown />
+				<MobileTimer />
 
 				<Flex id="content-container" className="container">
 					<Home />

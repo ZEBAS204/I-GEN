@@ -4,7 +4,7 @@
  *		* components/timer/CountDown.js
  *		* components/timer/CountDownControls.js
  */
-import { useRef, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Box, Button, ButtonGroup, IconButton } from '@chakra-ui/react'
 import {
 	RiPlayFill,
@@ -13,9 +13,11 @@ import {
 	RiRefreshLine,
 } from 'react-icons/ri'
 import { useTranslation } from 'react-i18next'
-import { CountDown } from '../components/timer/CountDown'
-import CountDownControls from '../components/timer/CountDownControl'
+
 import TTS from '../utils/tts'
+import { useAppContext } from '../layouts/AppContext'
+import { CountDown } from '../components/timer/CountDown'
+import { CountDownControls } from '../components/timer/CountDownControl'
 
 const SS_NAME = 'countdown_time' // Name of the key to use in session storage
 const DEF_TIME = 600 // 10 min
@@ -24,10 +26,7 @@ const MAX_TIME = 215999
 
 export default function TimerMode() {
 	const { t } = useTranslation()
-
-	// Create a reference to generator component
-	const genREF = useRef(null)
-	const generator = () => genREF.current && genREF.current.regenerateWord()
+	const { generateWord, changeTime } = useAppContext()
 
 	const [running, setRunning] = useState(false)
 	const [resetSignal, setReset] = useState(0)
@@ -39,6 +38,7 @@ export default function TimerMode() {
 		if (!checkTimeValue(newTime)) return false
 
 		setTime(newTime)
+		changeTime(newTime)
 		// Save countdown state in Session Storage
 		try {
 			window.sessionStorage.setItem(SS_NAME, JSON.stringify(newTime))
@@ -53,7 +53,7 @@ export default function TimerMode() {
 	}
 
 	// CountDown ended, received callback signal from child
-	const countDownEND = () => generator()
+	const countDownEND = () => generateWord()
 
 	const showControls = () => {
 		setRunning(false)

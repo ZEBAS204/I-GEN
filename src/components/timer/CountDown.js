@@ -1,20 +1,24 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, cloneElement, useMemo } from 'react'
+import { useInterval } from 'react-use'
+import { useTranslation } from 'react-i18next'
 import {
-	useMediaQuery,
 	useColorModeValue,
 	Grid,
 	GridItem,
 	Text,
 	Flex,
 	Spacer,
+	ButtonGroup,
 	Button,
+	IconButton,
 	Progress,
 } from '@chakra-ui/react'
-import { mobileViewMQ } from '../../utils/constants'
+import { RiTimeFill } from 'react-icons/ri'
+
 import { useAppContext } from '../../layouts/AppContext'
 
-// Default remaining time to add if no saved time is provided by the parent (10min)
-const DEF_TIME = 10000
+// Default remaining time to add if no saved time is provided (10min)
+const DEF_TIME = 600
 
 /**
  * Output numbers with leading zeros
@@ -23,17 +27,104 @@ const DEF_TIME = 10000
  */
 const toTwoDigits = (num) => String(num ?? 0).padStart(2, '0')
 
+/**
+ * If the number is not zero, returns number + type
+ * Eg. num = 3, type = 's' -> returns 3s
+ * @param {number} num
+ * @param {string|'h'|'m'|'s'} type Time tipe
+ * @returns {string|null}
+ */
 const ifExistsDisplay = (num, type) => (num ? num + type : null)
 
-const MobileCountDown = () => {
-	const [isInMobileView] = useMediaQuery(mobileViewMQ)
-	const { isTimerVisible } = useAppContext()
+const TimeManager = ({ children, reset }) => {
+	const { time, isRunning, generateWord } = useAppContext()
 
-	const { hoursToDisplay, minutesToDisplay, secondsToDisplay } = {
-		hoursToDisplay: 1,
-		minutesToDisplay: 26,
-		secondsToDisplay: 5,
-	}
+	const [totalTime, setTotalTime] = useState(time || DEF_TIME)
+	const [secondsRemaining, setSecondsRemaining] = useState(time || DEF_TIME)
+
+	const secondsToDisplay = secondsRemaining % 60
+	const minutesRemaining = (secondsRemaining - secondsToDisplay) / 60
+	const minutesToDisplay = minutesRemaining % 60
+	const hoursToDisplay = (minutesRemaining - minutesToDisplay) / 60
+
+	// Update total time with context
+	useEffect(() => {
+		setTotalTime(time)
+		setSecondsRemaining(time)
+	}, [time]) // eslint-disable-line react-hooks/exhaustive-deps
+
+	const [parentRunning, setParentRunning] = useState(isRunning)
+	useEffect(() => setParentRunning(() => isRunning), [isRunning]) // eslint-disable-line react-hooks/exhaustive-deps
+
+	// Allow parent to reset timer
+	const resetTimer = () => setSecondsRemaining(totalTime)
+	useEffect(() => resetTimer(), [reset]) // eslint-disable-line react-hooks/exhaustive-deps
+
+	useInterval(
+		() => {
+			if (parentRunning && secondsRemaining > 0)
+				setSecondsRemaining(secondsRemaining - 1)
+			else {
+				generateWord()
+				resetTimer()
+			}
+		},
+		// passing null stops the interval
+		parentRunning ? 1000 : null
+	)
+
+	//* Testing component
+	return (
+		<MobileCountDown
+			parentRunning={parentRunning}
+			totalTime={totalTime}
+			remainingTime={secondsRemaining}
+			hoursToDisplay={hoursToDisplay}
+			minutesToDisplay={minutesToDisplay}
+			secondsToDisplay={secondsToDisplay}
+		/>
+	)
+
+	/*
+	if (!children) return <></>
+
+	return cloneElement(children, {
+		parentRunning,
+		totalTime,
+		remainingTime: secondsRemaining,
+		hoursToDisplay,
+		minutesToDisplay,
+		secondsToDisplay,
+	})
+	*/
+}
+
+const MobileCountDown = ({
+	parentRunning,
+	totalTime,
+	remainingTime,
+	hoursToDisplay,
+	minutesToDisplay,
+	secondsToDisplay,
+}) => {
+	const { t } = useTranslation()
+	const {
+		isInMobileView,
+		toggleRunning,
+		toggleTimePickerVisible,
+		isTimerVisible,
+	} = useAppContext()
+
+	//* Allows to return memoized values of the total time
+	//* without having to deal with extra arguments arguments
+	const _ = useMemo(
+		() => ({
+			hours: hoursToDisplay,
+			min: minutesToDisplay,
+			sec: secondsToDisplay,
+		}),
+		[totalTime] // eslint-disable-line react-hooks/exhaustive-deps
+	)
 
 	if (!isInMobileView || !isTimerVisible) return <></>
 
@@ -44,20 +135,43 @@ const MobileCountDown = () => {
 			alignItems="center"
 			textAlign="center"
 		>
-			<Progress id="mobile-countdown-progress" value={20} size="xs" />
+			<Progress
+				id="mobile-countdown-progress"
+				value={totalTime - remainingTime}
+				max={totalTime}
+				size="xs"
+			/>
 			<div>
 				<Text fontWeight="bold" fontSize="2xl" lineHeight="20px">
 					{toTwoDigits(hoursToDisplay)}:{toTwoDigits(minutesToDisplay)}:
 					{toTwoDigits(secondsToDisplay)}
 				</Text>
 				<Text fontSize={15}>
-					Total {ifExistsDisplay(hoursToDisplay, 'h')}{' '}
-					{ifExistsDisplay(minutesToDisplay, 'm')}{' '}
-					{ifExistsDisplay(secondsToDisplay, 's')}
+					{_.hours || _.min || _.sec ? (
+						<>
+							Total {ifExistsDisplay(_.hours, 'h')}{' '}
+							{ifExistsDisplay(_.min, 'm')} {ifExistsDisplay(_.sec, 's')}
+						</>
+					) : (
+						<></>
+					)}
 				</Text>
 			</div>
 			<Spacer />
-			<Button colorScheme="red">STOP</Button>
+			<ButtonGroup colorScheme={parentRunning ? 'red' : null} isAttached>
+				<IconButton
+					icon={<RiTimeFill />}
+					onClick={toggleTimePickerVisible}
+					title="Change Time"
+					aria-label="Change time"
+					rounded="full"
+					fontSize="20px"
+					disabled={parentRunning}
+				/>
+				<Button onClick={toggleRunning}>
+					{parentRunning ? t('buttons.stop_btn') : t('buttons.play_btn')}
+				</Button>
+			</ButtonGroup>
 		</Flex>
 	)
 }
@@ -136,29 +250,4 @@ const CountDown = ({ savedTime, parentRunning, speak, reset }) => {
 	)
 }
 
-/**
- * Same as setInterval but Hook focused
- * @param {*} callback
- * @param {Number} delay
- * @see https://overreacted.io/making-setinterval-declarative-with-react-hooks/
- */
-function useInterval(callback, delay) {
-	const savedCallback = useRef()
-
-	// Remember the latest callback.
-	useEffect(() => {
-		savedCallback.current = callback
-	}, [callback])
-
-	// Set up the interval.
-	useEffect(() => {
-		const tick = () => savedCallback.current()
-
-		if (delay !== null) {
-			const id = setInterval(tick, delay)
-			return () => clearInterval(id)
-		}
-	}, [delay])
-}
-
-export { CountDown, MobileCountDown }
+export { CountDown, TimeManager as MobileCountDown }

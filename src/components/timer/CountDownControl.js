@@ -2,6 +2,7 @@
  * Used with CountDown.js
  */
 import { useState, useEffect, useRef } from 'react'
+import Sheet from 'react-modal-sheet'
 import {
 	useColorModeValue,
 	Grid,
@@ -14,7 +15,24 @@ import {
 	NumberDecrementStepper,
 } from '@chakra-ui/react'
 
-export default function CountDownControls({ parentCallback, savedTime }) {
+import { useAppContext } from '../../layouts/AppContext'
+
+const CountDownControlsMobile = () => {
+	const { isTimePickerVisible, toggleTimePickerVisible } = useAppContext()
+
+	return (
+		<Sheet isOpen={isTimePickerVisible} onClose={toggleTimePickerVisible}>
+			<Sheet.Container>
+				<Sheet.Header />
+				<Sheet.Content>{/* Your sheet content goes here */}</Sheet.Content>
+			</Sheet.Container>
+
+			<Sheet.Backdrop />
+		</Sheet>
+	)
+}
+
+const CountDownControls = ({ parentCallback, savedTime }) => {
 	const NumBoxBG = useColorModeValue('blackAlpha.100', 'whiteAlpha.100')
 	const [seconds, setSeconds] = useState(() =>
 		savedTime ? Math.floor((savedTime % 3600) % 60) : 0
@@ -103,3 +121,5 @@ export default function CountDownControls({ parentCallback, savedTime }) {
 		</Grid>
 	)
 }
+
+export { CountDownControls, CountDownControlsMobile }
