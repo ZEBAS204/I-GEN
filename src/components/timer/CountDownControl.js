@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react'
 
 import { useAppContext } from '../../layouts/AppContext'
+import '../../assets/scss/components/CountDownControl.scss'
 
 const CountDownControlsMobile = () => {
 	const { isTimePickerVisible, toggleTimePickerVisible } = useAppContext()
