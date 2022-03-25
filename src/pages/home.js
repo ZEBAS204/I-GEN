@@ -28,7 +28,7 @@ export default function Home() {
 				<Suspense fallback={<p>Loading word sets...</p>}>
 					<WordGenerator disableTTS={ttsDisabled} />
 				</Suspense>
-				{!isInMobileView && isTimerVisible && (
+				{!isInMobileView && (
 					<Center flexDirection="column">
 						<TimerMode />
 					</Center>
