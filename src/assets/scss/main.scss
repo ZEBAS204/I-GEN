@@ -124,5 +124,12 @@
 		width: 100%;
 		color: #106798;
 		background: #106798;
+
+		// Chakra automatically applies a transition to the
+		// progress width, the only wrong is that the transition
+		// is almost nonexistent
+		& > div {
+			transition: width 1s linear;
+		}
 	}
 }
