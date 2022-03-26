@@ -71,11 +71,15 @@ registerRoute(
 registerRoute(
 	({ url }) =>
 		url.origin === self.location.origin &&
-		url.pathname.startsWith('/wordsets/'),
+		url.pathname.startsWith('/static/wordsets/'),
 
 	new StaleWhileRevalidate({
 		cacheName: 'wordsets',
-		plugins: [new BroadcastUpdatePlugin()],
+		plugins: [
+			// Will only save the last used wordsets
+			new ExpirationPlugin({ maxEntries: 2 }),
+			new BroadcastUpdatePlugin(),
+		],
 	})
 )
 
