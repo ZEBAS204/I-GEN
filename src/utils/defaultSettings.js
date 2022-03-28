@@ -31,6 +31,28 @@ export default async function defaultSettings() {
 				if (storedValue !== null) {
 					if (typeof storedValue === def.type) {
 						Logger.log(['DS', 'info'], `Expected value of key "${def.key}"`)
+
+						// Check min and max values for numbers
+						if (def.type === 'number') {
+							if ('min' in def && storedValue <= def.min) {
+								// Key is stored but the expected type exceedes the min value
+								// Set key to default value
+								Logger.log(
+									['DS', 'info'],
+									`Value of key "${def.key}" exceedes minimum value is unexpected! Restoring key default value.`
+								)
+								setData(def.key, def.value)
+							}
+							if ('max' in def && storedValue >= def.max) {
+								// Key is stored but the expected type exceedes the max value
+								// Set key to default value
+								Logger.log(
+									['DS', 'info'],
+									`Value of key "${def.key}" exceedes maximum value is unexpected! Restoring key default value.`
+								)
+								setData(def.key, def.value)
+							}
+						}
 					} else {
 						// Key is stored but the expected type is wrong
 						// Set key to default value
