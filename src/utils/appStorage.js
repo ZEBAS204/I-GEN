@@ -1,4 +1,5 @@
 import localforage from 'localforage'
+import { useState, useEffect } from 'react'
 
 const dev = false // process.env.NODE_ENV === 'development'
 
@@ -56,4 +57,61 @@ function clearData() {
 	})
 }
 
-export { setData, getData, remData, clearData, localforage }
+/**
+ * React custom hook to save/restore value from localStorage using LocalForage library
+ * @example
+ * ```js
+ * function App() {
+ *  const [value, set, remove] = useLocalForage('my-key', {});
+ * }
+ * ```
+ * @param {string} key - Unique storage key
+ * @param {*} initialValue=null - Initial value
+ * @returns {[any, (function(any): void), (function(): void)]}
+ */
+const useLocalForage = (key, initialValue = null) => {
+	/**
+	 * @author Junaid Atari <mj.atari@gmail.com>
+	 * @link https://github.com/blacksmoke26
+	 * @see https://github.com/streamich/react-use/issues/1522
+	 * @since 2020-08-05
+	 */
+	const [storedValue, setStoredValue] = useState(initialValue)
+
+	useEffect(() => {
+		;(async function () {
+			try {
+				const value = await localforage.getItem(key)
+				setStoredValue(value)
+			} catch (err) {
+				return initialValue
+			}
+		})()
+	}, [initialValue, storedValue, key])
+
+	/** Set value */
+	const set = (value) => {
+		;(async function () {
+			try {
+				await localforage.setItem(key, value)
+				setStoredValue(value)
+			} catch (err) {
+				return initialValue
+			}
+		})()
+	}
+
+	/** Removes value from local storage */
+	const remove = () => {
+		;(async function () {
+			try {
+				await localforage.removeItem(key)
+				setStoredValue(null)
+			} catch (e) {}
+		})()
+	}
+
+	return [storedValue, set, remove]
+}
+
+export { setData, getData, remData, clearData, localforage, useLocalForage }
