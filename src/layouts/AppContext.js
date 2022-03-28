@@ -6,12 +6,11 @@ import {
 	useCallback,
 } from 'react'
 import { useMediaQuery } from '@chakra-ui/react'
-import { useEffectOnce } from 'react-use'
 
 import { mobileViewMQ } from '../utils/constants'
+import { useLocalForage } from '../utils/appStorage'
 
 // Constants
-const SS_NAME = 'countdown_time' // Name of the key to use in session storage
 const DEF_TIME = 600 // 10 min
 const MIN_TIME = 0
 const MAX_TIME = 359999 // 99h 59m 59s
@@ -24,8 +23,11 @@ const AppContextProvider = ({ children }) => {
 	const [isInMobileView] = useMediaQuery(mobileViewMQ)
 	const [isSettingVisible, setSettingVisible] = useState(false)
 	const [isTimePickerVisible, setTimePickerVisible] = useState(false)
-	const [isTimerVisible, setTimerVisible] = useState(false)
-	const [time, setTime] = useState(DEF_TIME)
+	const [isTimerVisible, setTimerVisible] = useLocalForage(
+		'timer_visible',
+		false
+	)
+	const [time, setTime] = useLocalForage('countdown_time', DEF_TIME)
 	const [isRunning, setRunning] = useState(false)
 	const [reset, setReset] = useState(false)
 	const [gen, sendGenerate] = useState(false)
@@ -55,10 +57,10 @@ const AppContextProvider = ({ children }) => {
 			isTimerVisible,
 			toggleTimerVisible: () => {
 				stopTimer()
-				setTimerVisible((e) => !e)
+				setTimerVisible(!isTimerVisible)
 			},
 			time,
-			changeTime: (e) => setTime(e),
+			changeTime: (e) => checkTimeValue(e) && setTime(e),
 			isRunning,
 			toggleRunning: () => setRunning((e) => !e),
 			reset,
@@ -83,20 +85,6 @@ const AppContextProvider = ({ children }) => {
 			stopTimer,
 		]
 	)
-
-	useEffectOnce(() => {
-		// On mount, get any saved state inside Session Storage
-		try {
-			if (window.sessionStorage.getItem(SS_NAME)) {
-				// Save storage object
-				const saved = JSON.parse(window.sessionStorage.getItem(SS_NAME))
-
-				if (checkTimeValue(saved)) {
-					setTime(parseInt(saved))
-				}
-			}
-		} catch (access_denied) {}
-	})
 
 	/*
 	console.log('%cCONTEXT UPDATED', 'color: #00ff00')
