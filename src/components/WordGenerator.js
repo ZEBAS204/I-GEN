@@ -100,7 +100,16 @@ export default function WordGenerator({ disableTTS }) {
 	if ((!nouns || !adjs) && firstRender) return <ContentError />
 
 	return (
-		<Grid textAlign="center" alignSelf="center" gap={3}>
+		<Grid
+			textAlign="center"
+			alignSelf="center"
+			gap={3}
+			style={{
+				width: 'clamp(1%, 20rem, 80%)',
+				fontSize: 'x-large',
+				fontWeight: 600,
+			}}
+		>
 			<WordBox children={words.adj} />
 			<Text fontSize="20px">+</Text>
 			<WordBox children={words.noun} />
