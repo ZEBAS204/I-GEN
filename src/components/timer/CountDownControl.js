@@ -1,6 +1,3 @@
-/**
- * Used with CountDown.js
- */
 import { useState, useEffect, useRef } from 'react'
 import Sheet from 'react-modal-sheet'
 import {
@@ -16,6 +13,8 @@ import {
 } from '@chakra-ui/react'
 
 import { useAppContext } from '../../layouts/AppContext'
+import TimePicker from './TimePicker'
+
 import '../../assets/scss/components/CountDownControl.scss'
 
 const CountDownControlsMobile = () => {
@@ -25,10 +24,14 @@ const CountDownControlsMobile = () => {
 		<Sheet isOpen={isTimePickerVisible} onClose={toggleTimePickerVisible}>
 			<Sheet.Container>
 				<Sheet.Header />
-				<Sheet.Content>{/* Your sheet content goes here */}</Sheet.Content>
+				<Sheet.Content>
+					<hr />
+					<br />
+					<TimePicker />
+				</Sheet.Content>
 			</Sheet.Container>
 
-			<Sheet.Backdrop />
+			<Sheet.Backdrop onClick={toggleTimePickerVisible} />
 		</Sheet>
 	)
 }
