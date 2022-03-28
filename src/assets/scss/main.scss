@@ -68,9 +68,14 @@
 }
 
 // Main container
-@media screen and (max-width: 501px) {
+@media screen and (max-width: 650px) {
 	#content-container {
 		border-radius: 0 !important;
+		padding: 0;
+	}
+
+	// Remove padding from the settings buttons
+	#animation-container {
 		padding: 0;
 	}
 }
@@ -79,11 +84,6 @@
 	// Increase font size in mobile devices
 	html {
 		font-size: 18px;
-	}
-
-	// Remove padding from the settings buttons
-	#animation-container {
-		padding: 0;
 	}
 }
 
