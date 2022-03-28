@@ -5,9 +5,16 @@
     "value": false
   },
   {
-    "key": "mobileTimerVisible",
+    "key": "timer_visible",
     "type": "boolean",
     "value": false
+  },
+  {
+    "key": "countdown_time",
+    "type": "number",
+    "value": 600,
+    "min": 0,
+    "max": 359999
   },
   {
     "key": "notify_enabled",
