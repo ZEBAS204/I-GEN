@@ -1,44 +1,7 @@
 import { getData, setData } from './appStorage'
 import Logger from './logger'
 
-// * https://github.com/cheton/is-electron
-function checkElectronInstance() {
-	// Renderer process
-	if (
-		typeof window !== 'undefined' &&
-		typeof window.process === 'object' &&
-		window.process.type === 'renderer'
-	) {
-		return true
-	}
-
-	// Main process
-	if (
-		typeof process !== 'undefined' &&
-		typeof process.versions === 'object' &&
-		!!process.versions.electron
-	) {
-		return true
-	}
-
-	// Detect the user agent when the `nodeIntegration` option is set to true
-	if (
-		typeof navigator === 'object' &&
-		typeof navigator.userAgent === 'string' &&
-		navigator.userAgent.indexOf('Electron') >= 0
-	) {
-		return true
-	}
-
-	return false
-}
-
 export default async function defaultSettings() {
-	const isElectron = () => {
-		const check = checkElectronInstance()
-		setData('electron', check)
-	}
-
 	const setDefaults = () => {
 		// Import default settings from assets
 		const defaults = require('../assets/defaultUserSettings.json')
@@ -87,7 +50,6 @@ export default async function defaultSettings() {
 		})
 	}
 
-	// Run in start
-	isElectron()
+	// Run at start
 	setDefaults()
 }
