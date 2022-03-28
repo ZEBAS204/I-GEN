@@ -14,7 +14,7 @@ import { mobileViewMQ } from '../utils/constants'
 const SS_NAME = 'countdown_time' // Name of the key to use in session storage
 const DEF_TIME = 600 // 10 min
 const MIN_TIME = 0
-const MAX_TIME = 215999 // 59h 59m 59s
+const MAX_TIME = 359999 // 99h 59m 59s
 
 // create context
 const AppContext = createContext()
@@ -50,7 +50,8 @@ const AppContextProvider = ({ children }) => {
 				setTimePickerVisible((e) => !e)
 			},
 			gen,
-			generateWord: () => sendGenerate((e) => !e),
+			generateWord: () =>
+				!isSettingVisible && !isTimePickerVisible && sendGenerate((e) => !e),
 			isTimerVisible,
 			toggleTimerVisible: () => {
 				stopTimer()
