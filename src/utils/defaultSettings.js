@@ -19,7 +19,14 @@ export default async function defaultSettings() {
 			// Compare the user value with the default ones
 			if (!isEmpty) {
 				// Get stored value from user
-				const storedValue = await getData(def.key)
+				let storedValue
+
+				// Prevent malformed values from breaking when parsing
+				try {
+					storedValue = await getData(def.key)
+				} catch (jsonError) {
+					storedValue = null
+				}
 
 				if (storedValue !== null) {
 					if (typeof storedValue === def.type) {
