@@ -34,7 +34,7 @@ export default async function defaultSettings() {
 
 						// Check min and max values for numbers
 						if (def.type === 'number') {
-							if ('min' in def && storedValue <= def.min) {
+							if ('min' in def && storedValue < def.min) {
 								// Key is stored but the expected type exceedes the min value
 								// Set key to default value
 								Logger.log(
@@ -43,7 +43,7 @@ export default async function defaultSettings() {
 								)
 								setData(def.key, def.value)
 							}
-							if ('max' in def && storedValue >= def.max) {
+							if ('max' in def && storedValue > def.max) {
 								// Key is stored but the expected type exceedes the max value
 								// Set key to default value
 								Logger.log(
