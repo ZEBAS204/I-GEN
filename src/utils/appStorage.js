@@ -1,4 +1,5 @@
 import localforage from 'localforage'
+import Logger from './logger'
 import { useState, useEffect } from 'react'
 
 const dev = false // process.env.NODE_ENV === 'development'
@@ -79,35 +80,49 @@ const useLocalForage = (key, initialValue = null) => {
 	const [storedValue, setStoredValue] = useState(initialValue)
 
 	useEffect(() => {
-		;(async function () {
-			try {
-				const value = await localforage.getItem(key)
-				setStoredValue(value)
-			} catch (err) {
-				return initialValue
-			}
+		;(async () => {
+			// When getting keys, we need to wait until
+			// localforage is ready before doing anything
+			localforage.ready().then(() => {
+				getData(key)
+					.then((value) => {
+						setStoredValue(value)
+						Logger.info(`Got value from "${key}"`, value)
+					})
+					.catch((err) => {
+						Logger.error(`Error getting stored value from "${key}"`, err)
+						return initialValue
+					})
+			})
 		})()
 	}, [initialValue, storedValue, key])
 
 	/** Set value */
 	const set = (value) => {
 		;(async function () {
-			try {
-				await localforage.setItem(key, value)
-				setStoredValue(value)
-			} catch (err) {
-				return initialValue
-			}
+			setData(key, value)
+				.then(() => {
+					setStoredValue(value)
+					Logger.info(`Set value to "${key}"`, value)
+				})
+				.catch((err) => {
+					Logger.error(`Error setting the key "${key}"`, err)
+					return initialValue
+				})
 		})()
 	}
 
 	/** Removes value from local storage */
 	const remove = () => {
 		;(async function () {
-			try {
-				await localforage.removeItem(key)
-				setStoredValue(null)
-			} catch (e) {}
+			remData(key)
+				.then(() => {
+					setStoredValue(null)
+					Logger.info(`Removed value from "${key}"`)
+				})
+				.catch((err) =>
+					Logger.error(`Error deleting the stored value from "${key}"`, err)
+				)
 		})()
 	}
 
