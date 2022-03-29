@@ -3,12 +3,12 @@ name: Build and Test dependencies
 on:
   push:
     branches:
-    - 'update_dependencies'
-    - 'update_dependencies/**'
+      - 'update_dependencies'
+      - 'update_dependencies/**'
   pull_request:
     branches:
-    - 'master'
-    - 'update_dependencies/**'
+      - 'master'
+      - 'update_dependencies/**'
   workflow_dispatch:
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [12, 14, 16]
+        node: [14, 16, 17]
 
     steps:
       - name: Checkout
