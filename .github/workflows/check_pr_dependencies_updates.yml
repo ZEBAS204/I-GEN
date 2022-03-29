@@ -18,6 +18,7 @@ jobs:
       CI: false
 
     strategy:
+      fail-fast: false
       matrix:
         node: [14, 16, 17]
 
