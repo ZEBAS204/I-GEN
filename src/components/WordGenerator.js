@@ -85,7 +85,7 @@ export default function WordGenerator({ disableTTS }) {
 	}, [disableTTS, generateNewWordSets])
 
 	const WordBox = ({ children }) => (
-		<Box bg={boxBG} boxShadow="md" p={[3, 6]} rounded="md">
+		<Box bg={boxBG} boxShadow="md" py={6} px={[4, 6]} rounded="md">
 			{!firstRender ? <Skeleton h="24px" /> : <Text>{children}</Text>}
 		</Box>
 	)
