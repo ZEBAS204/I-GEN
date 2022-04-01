@@ -14,11 +14,6 @@
 	flex-direction: column;
 }
 
-.container {
-	overflow: hidden;
-	overscroll-behavior: contain;
-}
-
 #content {
 	height: 100%;
 }
@@ -67,7 +62,6 @@
 	overflow: hidden auto;
 }
 
-// Main container
 @media screen and (max-width: 650px) {
 	// Increase font size in mobile devices
 	html {
@@ -77,6 +71,9 @@
 	#content-container {
 		border-radius: 0 !important;
 		padding: 0;
+
+		// Center word sets
+		margin-top: clamp(-10vh, -3.5rem, -4rem);
 	}
 
 	// Remove padding from the settings buttons

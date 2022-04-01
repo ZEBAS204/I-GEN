@@ -16,11 +16,11 @@ export default function DefaultLayout() {
 	return (
 		<AppContextProvider>
 			<Settings />
-			<Flex id="content" direction="column" className="container">
+			<Flex id="content" direction="column">
 				<SideNav />
 				<MobileTimer />
 
-				<Flex id="content-container" className="container">
+				<Flex id="content-container">
 					<Home />
 				</Flex>
 			</Flex>
