@@ -1,5 +1,13 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useColorModeValue, Grid, Box, Text, Skeleton } from '@chakra-ui/react'
+import {
+	useColorModeValue,
+	Grid,
+	Box,
+	Text,
+	Skeleton,
+	Icon,
+} from '@chakra-ui/react'
+import { RiAddLine } from 'react-icons/ri'
 
 import TTS from '../utils/tts'
 import { getData } from '../utils/appStorage'
@@ -109,7 +117,7 @@ export default function WordGenerator({ disableTTS }) {
 			fontWeight={600}
 		>
 			<WordBox children={words.adj} />
-			<Text fontSize="20px">+</Text>
+			<Icon as={RiAddLine} w={10} h={10} m="0 auto" />
 			<WordBox children={words.noun} />
 		</Grid>
 	)
