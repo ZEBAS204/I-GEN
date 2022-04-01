@@ -104,11 +104,9 @@ export default function WordGenerator({ disableTTS }) {
 			textAlign="center"
 			alignSelf="center"
 			gap={3}
-			style={{
-				width: 'clamp(1%, 20rem, 80%)',
-				fontSize: 'x-large',
-				fontWeight: 600,
-			}}
+			width="clamp(1%, 20rem, 80%)"
+			fontSize={['x-large', null, 'xx-large']}
+			fontWeight={600}
 		>
 			<WordBox children={words.adj} />
 			<Text fontSize="20px">+</Text>
