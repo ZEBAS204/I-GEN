@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { getData, setData, clearData } from '../../utils/appStorage'
+import { useState } from 'react'
+import { clearData } from '../../utils/appStorage'
 import { useTranslation } from 'react-i18next'
 import Logger from '../../utils/logger'
 import {
@@ -22,15 +22,12 @@ import {
 
 const modalsIds = {
 	resetConfig: 1,
-	sw: 2,
 }
 
 export default function Advanced() {
 	const { t } = useTranslation()
 
 	const [useDebug, setDebug] = useState(Logger.getLevel() === 0 ? true : false)
-	const [useSW, setSW] = useState(false)
-
 	const [selectedModal, setOpenModal] = useState(0)
 	const { isOpen, onOpen, onClose } = useDisclosure({
 		onClose: () => setOpenModal(0),
@@ -53,35 +50,6 @@ export default function Advanced() {
 
 			return !prevVal
 		})
-
-	const toggleSW = async () => {
-		// Save setting in a const so doesn't get overwrite when toggling
-		const enabled = !useSW
-		setSW(enabled)
-		setData('opt-in-serviceworker', enabled)
-
-		// If user op-out remove all registered service workers and remove saved cache
-		if (!navigator.serviceWorker || !window.caches) return
-		if (!enabled) {
-			await Promise.all([
-				// Remove all cache
-				caches.keys().then((c) => c.forEach((c) => caches.delete(c))),
-
-				// Unregister all service workers
-				navigator.serviceWorker
-					.getRegistrations()
-					.then((workers) => workers.forEach((sw) => sw.unregister())),
-			]).catch((err) => console.error(err))
-		}
-	}
-
-	useEffect(() => {
-		;(async () => {
-			await getData('opt-in-serviceworker').then((SW) =>
-				setSW(SW ? true : false)
-			)
-		})()
-	}, [])
 
 	const Prompt = ({ header, body, okOnClick = () => {} }) => (
 		<AlertDialog
@@ -117,20 +85,6 @@ export default function Advanced() {
 
 	return (
 		<>
-			<Heading size="md">{t('settings.service_worker')}</Heading>
-			<br />
-			<Stack direction="row">
-				<Heading size="sm">Use service worker</Heading>
-				<Spacer />
-				<Switch
-					onChange={() => (useSW ? openModal(modalsIds.sw) : toggleSW())}
-					isChecked={useSW}
-				/>
-			</Stack>
-			<Text>Allows faster load and offline usage of the page.</Text>
-			<br />
-			<Divider />
-			<br />
 			<Heading size="md">{t('settings.debugging')}</Heading>
 			<br />
 			<Stack direction="row">
@@ -165,20 +119,6 @@ export default function Advanced() {
 						</>
 					}
 					okOnClick={restoreSettings}
-				/>
-			) : selectedModal === modalsIds.sw ? (
-				<Prompt
-					header="Disable Service Worker Usage"
-					body={
-						<>
-							<Text>Are you sure you want to disable the service worker?</Text>
-							<Text color="red.400">
-								* Disabling it will make the page load slower and will not be
-								able to work without internet connection
-							</Text>
-						</>
-					}
-					okOnClick={toggleSW}
 				/>
 			) : (
 				<></>
