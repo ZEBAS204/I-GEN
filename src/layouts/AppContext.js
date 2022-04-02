@@ -27,6 +27,7 @@ const AppContextProvider = ({ children }) => {
 		'timer_visible',
 		false
 	)
+	const [speak, setSpeak] = useLocalForage('tts_enabled', false)
 	const [time, setTime] = useLocalForage('countdown_time', DEF_TIME)
 	const [isRunning, setRunning] = useState(false)
 	const [reset, setReset] = useState(false)
@@ -61,6 +62,8 @@ const AppContextProvider = ({ children }) => {
 			},
 			time,
 			changeTime: (e) => checkTimeValue(e) && setTime(e),
+			speak,
+			toggleSpeak: (e) => (e ? setSpeak(e) : setSpeak(!speak)),
 			isRunning,
 			toggleRunning: () => setRunning((e) => !e),
 			reset,
@@ -76,9 +79,11 @@ const AppContextProvider = ({ children }) => {
 			sendGenerate,
 			isTimerVisible,
 			setTimerVisible,
+			speak,
+			setSpeak,
 			time,
-			isRunning,
 			setTime,
+			isRunning,
 			setRunning,
 			reset,
 			setReset,
@@ -88,17 +93,16 @@ const AppContextProvider = ({ children }) => {
 
 	/*
 	console.log('%cCONTEXT UPDATED', 'color: #00ff00')
-	;(() => {
-		console.table({
-			IS_IN_MOBILE_VIEW: [isInMobileView],
-			SETTINGS_VISIBLE: [isSettingVisible],
-			TIMER_VISIBLE: [isTimerVisible],
-			TIMER_TIMER: [time],
-			TIMER_RUNNING: [isRunning],
-			TIMER_RESET: [reset],
-			WORD_GENERATOR: [gen],
-		})
-	})()
+	console.table({
+		IS_IN_MOBILE_VIEW: [isInMobileView],
+		SETTINGS_VISIBLE: [isSettingVisible],
+		TIMER_VISIBLE: [isTimerVisible],
+		TIMER_TIMER: [time],
+		TIMER_RUNNING: [isRunning],
+		TIMER_RESET: [reset],
+		WORD_GENERATOR: [gen],
+		TTS_ENABLED: [speak],
+	})
 	*/
 
 	return (
