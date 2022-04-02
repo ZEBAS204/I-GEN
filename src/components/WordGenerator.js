@@ -10,8 +10,8 @@ import {
 import { RiAddLine } from 'react-icons/ri'
 
 import TTS from '../utils/tts'
-import { getData } from '../utils/appStorage'
 import { useAppContext } from '../layouts/AppContext'
+import { useLocalForage } from '../utils/appStorage'
 import { ReactComponent as GhostIcon } from '../assets/icons/ghost.svg'
 
 // Global variables: cache responses and prevent refetching when its not needed
@@ -35,40 +35,42 @@ async function fetchWordSets() {
 		.catch((err) => console.error(err))
 }
 
-export default function WordGenerator({ disableTTS }) {
+export default function WordGenerator() {
+	const { gen, speak } = useAppContext()
 	const boxBG = useColorModeValue('blackAlpha.100', 'whiteAlpha.100')
+
 	const [firstRender, setFirstRender] = useState(wasRendered)
-	const [useTTS, setTTS] = useState(false)
+	const [useTTS] = useLocalForage('tts_only_timermode', false)
 	const [words, setWords] = useState({})
 
-	const { gen } = useAppContext()
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	useEffect(() => generateNewWordSets, [gen])
+	useEffect(() => generateNewWordSets(), [gen])
 
 	/**
 	 * Create a ref so regenerateWord() can be called from outside the component
 	 * See https://stackoverflow.com/a/57006730
 	 */
+	const getNewPairOfWords = () => ({
+		noun: shuffleArray(nouns),
+		adj: shuffleArray(adjs),
+	})
+
 	const generateNewWordSets = useCallback(
 		(firstRun = false) => {
 			if (!nouns || !adjs) return
 
-			const noun = shuffleArray(nouns)
-			const adj = shuffleArray(adjs)
+			const { noun, adj } = getNewPairOfWords()
 			setWords({ noun, adj })
 
 			// If user enabled TTS, speak
 			if (useTTS && !firstRun) new TTS(`${adj} ${noun}`).say()
 		},
-		[useTTS]
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[speak]
 	)
 
 	useEffect(() => {
 		;(async () => {
-			if (disableTTS) setTTS(false)
-			else
-				await getData('tts_enabled').then((tts) => setTTS(tts ? true : false))
-
 			fetchWordSets()
 				.then(() => generateNewWordSets(true)) // true to prevent TTS from speaking
 				.then(() => {
@@ -82,7 +84,7 @@ export default function WordGenerator({ disableTTS }) {
 			// Just stop TTS if speaking, already has check inside the class function
 			TTS.stop()
 		}
-	}, [disableTTS, generateNewWordSets])
+	}, [generateNewWordSets])
 
 	const WordBox = ({ children }) => (
 		<Box bg={boxBG} boxShadow="md" py={6} px={[4, 6]} rounded="md">
