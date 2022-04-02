@@ -2,9 +2,10 @@ import { lazy, Suspense } from 'react'
 import { Flex, Center } from '@chakra-ui/react'
 
 import { useAppContext } from '../layouts/AppContext'
-import TimerMode from './timer'
 import GenerateButton from '../components/common/GenerateButton'
+
 const WordGenerator = lazy(() => import('../components/WordGenerator'))
+const TimerMode = lazy(() => import('./timer'))
 
 export default function Home() {
 	const { isInMobileView } = useAppContext()
@@ -17,7 +18,9 @@ export default function Home() {
 				</Suspense>
 				{!isInMobileView && (
 					<Center flexDirection="column">
-						<TimerMode />
+						<Suspense fallback={<p>Loading countdown...</p>}>
+							<TimerMode />
+						</Suspense>
 					</Center>
 				)}
 			</Flex>
