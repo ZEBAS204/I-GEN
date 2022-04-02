@@ -112,7 +112,7 @@ export default function WordGenerator({ disableTTS }) {
 			textAlign="center"
 			alignSelf="center"
 			gap={3}
-			width="clamp(1%, 20rem, 80%)"
+			width="clamp(1%, 25rem, 80%)"
 			fontSize={['x-large', null, 'xx-large']}
 			fontWeight={600}
 		>
