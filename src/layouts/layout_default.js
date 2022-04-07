@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react'
 
 // App Components
 import { AppContextProvider } from './AppContext'
-import SideNav from '../components/SideNavBar'
+import SideNav from '../components/NavBar'
 import Settings from '../components/settings'
 import MobileTimer from '../components/timer/MobileTimer'
 

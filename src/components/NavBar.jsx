@@ -20,7 +20,7 @@ import { useAppContext } from '../layouts/AppContext'
 import GenerateButton from './common/GenerateButton.jsx'
 
 // Style
-import '../assets/scss/components/SideNavBar.scss'
+import '../assets/scss/components/NavBar.scss'
 
 export default function SideNav() {
 	const { toggleColorMode } = useColorMode()
