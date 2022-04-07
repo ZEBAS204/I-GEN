@@ -1,18 +1,11 @@
 import { useTranslation } from 'react-i18next'
-
-import { mobileViewMQ } from '../utils/constants'
-import { useAppContext } from '../layouts/AppContext'
-import GenerateButton from './common/GenerateButton.jsx'
-
 import {
 	chakra,
 	useColorMode,
 	useColorModeValue,
 	Button,
-	IconButton,
 	Spacer,
-	useMediaQuery,
-	Tag, // Used to get color scheme in buttons
+	Icon,
 } from '@chakra-ui/react'
 import {
 	RiTimerFlashLine,
@@ -23,28 +16,38 @@ import {
 	RiSunFill,
 } from 'react-icons/ri'
 
+import { useAppContext } from '../layouts/AppContext'
+import GenerateButton from './common/GenerateButton.jsx'
+
 // Style
 import '../assets/scss/components/SideNavBar.scss'
 
 export default function SideNav() {
 	const { toggleColorMode } = useColorMode()
 	const { t } = useTranslation()
-	const [isInMobileView] = useMediaQuery(mobileViewMQ)
 
-	const themeIcon = useColorModeValue(<RiSunFill />, <RiMoonClearFill />)
-	const { isTimerVisible, toggleSettingVisible, toggleTimerVisible } =
-		useAppContext()
+	const themeIcon = useColorModeValue(RiSunFill, RiMoonClearFill)
+	const {
+		isInMobileView,
+		isTimerVisible,
+		isSettingVisible,
+		toggleSettingVisible,
+		toggleTimerVisible,
+	} = useAppContext()
 
 	const SettingsButton = () => (
-		<Tag
-			variant="outline"
-			className="navbar-item"
+		<Button
+			variant="unstyled"
+			className={`navbar-item ${isSettingVisible ? 'active' : ''}`}
+			aria-label="Settings"
 			onClick={toggleSettingVisible}
 		>
-			<RiSettings3Fill className="navbar-item-icon-active" />
-			<RiSettings3Line className="navbar-item-icon" />
+			<Icon
+				className="navbar-item-icon"
+				as={isSettingVisible ? RiSettings3Fill : RiSettings3Line}
+			/>
 			<span className="navbar-item-label">{t('buttons.settings')}</span>
-		</Tag>
+		</Button>
 	)
 
 	const desktopNav = (
@@ -53,32 +56,35 @@ export default function SideNav() {
 			<Spacer />
 			<h1>LOGO</h1>
 			<Spacer />
-			<Tag variant="outline" className="navbar-item navbar-swap-button">
-				<IconButton
-					aria-label="Swap theme icon"
-					onClick={toggleColorMode}
+
+			<Button
+				variant="unstyled"
+				className="navbar-item"
+				aria-label="Swap theme icon"
+			>
+				<Icon
 					className="navbar-item-icon"
-					icon={themeIcon}
-					variant="unstyled"
+					as={themeIcon}
+					onClick={toggleColorMode}
 				/>
-			</Tag>
+			</Button>
 		</>
 	)
 
 	const mobileNav = (
 		<>
-			<Tag
-				variant="outline"
-				className="navbar-item"
+			<Button
+				variant="unstyled"
+				className={`navbar-item ${isTimerVisible ? 'active' : ''}`}
+				aria-label="Timer"
 				onClick={toggleTimerVisible}
 			>
-				{isTimerVisible ? (
-					<RiTimerFlashFill className="navbar-item-icon" />
-				) : (
-					<RiTimerFlashLine className="navbar-item-icon" />
-				)}
-				<span className="navbar-item-label">TIMER</span>
-			</Tag>
+				<Icon
+					className="navbar-item-icon"
+					as={isTimerVisible ? RiTimerFlashFill : RiTimerFlashLine}
+				/>
+				<span className="navbar-item-label">{t('buttons.timermode')}</span>
+			</Button>
 			<Spacer />
 			<GenerateButton />
 			<Spacer />

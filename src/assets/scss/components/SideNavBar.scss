@@ -1,24 +1,6 @@
-// TODO: calculate position of outside rounded borders with min-height
-
-$navbar-item-min-height: 50px;
-
 $media-navbar-mobile: 650px;
 
-// Support reduced motion
-@media (prefers-reduced-motion: reduce) {
-	.navbar-item-label {
-		transform: none;
-		transition: none;
-	}
-}
-
-@mixin themify(
-	$theme-name,
-	$saturation,
-	$background-color,
-	$background-color-mobile,
-	$main-color
-) {
+@mixin themify($theme-name, $background-mobile, $ripple-color-hsl) {
 	body.#{$theme-name} {
 		nav,
 		.navbar {
@@ -29,57 +11,44 @@ $media-navbar-mobile: 650px;
 		}
 
 		.navbar-item {
-			align-items: center;
-			border: 0;
-			// Override tag component style
-			box-shadow: none;
 			display: flex;
 			flex-direction: column;
-			justify-content: center;
-			padding: 0;
 			text-align: center;
-			text-decoration: none;
+			align-items: center;
+			cursor: pointer;
 
-			&.active,
+			// Disable accessibility outline on click
+			box-shadow: none;
 			&:focus,
 			&:hover {
 				outline: none;
 				-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 				-webkit-tap-highlight-color: transparent;
-
-				.navbar-item-icon,
-				.navbar-item-icon-active,
-				.navbar-item-label {
-					@if $saturation {
-						// Only fix for the low color saturation of tags...
-						filter: saturate(3);
-					}
-					color: inherit;
-				}
-			}
-
-			&-icon,
-			&-icon-active {
-				color: $main-color;
-				font-size: 26px;
-				transition: 0.25s ease;
 			}
 
 			&-icon {
-				display: inline-flex;
-				visibility: visible;
-
-				&-active {
-					display: none;
-					visibility: hidden;
-				}
+				font-size: 26px;
 			}
 
 			&-label {
-				color: $main-color;
 				display: block;
 				font-size: 13px;
-				transition: 0.25s ease;
+				line-height: 14px;
+				font-weight: 500;
+				text-transform: uppercase;
+				transition: font-weight 0.25ms ease;
+			}
+
+			&.active {
+				.navbar-item {
+					&-icon {
+						fill: var(--chakra-colors-blue-300);
+					}
+					&-label {
+						color: var(--chakra-colors-blue-300);
+						font-weight: 600;
+					}
+				}
 			}
 		}
 
@@ -91,66 +60,31 @@ $media-navbar-mobile: 650px;
 				order: 0;
 				overflow-x: hidden;
 				overflow-y: auto;
-				padding: 0 20px;
+				padding: 1em 20px;
 			}
 
 			.navbar-item {
-				margin-bottom: 0;
-				margin-inline-end: 0;
-				margin-inline-start: 0;
-				margin-top: 1rem;
-				min-height: $navbar-item-min-height;
-				cursor: pointer;
+				&-label {
+					display: none;
+				}
 
-				&.active {
-					&.navbar-item {
-						background: $background-color;
-						border-radius: 5px 0 0 5px;
-
-						// Outside rounded paths
-						// Awesome tutorial! https://segmentfault.com/a/1190000040372386/en
-						&::before,
-						&::after {
-							background-image: radial-gradient(
-								circle at 15px 0,
-								rgba(0, 0, 0, 0) 15px,
-								$background-color 0
-							);
-							background-position: -15px bottom, left top, center bottom,
-								center bottom;
-							background-repeat: repeat-x, repeat-x, no-repeat, no-repeat;
-							background-size: 100% 15px;
-							content: '';
-							height: 10px;
-							position: relative;
-							right: -55%;
-							width: 35px;
-						}
-						&::before {
-							top: -12px;
-						}
-						//! Will show a slight line in chromium based browsers. Sorry there's nothing I can do...
-						&::after {
-							top: 12px;
-							transform: rotate(180deg);
-						}
-					}
-					.navbar-item-icon {
-						display: none;
-						visibility: hidden;
-						&-active {
-							display: block;
-							visibility: visible;
-						}
-					}
-
-					.navbar-item-label {
-						height: 0;
-						opacity: 0;
-						position: relative;
-						transform: scale(0);
-						transition: opacity 0.25s ease 0, transform 0.25s;
-					}
+				// Google material design ripple effect on hover
+				&:after {
+					content: '';
+					position: absolute;
+					width: 100%;
+					height: 100%;
+					background-color: $ripple-color-hsl;
+					border-radius: 50%;
+					opacity: 0;
+					transform: scale(1.1);
+					transition: 300ms ease;
+					pointer-events: none;
+				}
+				&:hover:after {
+					opacity: 1;
+					transform: none;
+					animation: scale 150ms ease-in, opacity 150ms ease;
 				}
 			}
 		}
@@ -159,7 +93,7 @@ $media-navbar-mobile: 650px;
 		@media (max-width: $media-navbar-mobile) {
 			nav,
 			.navbar {
-				background: $background-color-mobile;
+				background: $background-mobile;
 				border-radius: 30px 30px 0 0;
 				bottom: 0;
 				box-shadow: 0 15px 30px 0 #000;
@@ -175,25 +109,6 @@ $media-navbar-mobile: 650px;
 				flex-basis: 80px;
 				flex-grow: 1;
 				flex-shrink: 1;
-
-				&.active {
-					.navbar-item-icon {
-						display: none;
-						visibility: hidden;
-						&-active {
-							display: block;
-							visibility: visible;
-						}
-					}
-
-					.navbar-item-label {
-						height: 0;
-						opacity: 0;
-						position: relative;
-						transform: translateY(100px) scale(0);
-						transition: opacity 0.25s ease 0, transform 0.25s;
-					}
-				}
 			}
 		}
 	}
@@ -202,16 +117,12 @@ $media-navbar-mobile: 650px;
 //* Light Theme
 @include themify(
 	chakra-ui-light,
-	false,
-	var(--chakra-colors-blackAlpha-200),
 	var(--chakra-colors-white),
-	#1a202c
+	hsla(0, 0, 0, 0.1)
 );
 //* Dark Theme
 @include themify(
 	chakra-ui-dark,
-	true,
-	var(--chakra-colors-whiteAlpha-200),
 	var(--chakra-colors-gray-800),
-	#fff
+	hsla(0, 100%, 100%, 0.1)
 );
