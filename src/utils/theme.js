@@ -1,4 +1,5 @@
 import { mode } from '@chakra-ui/theme-tools'
+import { useTheme } from '@chakra-ui/react'
 
 /**
  ** Overrides the default Chakra theme
@@ -59,4 +60,11 @@ const customTheme = {
 	},
 }
 
-export { customTheme }
+/** Exposes the current color scheme */
+function useColorScheme() {
+	const currentColor = useTheme().components.Button.defaultProps.colorScheme
+
+	return currentColor
+}
+
+export { customTheme, useColorScheme }
