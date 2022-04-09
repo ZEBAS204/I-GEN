@@ -84,7 +84,37 @@ export default function WordGenerator() {
 	)
 
 	const WordBox = ({ children }) => (
-		<Box bg={boxBG} boxShadow="md" py={6} px={[4, 6]} rounded="md">
+		<Box
+			bg={boxBG}
+			boxShadow="md"
+			py={6}
+			px={[4, 6]}
+			rounded="md"
+			sx={{
+				// Fade effect
+				position: 'relative',
+				'&:after, &:before': {
+					content: '""',
+					position: 'absolute',
+					width: '100%',
+					height: '100%',
+					top: 0,
+					left: 0,
+					backgroundColor: boxBG,
+					opacity: 0.5,
+					borderRadius: 'inherit',
+					transformOrigin: 'center',
+					pointerEvents: 'none',
+					zIndex: -1,
+				},
+				'&:before': {
+					transform: 'scale3d(1.05,1.2,1)',
+				},
+				'&:after': {
+					transform: 'scale3d(1.1,1.4,1)',
+				},
+			}}
+		>
 			{!firstRender ? <Skeleton h="24px" /> : <Text>{children}</Text>}
 		</Box>
 	)
@@ -121,7 +151,7 @@ export default function WordGenerator() {
 		<Grid
 			textAlign="center"
 			alignSelf="center"
-			gap={3}
+			gap={[6, 8]}
 			width="clamp(1%, 25rem, 80%)"
 			fontSize={['x-large', null, 'xx-large']}
 			fontWeight={600}
