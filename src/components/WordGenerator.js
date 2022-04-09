@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback } from 'react'
+import { useLifecycles, useUpdateEffect } from 'react-use'
 import {
 	useColorModeValue,
 	Grid,
@@ -45,12 +46,8 @@ export default function WordGenerator() {
 	const [words, setWords] = useState({})
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	useEffect(() => generateNewWordSets(), [gen])
+	useUpdateEffect(() => generateNewWordSets(), [gen])
 
-	/**
-	 * Create a ref so regenerateWord() can be called from outside the component
-	 * See https://stackoverflow.com/a/57006730
-	 */
 	const getNewPairOfWords = () => ({
 		noun: nouns[Math.floor(Math.random() * nouns.length)],
 		adj: adjs[Math.floor(Math.random() * adjs.length)],
@@ -70,22 +67,21 @@ export default function WordGenerator() {
 		[speak]
 	)
 
-	useEffect(() => {
-		;(async () => {
+	useLifecycles(
+		// On component mount, we need to fetch the current word sets
+		// and generate a new pair of words
+		async () => {
 			fetchWordSets()
-				.then(() => generateNewWordSets(true)) // true to prevent TTS from speaking
+				.then(() => generateNewWordSets(true)) // prevent TTS from speaking
 				.then(() => {
 					setFirstRender(true)
-					wasRendered = true // Prevent checking for render in future page changes
+					wasRendered = true // Prevent checking for render in future component renders
 				})
-		})()
-
-		return () => {
-			// On component dismount
-			// Just stop TTS if speaking, already has check inside the class function
-			TTS.stop()
-		}
-	}, [generateNewWordSets])
+		},
+		// On component dismount
+		// Just stop TTS if speaking, already has check inside the class function
+		() => TTS.stop()
+	)
 
 	const WordBox = ({ children }) => (
 		<Box bg={boxBG} boxShadow="md" py={6} px={[4, 6]} rounded="md">
