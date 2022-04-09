@@ -2,16 +2,14 @@ import localforage from 'localforage'
 import Logger from './logger'
 import { useState, useEffect } from 'react'
 
-const dev = false // process.env.NODE_ENV === 'development'
-
-// This will rename the database from "storage" to "Settings"
 localforage.config({
+	// This will rename the database from "storage" to "Settings"
 	name: 'Settings',
 	description: 'Keep track of user preferences',
 	version: 1.0,
-	// If in development environment, use localstorage (will allow modifying saved value with ease)
-	// If not, will use [INDEXEDDB, WEBSQL, LOCALSTORAGE]
-	driver: dev ? localforage.LOCALSTORAGE : undefined,
+	// Only use local storage as driver
+	// Available storages [localforage.INDEXEDDB, localforage.WEBSQL, localforage.LOCALSTORAGE]
+	driver: [localforage.LOCALSTORAGE],
 })
 
 /**
