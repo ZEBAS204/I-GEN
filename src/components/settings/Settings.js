@@ -156,13 +156,8 @@ export default function SettingsPage() {
 							borderRadius="lg"
 							minWidth="13rem"
 							fontWeight="normal"
-							_selected={
-								!isInMobileView && {
-									fontWeight: 'semibold',
-									background: 'blue.300',
-									color: 'gray.800',
-								}
-							}
+							_selected={!isInMobileView ? null : {}}
+							_hover={!isInMobileView ? { background: bgColorList } : null}
 							transition={isInMobileView ? null : 'all 300ms'}
 						>
 							<Box as="span" mr={3}>
