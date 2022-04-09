@@ -26,10 +26,10 @@ async function fetchWordSets() {
 	await Promise.all([
 		fetch(`${process.env.PUBLIC_URL}/static/wordsets/noun.json`)
 			.then((res) => res.json())
-			.then((e) => (nouns = e)),
+			.then((e) => (nouns = shuffleArray(e))),
 		fetch(`${process.env.PUBLIC_URL}/static/wordsets/adj.json`)
 			.then((res) => res.json())
-			.then((e) => (adjs = e)),
+			.then((e) => (adjs = shuffleArray(e))),
 	])
 		.then((fetched = true))
 		.catch((err) => console.error(err))
@@ -51,8 +51,8 @@ export default function WordGenerator() {
 	 * See https://stackoverflow.com/a/57006730
 	 */
 	const getNewPairOfWords = () => ({
-		noun: shuffleArray(nouns),
-		adj: shuffleArray(adjs),
+		noun: nouns[Math.floor(Math.random() * nouns.length)],
+		adj: adjs[Math.floor(Math.random() * adjs.length)],
 	})
 
 	const generateNewWordSets = useCallback(
@@ -134,5 +134,5 @@ function shuffleArray(array) {
 		const j = Math.floor(Math.random() * (i + 1))
 		;[array[i], array[j]] = [array[j], array[i]]
 	}
-	return array[0]
+	return array
 }
