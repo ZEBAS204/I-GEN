@@ -94,7 +94,13 @@ export default function WordGenerator() {
 	)
 
 	const ContentError = () => (
-		<Grid justifyItems="center" textAlign="center">
+		<Grid
+			justifyItems="center"
+			textAlign="center"
+			alignContent="center"
+			gap={10}
+			width="clamp(1%, 25rem, 80%)"
+		>
 			<Box as={GhostIcon} w="6rem" h="6rem" />
 			<Text>
 				Looks like the word sets have not yet loaded!
