@@ -118,11 +118,11 @@ $media-navbar-mobile: 650px;
 @include themify(
 	chakra-ui-light,
 	var(--chakra-colors-white),
-	hsla(0, 0, 0, 0.1)
+	rgba(0, 0, 0, 0.1)
 );
 //* Dark Theme
 @include themify(
 	chakra-ui-dark,
 	var(--chakra-colors-gray-800),
-	hsla(0, 100%, 100%, 0.1)
+	rgba(255, 255, 255, 0.1)
 );
