@@ -6,6 +6,7 @@ import {
 	Text,
 	Skeleton,
 	Icon,
+	Button,
 } from '@chakra-ui/react'
 import { RiAddLine } from 'react-icons/ri'
 
@@ -101,6 +102,11 @@ export default function WordGenerator() {
 				This could be because of a slow internet connection or something is
 				blocking the data load of the sets files.
 			</Text>
+			<Button
+				onClick={() => fetchWordSets().then(() => generateNewWordSets(true))}
+			>
+				Refresh
+			</Button>
 		</Grid>
 	)
 
