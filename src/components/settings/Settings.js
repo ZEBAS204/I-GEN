@@ -1,7 +1,7 @@
 // FIXME: bottom part of drawer is hide bellow the URL in mobile (edge)
 
 import { Suspense, lazy, useState } from 'react'
-import { useKeyPressEvent } from 'react-use'
+import { useLifecycles, useHash, useKeyPressEvent } from 'react-use'
 
 import { useAppContext } from '../../layouts/AppContext'
 
@@ -93,12 +93,41 @@ export default function SettingsPage() {
 	const [isOpen, setOpenModal] = useState(false)
 	const { onOpen, onClose } = useDisclosure({
 		onOpen: () => {
+			if (!isInMobileView) return
 			setOpenModal(true)
 		},
 		onClose: () => {
+			if (!isInMobileView) return
 			setOpenModal(false)
 		},
 	})
+
+	/** Allows to use navigation back event to close the interface */
+	const [, setHash] = useHash()
+	const handleBackButton = (event) => {
+		event.preventDefault()
+		event.stopPropagation()
+
+		if (isOpen) {
+			setHash('#settings')
+			setOpenModal(false)
+			return
+		}
+
+		toggleSettingVisible()
+	}
+
+	useLifecycles(
+		() => {
+			setHash('#settings')
+			window.addEventListener('popstate', handleBackButton)
+		},
+		() => {
+			// Remove hash and event listener on unmount
+			window.removeEventListener('popstate', handleBackButton)
+			setHash('')
+		}
+	)
 
 	/**
 	 ** Allows to close settings with ESC
