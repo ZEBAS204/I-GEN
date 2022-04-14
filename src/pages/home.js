@@ -5,7 +5,7 @@ import { useAppContext } from '../layouts/AppContext'
 import GenerateButton from '../components/common/GenerateButton'
 
 const WordGenerator = lazy(() => import('../components/WordGenerator'))
-const TimerMode = lazy(() => import('./timer'))
+const DesktopTimer = lazy(() => import('src/components/timer/DesktopTimer'))
 
 export default function Home() {
 	const { isInMobileView } = useAppContext()
@@ -17,9 +17,9 @@ export default function Home() {
 					<WordGenerator />
 				</Suspense>
 				{!isInMobileView && (
-					<Center flexDirection="column">
-						<Suspense fallback={<p>Loading countdown...</p>}>
-							<TimerMode />
+					<Center flexDirection="column" w="clamp(1%, 25rem, 50%)">
+						<Suspense fallback={<p>Loading timer...</p>}>
+							<DesktopTimer />
 						</Suspense>
 					</Center>
 				)}
