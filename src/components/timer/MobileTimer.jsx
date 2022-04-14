@@ -1,6 +1,6 @@
 import { useAppContext } from '../../layouts/AppContext'
-import { MobileCountDown } from './CountDown'
-import { CountDownControlsMobile } from './CountDownControl'
+import { TimeManager, MobileCountDown } from './CountDown'
+import { CountDownControls } from './CountDownControl'
 
 export default function MobileTimer() {
 	const { isInMobileView } = useAppContext()
@@ -8,8 +8,10 @@ export default function MobileTimer() {
 	if (isInMobileView)
 		return (
 			<>
-				<MobileCountDown />
-				<CountDownControlsMobile />
+				<TimeManager>
+					<MobileCountDown />
+				</TimeManager>
+				<CountDownControls />
 			</>
 		)
 

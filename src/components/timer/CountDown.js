@@ -2,9 +2,6 @@ import { useState, useEffect, cloneElement, useMemo } from 'react'
 import { useInterval } from 'react-use'
 import { useTranslation } from 'react-i18next'
 import {
-	useColorModeValue,
-	Grid,
-	GridItem,
 	Text,
 	Flex,
 	Spacer,
@@ -16,6 +13,8 @@ import {
 import { RiTimeFill } from 'react-icons/ri'
 
 import { useAppContext } from '../../layouts/AppContext'
+import Clock from './Clock'
+import TimePicker from './TimePicker'
 
 // Default remaining time to add if no saved time is provided (10min)
 const DEF_TIME = 600
@@ -31,13 +30,13 @@ const toTwoDigits = (num) => String(num ?? 0).padStart(2, '0')
  * If the number is not zero, returns number + type
  * Eg. num = 3, type = 's' -> returns 3s
  * @param {number} num
- * @param {string|'h'|'m'|'s'} type Time tipe
+ * @param {string|'h'|'m'|'s'} type Time type
  * @returns {string|null}
  */
 const ifExistsDisplay = (num, type) => (num ? num + type : null)
 
-const TimeManager = ({ children, reset }) => {
-	const { time, isRunning, generateWord } = useAppContext()
+const TimeManager = ({ children }) => {
+	const { time, isRunning, generateWord, reset } = useAppContext()
 
 	const [totalTime, setTotalTime] = useState(time || DEF_TIME)
 	const [secondsRemaining, setSecondsRemaining] = useState(time || DEF_TIME)
@@ -63,7 +62,7 @@ const TimeManager = ({ children, reset }) => {
 	useInterval(
 		() => {
 			if (parentRunning && secondsRemaining > 0)
-				setSecondsRemaining(secondsRemaining - 1)
+				setSecondsRemaining((e) => e - 1)
 			else {
 				generateWord()
 				resetTimer()
@@ -73,19 +72,6 @@ const TimeManager = ({ children, reset }) => {
 		parentRunning ? 1000 : null
 	)
 
-	//* Testing component
-	return (
-		<MobileCountDown
-			parentRunning={parentRunning}
-			totalTime={totalTime}
-			remainingTime={secondsRemaining}
-			hoursToDisplay={hoursToDisplay}
-			minutesToDisplay={minutesToDisplay}
-			secondsToDisplay={secondsToDisplay}
-		/>
-	)
-
-	/*
 	if (!children) return <></>
 
 	return cloneElement(children, {
@@ -96,7 +82,6 @@ const TimeManager = ({ children, reset }) => {
 		minutesToDisplay,
 		secondsToDisplay,
 	})
-	*/
 }
 
 const MobileCountDown = ({
@@ -116,7 +101,7 @@ const MobileCountDown = ({
 	} = useAppContext()
 
 	//* Allows to return memoized values of the total time
-	//* without having to deal with extra arguments arguments
+	//* without having to deal with extra arguments
 	const _ = useMemo(
 		() => ({
 			hours: hoursToDisplay,
@@ -176,78 +161,30 @@ const MobileCountDown = ({
 	)
 }
 
-const CountDown = ({ savedTime, parentRunning, speak, reset }) => {
-	const NumBoxBG = useColorModeValue('blackAlpha.100', 'whiteAlpha.100')
+const CountDown = ({ parentRunning, totalTime, remainingTime }) => {
+	const { t } = useTranslation()
+	const { toggleRunning, sendReset } = useAppContext()
+	const [isPickerVisible, setPickerVisible] = useState(false)
 
-	const [totalTime, setTotalTime] = useState(DEF_TIME)
-	const [secondsRemaining, setSecondsRemaining] = useState(DEF_TIME)
-
-	const secondsToDisplay = secondsRemaining % 60
-	const minutesRemaining = (secondsRemaining - secondsToDisplay) / 60
-	const minutesToDisplay = minutesRemaining % 60
-	const hoursToDisplay = (minutesRemaining - minutesToDisplay) / 60
-
-	// Allow parent to reset timer
-	const resetTimer = () => setSecondsRemaining(totalTime)
-	useEffect(() => resetTimer(), [reset]) // eslint-disable-line
-
-	useInterval(
-		() => {
-			if (secondsRemaining > 0) setSecondsRemaining(secondsRemaining - 1)
-			else {
-				speak()
-				resetTimer()
-			}
-		},
-		// passing null stops the interval
-		parentRunning ? 1000 : null
-	)
-
-	useEffect(() => {
-		if (savedTime) {
-			setTotalTime(savedTime)
-			setSecondsRemaining(savedTime)
-		}
-	}, [savedTime])
-
-	const fontSizeVariants = ['1rem', '1.5rem', '2rem', '2.5rem']
-	const NumBox = ({ children }) => (
-		<GridItem
-			bg={NumBoxBG}
-			minW={['30px', '62px']}
-			paddingY={2}
-			shadow="md"
-			borderRadius="md"
-			textShadow="0 0 1px black"
-		>
-			<TxtNum>{children}</TxtNum>
-		</GridItem>
-	)
-	const TxtNum = ({ children }) => (
-		<Text fontSize={fontSizeVariants}>{children || ':'}</Text>
-	)
+	const handleTogglePicker = () => setPickerVisible(!isPickerVisible)
 
 	return (
-		<Grid
-			templateColumns="1fr auto 1fr auto 1fr"
-			templateRows="1fr auto"
-			fontFamily="consolas"
-			gap={3}
-			alignItems="center"
-			textAlign="center"
-		>
-			<NumBox children={toTwoDigits(hoursToDisplay)} />
-			<TxtNum />
-			<NumBox children={toTwoDigits(minutesToDisplay)} />
-			<TxtNum />
-			<NumBox children={toTwoDigits(secondsToDisplay)} />
-			<Text>Hours</Text>
-			<div />
-			<Text>Minutes</Text>
-			<div />
-			<Text>Seconds</Text>
-		</Grid>
+		<>
+			{!isPickerVisible && (
+				<Clock totalTime={totalTime} remainingTime={remainingTime} />
+			)}
+
+			{isPickerVisible && <TimePicker />}
+
+			<ButtonGroup colorScheme={parentRunning ? 'red' : null}>
+				<Button onClick={sendReset}>{t('buttons.reset_btn')}</Button>
+				<Button onClick={toggleRunning}>
+					{parentRunning ? t('buttons.stop_btn') : t('buttons.play_btn')}
+				</Button>
+				<Button onClick={handleTogglePicker}>Edit</Button>
+			</ButtonGroup>
+		</>
 	)
 }
 
-export { CountDown, TimeManager as MobileCountDown }
+export { TimeManager, CountDown, MobileCountDown }
