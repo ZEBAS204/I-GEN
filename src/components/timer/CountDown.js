@@ -18,35 +18,56 @@ import { useColorScheme } from 'src/utils/theme'
 import Clock from './Clock'
 import TimePicker from './TimePicker'
 
-// Default remaining time to add if no saved time is provided (10min)
-const DEF_TIME = 600
+/** Default fallback of the remaining time if not time is provided (10min) */
+const defaultTime = 600
 
 /**
- * Output numbers with leading zeros
- * @param {number} num
- * @returns {string}
+ * Converts the number to a string and add a leading zero
+ * @param {number} num Number to convert
+ * @returns {string} Formated number
+ * @example padWithZero(3) // returns '03'
  */
-const toTwoDigits = (num) => String(num ?? 0).padStart(2, '0')
+const padWithZero = (num = 0) => String(num).padStart(2, '0')
 
 /**
- * If the number is not zero, returns number + type
- * Eg. num = 3, type = 's' -> returns 3s
+ * If the number is not zero, returns number it's type as strings
  * @param {number} num
  * @param {string|'h'|'m'|'s'} type Time type
- * @returns {string|null}
+ * @returns {string}
+ * @example ifNotZero(3, 's') // returns '3s'
  */
-const ifExistsDisplay = (num, type) => (num ? num + type : null)
+const ifNotZero = (num, type) => (num ? num + type : '')
 
 const TimeManager = ({ children }) => {
 	const { time, isRunning, generateWord, reset } = useAppContext()
 
-	const [totalTime, setTotalTime] = useState(time || DEF_TIME)
-	const [secondsRemaining, setSecondsRemaining] = useState(time || DEF_TIME)
+	const [totalTime, setTotalTime] = useState(time || defaultTime)
+	const [secondsRemaining, setSecondsRemaining] = useState(time || defaultTime)
 
 	const secondsToDisplay = secondsRemaining % 60
 	const minutesRemaining = (secondsRemaining - secondsToDisplay) / 60
 	const minutesToDisplay = minutesRemaining % 60
 	const hoursToDisplay = (minutesRemaining - minutesToDisplay) / 60
+
+	//* Allows to return memoized values of the total time
+	//* without having to deal with extra arguments
+	const _ = useMemo(
+		() => ({
+			hours: hoursToDisplay,
+			min: minutesToDisplay,
+			sec: secondsToDisplay,
+		}),
+		[totalTime] // eslint-disable-line react-hooks/exhaustive-deps
+	)
+
+	const remainingtimeToDisplay = `${padWithZero(hoursToDisplay)}:${padWithZero(
+		minutesToDisplay
+	)}:${padWithZero(secondsToDisplay)}`
+
+	const totalTimeToDisplay = `Total ${ifNotZero(_.hours, 'h')} ${ifNotZero(
+		_.min,
+		'm'
+	)} ${ifNotZero(_.sec, 's')}`
 
 	// Update total time with context
 	useEffect(() => {
@@ -74,25 +95,23 @@ const TimeManager = ({ children }) => {
 		parentRunning ? 1000 : null
 	)
 
-	if (!children) return <></>
+	if (!children) throw Error('TimeManager component requires a children')
 
 	return cloneElement(children, {
 		parentRunning,
 		totalTime,
 		remainingTime: secondsRemaining,
-		hoursToDisplay,
-		minutesToDisplay,
-		secondsToDisplay,
+		remainingtimeToDisplay,
+		totalTimeToDisplay,
 	})
 }
 
 const MobileCountDown = ({
-	parentRunning,
-	totalTime,
-	remainingTime,
-	hoursToDisplay,
-	minutesToDisplay,
-	secondsToDisplay,
+	parentRunning = false,
+	totalTime = 0,
+	remainingTime = 0,
+	remainingtimeToDisplay = 0,
+	totalTimeToDisplay = 0,
 }) => {
 	const { t } = useTranslation()
 	const currentColor = useColorScheme()
@@ -103,17 +122,6 @@ const MobileCountDown = ({
 		toggleTimePickerVisible,
 		isTimerVisible,
 	} = useAppContext()
-
-	//* Allows to return memoized values of the total time
-	//* without having to deal with extra arguments
-	const _ = useMemo(
-		() => ({
-			hours: hoursToDisplay,
-			min: minutesToDisplay,
-			sec: secondsToDisplay,
-		}),
-		[totalTime] // eslint-disable-line react-hooks/exhaustive-deps
-	)
 
 	if (!isInMobileView || !isTimerVisible) return <></>
 
@@ -135,19 +143,9 @@ const MobileCountDown = ({
 			/>
 			<div>
 				<Text fontWeight="bold" fontSize="2xl" lineHeight="20px">
-					{toTwoDigits(hoursToDisplay)}:{toTwoDigits(minutesToDisplay)}:
-					{toTwoDigits(secondsToDisplay)}
+					{remainingtimeToDisplay}
 				</Text>
-				<Text fontSize={15}>
-					{_.hours || _.min || _.sec ? (
-						<>
-							Total {ifExistsDisplay(_.hours, 'h')}{' '}
-							{ifExistsDisplay(_.min, 'm')} {ifExistsDisplay(_.sec, 's')}
-						</>
-					) : (
-						<></>
-					)}
-				</Text>
+				<Text fontSize={15}>{totalTimeToDisplay}</Text>
 			</div>
 			<Spacer />
 			<ButtonGroup colorScheme={parentRunning ? 'red' : null} isAttached>
@@ -168,7 +166,13 @@ const MobileCountDown = ({
 	)
 }
 
-const CountDown = ({ parentRunning, totalTime, remainingTime }) => {
+const CountDown = ({
+	parentRunning = false,
+	totalTime = 0,
+	remainingTime = 0,
+	remainingtimeToDisplay = '',
+	totalTimeToDisplay = '',
+}) => {
 	const { t } = useTranslation()
 	const { toggleRunning, sendReset } = useAppContext()
 	const [isPickerVisible, setPickerVisible] = useState(false)
@@ -178,7 +182,12 @@ const CountDown = ({ parentRunning, totalTime, remainingTime }) => {
 	return (
 		<>
 			{!isPickerVisible && (
-				<Clock totalTime={totalTime} remainingTime={remainingTime} />
+				<Clock
+					totalTime={totalTime}
+					remainingTime={remainingTime}
+					remainingtimeToDisplay={remainingtimeToDisplay}
+					totalTimeToDisplay={totalTimeToDisplay}
+				/>
 			)}
 
 			{isPickerVisible && <TimePicker />}

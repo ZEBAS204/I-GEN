@@ -2,7 +2,17 @@ import { useEffect, useState } from 'react'
 import { chakra, useColorModeValue, Text } from '@chakra-ui/react'
 import { useColorScheme } from 'src/utils/theme'
 
-export default function Clock({ totalTime = 0, remainingTime = 0 }) {
+const circlePosition = {
+	cx: 50,
+	cy: 50,
+}
+
+export default function Clock({
+	totalTime = 0,
+	remainingTime = 0,
+	remainingtimeToDisplay = '',
+	totalTimeToDisplay = '',
+}) {
 	const currentColor = useColorScheme()
 	const fillColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.50')
 	const strokeColor = useColorModeValue('gray.400', 'gray.600')
@@ -10,23 +20,11 @@ export default function Clock({ totalTime = 0, remainingTime = 0 }) {
 	const [total, setTotal] = useState(totalTime)
 	const [remaining, setRemaining] = useState(totalTime - remainingTime)
 
-	const { seconds, minutes, hours } = {
-		seconds: Math.floor((total % 3600) % 60),
-		minutes: Math.floor(Math.floor((total % 3600) / 60)),
-		hours: Math.floor(total / 3600),
-	}
+	useEffect(() => setTotal(totalTime), [totalTime])
 
-	// Ignores the first invocation
-	// Prevents a weird effect of strokes
 	useEffect(() => {
-		setTotal(totalTime)
 		setRemaining(totalTime - remainingTime)
 	}, [totalTime, remainingTime])
-
-	const circlePosition = {
-		cx: 50,
-		cy: 50,
-	}
 
 	const GlowBlurFilter = () => (
 		<defs>
@@ -104,10 +102,10 @@ export default function Clock({ totalTime = 0, remainingTime = 0 }) {
 				{...circlePosition}
 			/>
 			<ClockText y={50} fontSize="1em" fontWeight="bold">
-				{hours}:{minutes}:{seconds}
+				{remainingtimeToDisplay}
 			</ClockText>
 			<ClockText y={60} fontSize="0.5em" fontWeight="200">
-				Total 1min 31s
+				{totalTimeToDisplay}
 			</ClockText>
 		</chakra.svg>
 	)
