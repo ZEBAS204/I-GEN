@@ -2,6 +2,7 @@ import { useState, useEffect, cloneElement, useMemo } from 'react'
 import { useInterval } from 'react-use'
 import { useTranslation } from 'react-i18next'
 import {
+	useColorModeValue,
 	Text,
 	Flex,
 	Spacer,
@@ -13,6 +14,7 @@ import {
 import { RiTimeFill } from 'react-icons/ri'
 
 import { useAppContext } from '../../layouts/AppContext'
+import { useColorScheme } from 'src/utils/theme'
 import Clock from './Clock'
 import TimePicker from './TimePicker'
 
@@ -93,6 +95,8 @@ const MobileCountDown = ({
 	secondsToDisplay,
 }) => {
 	const { t } = useTranslation()
+	const currentColor = useColorScheme()
+	const fillColor = useColorModeValue('100', '600')
 	const {
 		isInMobileView,
 		toggleRunning,
@@ -125,6 +129,9 @@ const MobileCountDown = ({
 				value={totalTime - remainingTime}
 				max={totalTime}
 				size="xs"
+				colorScheme={currentColor}
+				bg={`${currentColor}.${fillColor}`}
+				color={`${currentColor}.${fillColor}`}
 			/>
 			<div>
 				<Text fontWeight="bold" fontSize="2xl" lineHeight="20px">
