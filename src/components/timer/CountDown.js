@@ -115,7 +115,8 @@ const MobileCountDown = ({
 }) => {
 	const { t } = useTranslation()
 	const currentColor = useColorScheme()
-	const fillColor = useColorModeValue('100', '600')
+	const fillColor = useColorModeValue('700', '600')
+	const bgColor = useColorModeValue('#d6d6d6', '#303b52')
 	const {
 		isInMobileView,
 		toggleRunning,
@@ -131,6 +132,7 @@ const MobileCountDown = ({
 			fontFamily="consolas"
 			alignItems="center"
 			textAlign="center"
+			bg={bgColor}
 		>
 			<Progress
 				id="mobile-countdown-progress"

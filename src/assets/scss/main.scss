@@ -101,15 +101,21 @@
 	border-radius: inherit;
 }
 
+@keyframes slide-in {
+	100% {
+		transform: translateY(-50px);
+	}
+}
+
 #mobile-countdown {
 	position: fixed;
-	bottom: 0;
+	bottom: -50px;
 	left: 0;
 	width: 100%;
 	text-align: left;
-	background: #303b52;
 	padding: 10px;
 	padding-bottom: clamp(12vh, 3.5rem, 6rem);
+	animation: slide-in 0.25s forwards;
 
 	&-progress {
 		position: absolute;
