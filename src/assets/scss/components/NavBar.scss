@@ -17,15 +17,6 @@ $media-navbar-mobile: 650px;
 			align-items: center;
 			cursor: pointer;
 
-			// Disable accessibility outline on click
-			box-shadow: none;
-			&:focus,
-			&:hover {
-				outline: none;
-				-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-				-webkit-tap-highlight-color: transparent;
-			}
-
 			&-icon {
 				font-size: 26px;
 			}
@@ -64,6 +55,8 @@ $media-navbar-mobile: 650px;
 			}
 
 			.navbar-item {
+				border-radius: 50%;
+
 				&-label {
 					display: none;
 				}
@@ -81,7 +74,9 @@ $media-navbar-mobile: 650px;
 					transition: 300ms ease;
 					pointer-events: none;
 				}
-				&:hover:after {
+
+				&:hover:after,
+				&:focus:after {
 					opacity: 1;
 					transform: none;
 					animation: scale 150ms ease-in, opacity 150ms ease;
@@ -109,6 +104,15 @@ $media-navbar-mobile: 650px;
 				flex-basis: 80px;
 				flex-grow: 1;
 				flex-shrink: 1;
+
+				// Disable accessibility outline on click
+				box-shadow: none;
+				&:focus,
+				&:hover {
+					outline: none;
+					-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+					-webkit-tap-highlight-color: transparent;
+				}
 			}
 		}
 	}
