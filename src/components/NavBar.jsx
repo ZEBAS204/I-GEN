@@ -61,12 +61,9 @@ export default function SideNav() {
 				variant="unstyled"
 				className="navbar-item"
 				aria-label="Swap theme icon"
+				onClick={toggleColorMode}
 			>
-				<Icon
-					className="navbar-item-icon"
-					as={themeIcon}
-					onClick={toggleColorMode}
-				/>
+				<Icon className="navbar-item-icon" as={themeIcon} />
 			</Button>
 		</>
 	)
