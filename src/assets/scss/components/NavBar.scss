@@ -108,7 +108,12 @@ $media-navbar-mobile: 650px;
 				// Disable accessibility outline on click
 				box-shadow: none;
 				&:focus,
-				&:hover {
+				&:hover,
+				&:active {
+					color: var(--chakra-colors-blue-200);
+					&svg {
+						fill: var(--chakra-colors-blue-200);
+					}
 					outline: none;
 					-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 					-webkit-tap-highlight-color: transparent;
