@@ -35,7 +35,73 @@
 		<title>AN-Generator</title>
 	</head>
 	<body>
-		<noscript>You need to enable JavaScript to run this app :(</noscript>
+		<noscript>
+			<style>
+				#hide-trick:checked ~ div {
+					display: none;
+				}
+				#noscript-overlay {
+					background: #1a202c;
+					position: fixed;
+					width: 100vw;
+					height: 100vh;
+					top: 0;
+					left: 0;
+					z-index: -1;
+				}
+				#noscript-modal {
+					color: #fff;
+					background: #2c313d;
+					border: 5px solid #f56565;
+					border-radius: 5px;
+					padding: 20px;
+					max-width: 80%;
+					margin: 50px auto;
+					font-family: Lato, sans-serif;
+				}
+				label {
+					color: #000;
+					background: #bd93f9;
+					padding: 10px;
+					border-radius: 5px;
+					cursor: pointer;
+				}
+				label:hover {
+					background: #d3b6fc;
+				}
+				a {
+					color: #76daff;
+				}
+			</style>
+			<div>
+				<input
+					type="checkbox"
+					id="hide-trick"
+					style="position: absolute; top: -9999px; left: -9999px"
+				/>
+				<div id="noscript-modal">
+					<h1>
+						Sorry! AN-Generator doesn't work properly without JavaScript
+						enabled. Please enable it to continue.
+					</h1>
+					<p>
+						Need help enabling it?
+						<a
+							href="http://enable-javascript.com/"
+							target="_blank"
+							rel="noopener"
+							>Go here</a
+						>
+					</p>
+					<br />
+
+					<label for="hide-trick" type="button"
+						>Don't Care. Close this, anyway</label
+					>
+				</div>
+			</div>
+			<div id="noscript-overlay"></div>
+		</noscript>
 		<div id="root"></div>
 	</body>
 </html>
