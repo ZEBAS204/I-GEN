@@ -1,12 +1,11 @@
 import { Heading } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 
-import { useColorScheme } from 'src/utils/theme'
 import { TimeManager, CountDown } from './CountDown'
 
 export default function DesktopTimer() {
 	const { t } = useTranslation()
-	const currentColor = useColorScheme()
+	const currentColor = 'blue'
 
 	return (
 		<>

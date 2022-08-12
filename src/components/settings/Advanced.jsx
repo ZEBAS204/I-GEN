@@ -40,7 +40,7 @@ export default function Advanced() {
 	const restoreSettings = () =>
 		// If user accepted, clear ALL stored data (local,session,etc) excluded SW cache
 		clearData()
-			.then((document.location.href = '/'))
+			.then(window.location.reload())
 			.catch(() => {})
 
 	const toggleDebugMode = () =>

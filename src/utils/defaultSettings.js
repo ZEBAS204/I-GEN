@@ -1,11 +1,9 @@
 import { getData, setData } from './appStorage'
 import Logger from './logger'
+import defaults from '@assets/defaultUserSettings.json'
 
 export default async function defaultSettings() {
 	const setDefaults = () => {
-		// Import default settings from assets
-		const defaults = require('../assets/defaultUserSettings.json')
-
 		// Loop all the settings from the default json and compare
 		// with the stored ones if they exist and their type match
 		defaults.forEach(async (def) => {

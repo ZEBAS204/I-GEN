@@ -1,13 +1,13 @@
-import { StrictMode, Suspense, useEffect, useState } from 'react'
-import ReactDOM from 'react-dom'
+import React, { StrictMode, Suspense, useEffect, useState } from 'react'
+import ReactDOM from 'react-dom/client'
 import * as serviceWorker from './serviceWorkerRegistration'
+import '@hookstate/devtools'
 
 import Logger from './utils/logger'
 import { localforage } from './utils/appStorage'
 
 import './utils/i18n'
 import defaultSettings from './utils/defaultSettings'
-
 import App from './App'
 
 function EnsureDataLoad() {
@@ -46,11 +46,10 @@ function EnsureDataLoad() {
 if (process.env.NODE_ENV === 'development')
 	document.title = '[DEV] ' + document.title
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById('root')).render(
 	<StrictMode>
 		<Suspense fallback={<></>}>
 			<EnsureDataLoad />
 		</Suspense>
-	</StrictMode>,
-	document.getElementById('root')
+	</StrictMode>
 )

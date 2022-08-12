@@ -5,7 +5,7 @@ import { useAppContext } from '../layouts/AppContext'
 import GenerateButton from '../components/common/GenerateButton'
 
 const WordGenerator = lazy(() => import('../components/WordGenerator'))
-const DesktopTimer = lazy(() => import('src/components/timer/DesktopTimer'))
+const DesktopTimer = lazy(() => import('../components/timer/DesktopTimer'))
 
 export default function Home() {
 	const { isInMobileView } = useAppContext()

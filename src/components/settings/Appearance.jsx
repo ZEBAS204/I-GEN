@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import CustomThemeEditor from './CustomThemeEditor'
 
 import { useTranslation } from 'react-i18next'
 import { getData, setData } from '../../utils/appStorage'
@@ -69,6 +70,8 @@ export default function Appearance() {
 				</Checkbox>{' '}
 				(Applied on restart)
 			</Box>
+
+			<CustomThemeEditor />
 		</>
 	)
 }

@@ -5,6 +5,7 @@ import {
 	extendTheme,
 	withDefaultColorScheme,
 } from '@chakra-ui/react'
+import { ThemeEditorProvider } from '@hypertheme-editor/chakra-ui'
 
 import './utils/i18n'
 import { getData } from './utils/appStorage'
@@ -17,7 +18,7 @@ import UpdateNotification from './components/UpdateNotification'
  ** If you want to set your own custom theme colors, uncomment the next import
  ** and the commented line inside extendTheme
  */
-// import { customTheme } from './utils/theme'
+import { customTheme } from './utils/theme'
 
 export default function App({ swUpdate, registration }) {
 	const [systemSync, setSystemSync] = useState(false)
@@ -25,7 +26,7 @@ export default function App({ swUpdate, registration }) {
 	const currentTheme = extendTheme(
 		extendTheme({
 			//* Uncomment next line for theme override
-			// ...customTheme,
+			...customTheme,
 			config: {
 				initialColorMode: 'dark',
 				useSystemColorMode: systemSync,
@@ -49,8 +50,10 @@ export default function App({ swUpdate, registration }) {
 		<>
 			<ColorModeScript initialColorMode="dark" />
 			<ChakraProvider resetCSS theme={currentTheme}>
-				{swUpdate && <UpdateNotification registration={registration} />}
-				<DefaultLayout />
+				<ThemeEditorProvider>
+					{swUpdate && <UpdateNotification registration={registration} />}
+					<DefaultLayout />
+				</ThemeEditorProvider>
 			</ChakraProvider>
 		</>
 	)

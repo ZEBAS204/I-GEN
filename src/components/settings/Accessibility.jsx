@@ -4,7 +4,7 @@
 // TODO: if not voices available add a message saying its unsupported in your browser
 
 import { useState, useEffect } from 'react'
-import { getData, setData } from '../../utils/appStorage'
+import { setData } from '../../utils/appStorage'
 import {
 	Box,
 	Grid,
@@ -29,12 +29,14 @@ import {
 } from '@chakra-ui/react'
 
 import { useTranslation } from 'react-i18next'
+import { useAppContext } from '../../layouts/AppContext'
 import TTS from '../../utils/tts'
 
 export default function Accessibility() {
 	const { t } = useTranslation()
+	const { speak, toggleSpeak } = useAppContext()
 
-	const [useTTS, setTTS] = useState(false)
+	const [useTTS, setTTS] = useState(speak)
 	const [onlyTimerTTS, toggleOnlyTimerTTS] = useState(false)
 	const [volume, setVolume] = useState(TTS._volume * 100)
 	const [speed, setSpeed] = useState(TTS._speed * 100)
@@ -53,6 +55,7 @@ export default function Accessibility() {
 		const newValue = !useTTS
 		setTTS(newValue)
 		setData('tts_enabled', newValue)
+		toggleSpeak(newValue)
 	}
 
 	const toggleTimerModeOnly = () => {
@@ -70,14 +73,6 @@ export default function Accessibility() {
 	}
 
 	useEffect(() => {
-		;(async () => {
-			await getData('tts_enabled').then((tts) => setTTS(tts ?? false))
-
-			await getData('tts_only_timermode').then((ttOnly) =>
-				toggleOnlyTimerTTS(ttOnly ?? false)
-			)
-		})()
-
 		return () => {
 			// Just stop TTS if speaking, already has check inside the class function
 			TTS.stop()

@@ -1,0 +1,25 @@
+{
+  "buttons": {
+    "home": "Home",
+    "regenerate": "Générer",
+    "timermode": "Minuteur",
+    "settings": "Paramètres",
+    "play_btn": "Démarrer",
+    "stop_btn": "Arrêter",
+    "reset_btn": "Réinitialiser",
+    "selected": "Sélectionné"
+  },
+  "settings": {
+    "interface": "Interface",
+    "appearance": "Apparence",
+    "accessibility": "Accessibilité",
+    "keybinds": "Raccourcis clavier",
+    "advanced": "Avancés",
+    "about": "About {{app_name}}",
+    "language": "Langue",
+    "theme": "Thème",
+    "tts": "Synthèse vocale (TTS)",
+    "service_worker": "Service worker",
+    "debugging": "Débogage"
+  }
+}

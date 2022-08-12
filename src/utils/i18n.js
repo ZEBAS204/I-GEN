@@ -49,7 +49,7 @@ i18n
 			// {{lng}} = language = en / es
 			// {{ns}} = translation = translation.json
 			// {{lng}}/{{ns}}.json = /en/translation.json
-			loadPath: '/static/locales/{{lng}}.json',
+			loadPath: '/locales/{{lng}}.json',
 			allowMultiLoading: false,
 		},
 

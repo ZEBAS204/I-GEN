@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { chakra, useColorModeValue, Text } from '@chakra-ui/react'
-import { useColorScheme } from 'src/utils/theme'
 
 const circlePosition = {
 	cx: 50,
@@ -13,7 +12,7 @@ export default function Clock({
 	remainingtimeToDisplay = '',
 	totalTimeToDisplay = '',
 }) {
-	const currentColor = useColorScheme()
+	const currentColor = 'blue'
 	const fillColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.50')
 	const strokeColor = useColorModeValue('gray.400', 'gray.600')
 
@@ -91,6 +90,7 @@ export default function Clock({
 				// Makes sure the animation starts at the top center of the circle
 				transform="rotate(-89.9deg)"
 				transformOrigin="center"
+				// FIXME: Transition shows small dots when the new total time set is more than previous one
 				transition="stroke-dasharray 1s linear"
 				pathLength={total}
 				r={45}

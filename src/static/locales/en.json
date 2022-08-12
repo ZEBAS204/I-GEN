@@ -2,10 +2,10 @@
   "buttons": {
     "home": "Home",
     "regenerate": "Regenerate",
-    "timermode": "Timer Mode",
+    "timermode": "Timer",
     "settings": "Settings",
-    "play_btn": "Play",
-    "stop_btn": "Stop",
+    "play_btn": "Resume",
+    "stop_btn": "Pause",
     "reset_btn": "Reset",
     "selected": "Selected"
   },

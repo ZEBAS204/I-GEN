@@ -19,17 +19,17 @@ import { ReactComponent as GhostIcon } from '../assets/icons/ghost.svg'
 // Global variables: cache responses and prevent refetching when its not needed
 let wasRendered = false
 let fetched = false
-let nouns
-let adjs
+let nouns = null
+let adjs = null
 
 async function fetchWordSets() {
 	if (fetched && nouns && adjs) return
 
 	await Promise.all([
-		fetch(`${process.env.PUBLIC_URL}/static/wordsets/noun.json`)
+		fetch(`/wordsets/noun.json`)
 			.then((res) => res.json())
 			.then((e) => (nouns = shuffleArray(e))),
-		fetch(`${process.env.PUBLIC_URL}/static/wordsets/adj.json`)
+		fetch(`/wordsets/adj.json`)
 			.then((res) => res.json())
 			.then((e) => (adjs = shuffleArray(e))),
 	])

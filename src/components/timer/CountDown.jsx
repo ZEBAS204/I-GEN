@@ -14,7 +14,6 @@ import {
 import { RiTimeFill } from 'react-icons/ri'
 
 import { useAppContext } from '../../layouts/AppContext'
-import { useColorScheme } from 'src/utils/theme'
 import Clock from './Clock'
 import TimePicker from './TimePicker'
 
@@ -114,7 +113,7 @@ const MobileCountDown = ({
 	totalTimeToDisplay = 0,
 }) => {
 	const { t } = useTranslation()
-	const currentColor = useColorScheme()
+	const currentColor = 'blue'
 	const fillColor = useColorModeValue('700', '600')
 	const bgColor = useColorModeValue('#d6d6d6', '#303b52')
 	const {
