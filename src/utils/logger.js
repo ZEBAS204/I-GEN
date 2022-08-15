@@ -16,4 +16,4 @@ if (process.env.NODE_ENV === 'development') log.setDefaultLevel(0)
 export default Logger
 
 //! Make it accessible from console in dev
-if (process.env.NODE_ENV === 'development') window.Logger = Logger
+if (import.meta.MODE === 'development') window.Logger = Logger

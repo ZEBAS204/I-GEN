@@ -43,7 +43,7 @@ function EnsureDataLoad() {
 }
 
 // Change document title if in dev environment
-if (process.env.NODE_ENV === 'development')
+if (import.meta.MODE === 'development')
 	document.title = '[DEV] ' + document.title
 
 ReactDOM.createRoot(document.getElementById('root')).render(
