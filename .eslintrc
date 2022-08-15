@@ -1,0 +1,27 @@
+{
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended",
+		"plugin:jsx-a11y/recommended",
+		"plugin:react/jsx-runtime",
+		"plugin:prettier/recommended",
+		"prettier"
+	],
+	"env": {
+		"node": true,
+		"browser": true,
+		"es6": true
+	},
+	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true,
+			"modules": true
+		},
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"rules": {
+		"no-unused-vars": "warn"
+	},
+	"plugins": ["react", "import", "jsx-a11y", "react-hooks", "prettier"]
+}

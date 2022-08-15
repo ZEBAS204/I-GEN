@@ -1,9 +1,11 @@
-import { resolve } from 'path'
 import fs from 'fs/promises'
+import { resolve } from 'path'
 
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import svgrPlugin from 'vite-plugin-svgr'
+import progress from 'vite-plugin-progress'
+import { ViteWebfontDownload } from 'vite-plugin-webfont-dl'
 
 // https://vitejs.dev/config/
 /** @type {import('vite').UserConfig} */
@@ -21,6 +23,11 @@ export default defineConfig({
 				icon: true,
 			},
 		}),
+		ViteWebfontDownload([
+			'https://fonts.googleapis.com/css2?family=Inter:wght@600;700',
+			'https://fonts.googleapis.com/css2?family=Poppins',
+		]),
+		progress(),
 	],
 	resolve: {
 		alias: {
