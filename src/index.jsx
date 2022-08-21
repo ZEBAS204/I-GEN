@@ -1,13 +1,13 @@
-import React, { StrictMode, Suspense, useEffect, useState } from 'react'
-import ReactDOM from 'react-dom/client'
+import { StrictMode, useEffect, useState } from 'react'
+import { createRoot } from 'react-dom/client'
 import * as serviceWorker from './serviceWorkerRegistration'
 import '@hookstate/devtools'
 
-import Logger from './utils/logger'
-import { localforage } from './utils/appStorage'
+import Logger from '@utils/logger'
+import { localforage } from '@utils/appStorage'
 
 import './utils/i18n'
-import defaultSettings from './utils/defaultSettings'
+import defaultSettings from '@utils/defaultSettings'
 import App from './App'
 
 function EnsureDataLoad() {
@@ -30,26 +30,24 @@ function EnsureDataLoad() {
 			.ready()
 			.then(() => defaultSettings())
 			.catch((err) => console.error(err))
-			.finally(setLoaded(true))
+			.finally(() => {
+				const $ = document.getElementById('loading-screen')
+				if ($) $.hidden = 'none'
+				setLoaded(true)
+			})
 	}, [])
 
 	if (!loaded) return <></>
 
-	return (
-		<>
-			<App swUpdate={swUpdate} registration={waitingWorker} />
-		</>
-	)
+	return <App swUpdate={swUpdate} registration={waitingWorker} />
 }
 
 // Change document title if in dev environment
 if (import.meta.MODE === 'development')
 	document.title = '[DEV] ' + document.title
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById('root')).render(
 	<StrictMode>
-		<Suspense fallback={<></>}>
-			<EnsureDataLoad />
-		</Suspense>
+		<EnsureDataLoad />
 	</StrictMode>
 )

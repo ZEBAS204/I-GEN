@@ -2,12 +2,40 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<link rel="icon" type="image/x-icon" href="favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Vite App</title>
+		<meta
+			name="theme-color"
+			media="(prefers-color-scheme: light)"
+			content="#fff"
+		/>
+		<meta
+			name="theme-color"
+			media="(prefers-color-scheme: dark)"
+			content="#1a202c"
+		/>
+		<meta
+			name="description"
+			content="Web site created using create-react-app"
+		/>
+		<link rel="icon" type="image/x-icon" href="favicon.ico" />
+		<link rel="apple-touch-icon" href="logo192.png" />
+		<link rel="manifest" href="site.webmanifest" />
+		<link rel="alternate" hreflang="x-default" href="?lang=en" />
+		<link rel="alternate" hreflang="en" href="?lang=en" />
+		<link rel="alternate" hreflang="es" href="?lang=es" />
 	</head>
 	<body>
+		<div id="loading-screen">
+			<div class="spinner">
+				<div class="rect1"></div>
+				<div class="rect2"></div>
+				<div class="rect3"></div>
+				<div class="rect4"></div>
+				<div class="rect5"></div>
+			</div>
+		</div>
 		<div id="root"></div>
-		<script type="module" src="/src/index.js"></script>
+		<script type="module" src="/src/index.jsx"></script>
 	</body>
 </html>
