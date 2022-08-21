@@ -48,7 +48,7 @@ registerRoute(
 
 		return true
 	},
-	createHandlerBoundToURL(import.meta.BASE_URL + '/index.html')
+	createHandlerBoundToURL(import.meta.env.BASE_URL + '/index.html')
 )
 
 // Cache translations

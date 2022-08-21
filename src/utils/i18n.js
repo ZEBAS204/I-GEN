@@ -7,7 +7,7 @@ import HttpApi from 'i18next-http-backend'
 import { supportedLanguages } from './supportedLanguages'
 
 // shortband for if-else later
-const dev = import.meta.MODE === 'development'
+const dev = import.meta.env.DEV
 
 i18n
 	.use(HttpApi)

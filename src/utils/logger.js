@@ -11,9 +11,9 @@ const Logger = log
  * Default Logger level is 3 (WARN)
  * Will display warning and error messages
  */
-if (process.env.NODE_ENV === 'development') log.setDefaultLevel(0)
+if (import.meta.env.DEV) log.setDefaultLevel(0)
 
 export default Logger
 
 //! Make it accessible from console in dev
-if (import.meta.MODE === 'development') window.Logger = Logger
+if (import.meta.env.DEV) window.Logger = Logger

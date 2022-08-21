@@ -191,4 +191,4 @@ export default class TTS {
 })()
 
 //! Make it accessible from console in dev
-if (import.meta.MODE === 'development') window.TTS = TTS
+if (import.meta.env.DEV) window.TTS = TTS

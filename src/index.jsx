@@ -43,8 +43,7 @@ function EnsureDataLoad() {
 }
 
 // Change document title if in dev environment
-if (import.meta.MODE === 'development')
-	document.title = '[DEV] ' + document.title
+if (import.meta.env.DEV) document.title = '[DEV] ' + document.title
 
 createRoot(document.getElementById('root')).render(
 	<StrictMode>
