@@ -25,7 +25,7 @@ export default defineConfig({
 		}),
 		ViteWebfontDownload([
 			'https://fonts.googleapis.com/css2?family=Inter:wght@600;700',
-			'https://fonts.googleapis.com/css2?family=Poppins',
+			'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700',
 		]),
 		progress(),
 	],
@@ -39,6 +39,7 @@ export default defineConfig({
 			'@layouts': resolve(__dirname, 'src/layouts'),
 			'@pages': resolve(__dirname, 'src/pages'),
 			'@utils': resolve(__dirname, 'src/utils'),
+			'@contexts': resolve(__dirname, 'src/components/contexts'),
 		},
 	},
 	//* Handle JS files with JSX syntax
