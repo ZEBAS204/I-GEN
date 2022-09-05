@@ -1,20 +1,12 @@
 import { useState, useCallback } from 'react'
 import { useLifecycles, useUpdateEffect } from 'react-use'
-import {
-	useColorModeValue,
-	Grid,
-	Box,
-	Text,
-	Skeleton,
-	Icon,
-	Button,
-} from '@chakra-ui/react'
+import { Grid, Box, Text, Skeleton, Icon, Button } from '@chakra-ui/react'
 import { RiAddLine } from 'react-icons/ri'
 
-import TTS from '../utils/tts'
-import { useAppContext } from '../layouts/AppContext'
-import { useLocalForage } from '../utils/appStorage'
-import { ReactComponent as GhostIcon } from '../assets/icons/ghost.svg'
+import TTS from '@utils/tts'
+import { useAppContext } from '@layouts/AppContext'
+import { useLocalForage } from '@utils/appStorage'
+import { ReactComponent as GhostIcon } from '@assets/icons/ghost.svg'
 
 // Global variables: cache responses and prevent refetching when is unneeded
 let wasRendered = false
@@ -39,13 +31,12 @@ async function fetchWordSets(nounLang = 'en', adjLang = 'en') {
 
 export default function WordGenerator() {
 	const { gen, speak } = useAppContext()
-	const boxBG = useColorModeValue('blackAlpha.100', 'whiteAlpha.100')
-
 	const [firstRender, setFirstRender] = useState(wasRendered)
-	const [useTTS] = useLocalForage('tts_only_timermode', false)
+	const [isResetLoading, setResetLoading] = useState(false)
+
+	const [useTTS] = useLocalForage('tts_enabled', false)
 	const [words, setWords] = useState({})
 
-	// eslint-disable-next-line react-hooks/exhaustive-deps
 	useUpdateEffect(() => generateNewWordSets(), [gen])
 
 	const getNewPairOfWords = () => ({
@@ -63,7 +54,6 @@ export default function WordGenerator() {
 			// If user enabled TTS, speak
 			if (useTTS && !firstRun) new TTS(`${adj} ${noun}`).say()
 		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[speak]
 	)
 
@@ -83,51 +73,40 @@ export default function WordGenerator() {
 		() => TTS.stop()
 	)
 
-	const WordBox = ({ children }) => (
+	const WordBox = ({ word, ...props }) => (
 		<Box
-			bg={boxBG}
-			boxShadow="md"
-			py={6}
-			px={[4, 6]}
-			rounded="md"
-			sx={{
-				// Fade effect
-				position: 'relative',
-				'&:after, &:before': {
-					content: '""',
-					position: 'absolute',
-					width: '100%',
-					height: '100%',
-					top: 0,
-					left: 0,
-					backgroundColor: boxBG,
-					opacity: 0.5,
-					borderRadius: 'inherit',
-					transformOrigin: 'center',
-					pointerEvents: 'none',
-					zIndex: -1,
-				},
-				'&:before': {
-					transform: 'scale3d(1.05,1.2,1)',
-				},
-				'&:after': {
-					transform: 'scale3d(1.1,1.4,1)',
-				},
+			bg="#fff"
+			_dark={{
+				bg: 'linear-gradient(to right, #6b4ecb 1%, #363e4d 1%, #363e4d 99%, #6b4ecb 99%)',
+				boxShadow: 'none',
 			}}
+			boxShadow="inset 0 0 3px #000"
+			rounded="20px"
+			p={8}
+			{...props}
 		>
-			{!firstRender ? <Skeleton h="24px" /> : <Text>{children}</Text>}
+			{!firstRender ? (
+				<Skeleton w="50%" minH="1em" margin="0 auto" />
+			) : (
+				<Text>{word}</Text>
+			)}
 		</Box>
 	)
 
 	const ContentError = () => (
 		<Grid
+			p={8}
+			mt={5}
+			align="center"
+			borderRadius="20px"
 			justifyItems="center"
-			textAlign="center"
-			alignContent="center"
-			gap={10}
-			width="clamp(1%, 25rem, 80%)"
+			fontSize="2vh"
+			fontWeight={700}
+			fontFamily="Inter, Arial"
+			bgGradient="linear(to-t, #ff4040, #fbca00)"
+			clipPath="polygon(0 0,25% 0,calc(25% + 15px) 15px,calc(75% - 15px) 15px,75% 0,100% 0,100% 100%,60% 100%,calc(60% - 20px) calc(100% - 20px),calc(40% + 20px) calc(100% - 20px),40% 100%,0 100%)"
 		>
-			<Box as={GhostIcon} w="6rem" h="6rem" />
+			<Box as={GhostIcon} w="8em" h="8em" />
 			<Text>
 				Looks like the word sets have not yet loaded!
 				<br />
@@ -135,7 +114,15 @@ export default function WordGenerator() {
 				blocking the data load of the sets files.
 			</Text>
 			<Button
-				onClick={() => fetchWordSets().then(() => generateNewWordSets(true))}
+				w="50%"
+				mt={5}
+				colorScheme="teal"
+				onClick={() => {
+					setResetLoading(true)
+					setTimeout(() => setResetLoading(false), 3000)
+					fetchWordSets().then(() => generateNewWordSets(true))
+				}}
+				isLoading={isResetLoading}
 			>
 				Refresh
 			</Button>
@@ -149,16 +136,44 @@ export default function WordGenerator() {
 
 	return (
 		<Grid
+			w="100%"
+			fontSize="xxx-large"
 			textAlign="center"
-			alignSelf="center"
-			gap={[6, 8]}
-			width="clamp(1%, 25rem, 80%)"
-			fontSize={['x-large', null, 'xx-large']}
-			fontWeight={600}
+			fontFamily="Inter, Arial"
+			textTransform="capitalize"
+			fontWeight={700}
+			lineHeight="80px"
+			color="#000"
+			_dark={{
+				color: '#fff',
+			}}
+			gap={2}
+			pt={5}
 		>
-			<WordBox children={words.adj} />
-			<Icon as={RiAddLine} w={10} h={10} m="0 auto" />
-			<WordBox children={words.noun} />
+			<WordBox
+				word={words.adj}
+				clipPath="polygon(0 0,25% 0,calc(25% + 15px) 15px,calc(75% - 15px) 15px,75% 0,100% 0,100% 100%,60% 100%,calc(60% - 20px) calc(100% - 20px),calc(40% + 20px) calc(100% - 20px),40% 100%,0 100%)"
+			/>
+			<Box h={0}>
+				<Icon
+					as={RiAddLine}
+					color="#8a6aec"
+					position="relative"
+					display="block"
+					top="-73px"
+					w="3em"
+					h="3em"
+					m="0 auto"
+					zIndex={1}
+				/>
+			</Box>
+			<WordBox
+				word={words.noun}
+				clipPath="polygon(0 0,
+					40% 0px, calc(40% + 20px) 20px, calc(60% - 20px) 20px, 60% 0px,
+					100% 0,100% 100%,60% 100%,calc(60% - 20px) calc(100% - 20px),calc(40% + 20px) calc(100% - 20px),40% 100%,
+				0 100%)"
+			/>
 		</Grid>
 	)
 }
