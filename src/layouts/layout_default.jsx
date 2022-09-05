@@ -1,29 +1,28 @@
-import { Flex } from '@chakra-ui/react'
+import { Grid } from '@chakra-ui/react'
 
-// App Components
 import { AppContextProvider } from './AppContext'
-import SideNav from '../components/NavBar'
-import Settings from '../components/settings'
-import MobileTimer from '../components/timer/MobileTimer'
-
-// Pages
-import Home from '../pages/home'
-
-// Style
-import '../assets/scss/main.scss'
+import Settings from '@components/settings'
+import Home from '@pages/home'
+import About from '@components/About'
+import '@assets/scss/main.scss'
 
 export default function DefaultLayout() {
 	return (
-		<AppContextProvider>
-			<Settings />
-			<Flex id="content" direction="column">
-				<SideNav />
-				<MobileTimer />
-
-				<Flex id="content-container">
-					<Home />
-				</Flex>
-			</Flex>
-		</AppContextProvider>
+		<Grid
+			as="main"
+			w="100vw"
+			pt={5}
+			mx="1.5%"
+			templateColumns="20% 50% 20%"
+			templateRows="1fr"
+			gap="3.5%"
+			flex="1 0 auto"
+		>
+			<AppContextProvider>
+				<Settings />
+				<Home />
+			</AppContextProvider>
+			<About />
+		</Grid>
 	)
 }
