@@ -1,0 +1,56 @@
+/*
+ * Generated using cssload.net
+ */
+
+$mug-grad-top: #01c0ff;
+$mug-grad-bottom: #0452ef;
+$mug-handle-top: #03cdff;
+$mug-handle-bottom: #18a5d9;
+
+.cssload-coffee {
+	height: 188px;
+	width: 150px;
+	border-bottom-left-radius: 19px;
+	border-bottom-right-radius: 19px;
+	position: absolute;
+	background: linear-gradient(to bottom left, $mug-grad-top, $mug-grad-bottom);
+}
+
+.cssload-coffee:before {
+	content: '';
+	position: absolute;
+	right: -56px;
+	top: 19px;
+	height: 94px;
+	width: 38px;
+	background: transparent;
+	border: 19px solid $mug-handle-top;
+	border-left: 19px solid transparent;
+	border-bottom: 19px solid $mug-handle-bottom;
+	border-top-right-radius: 38px;
+	border-bottom-right-radius: 38px;
+	box-sizing: content-box; //! fixes edge cut
+}
+
+.cssload-coffee:after {
+	content: '';
+	position: absolute;
+	width: 19px;
+	height: 113px;
+	background: rgba(113, 120, 133, 0.99);
+	border-radius: 15px;
+	top: -120px;
+	box-shadow: 131px 0px 0 rgb(113, 120, 133), 65.5px -56px 0 rgb(94, 100, 110);
+	opacity: 1;
+	animation: cssload-steam 2.1s ease infinite;
+}
+
+@keyframes cssload-steam {
+	100% {
+		top: -150px;
+		background: rgba(54, 62, 77, 0.47);
+		box-shadow: 131px 0px 0 rgba(54, 62, 77, 0.46),
+			65.5px -56px 0 rgba(54, 62, 77, 0.5);
+		opacity: 0;
+	}
+}
