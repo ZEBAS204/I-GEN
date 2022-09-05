@@ -9,17 +9,9 @@ import { useState, useEffect } from 'react'
 import CustomThemeEditor from './CustomThemeEditor'
 
 import { useTranslation } from 'react-i18next'
-import { getData, setData } from '../../utils/appStorage'
-import {
-	Box,
-	Text,
-	Radio,
-	RadioGroup,
-	Checkbox,
-	useColorMode,
-	Stack,
-	Heading,
-} from '@chakra-ui/react'
+import { getData, setData } from '@utils/appStorage'
+import { Checkbox, Stack, Spacer, Heading } from '@chakra-ui/react'
+import { ColorModeToggle } from './ColorModeToggle'
 
 var prevSelectedSync = null
 
@@ -28,8 +20,6 @@ export default function Appearance() {
 
 	// This functions bind to the useDispatch
 	// and allows to send a signal to update other UI components
-
-	const { colorMode, toggleColorMode } = useColorMode()
 	const [systemSync, setSystemSync] = useState(prevSelectedSync ?? false)
 
 	const toggleSystemSync = (val) => {
@@ -50,28 +40,19 @@ export default function Appearance() {
 
 	return (
 		<>
-			<Heading size="md">{t('settings.theme')}</Heading>
-			<br />
-			<Heading size="sm">Change theme</Heading>
-			<Text>Blind or not blind. That's the question</Text>
-			<Box padding={4}>
-				<RadioGroup onChange={toggleColorMode} value={colorMode}>
-					<Stack>
-						<Radio value="light">Light</Radio>
-						<Radio value="dark">Dark</Radio>
-					</Stack>
-				</RadioGroup>
-				<br />
-				<Checkbox
-					isChecked={systemSync}
-					onChange={(e) => toggleSystemSync(e.target.checked)}
-				>
-					Sync with system
-				</Checkbox>{' '}
-				(Applied on restart)
-			</Box>
-
-			<CustomThemeEditor />
+			<Stack direction="row" alignItems="center">
+				<Heading size="md">{t('settings.theme')}</Heading>
+				<Spacer />
+				<ColorModeToggle size="lg" />
+				<CustomThemeEditor />
+			</Stack>
+			<Checkbox
+				pl={2}
+				isChecked={systemSync}
+				onChange={(e) => toggleSystemSync(e.target.checked)}
+			>
+				{t('settings.theme_sync')}
+			</Checkbox>{' '}
 		</>
 	)
 }
