@@ -7,32 +7,32 @@ import {
 } from '@chakra-ui/react'
 import { ThemeEditorProvider } from '@hypertheme-editor/chakra-ui'
 
-import './utils/i18n'
-import { getData } from './utils/appStorage'
-import Logger from './utils/logger'
-import DefaultLayout from './layouts/layout_default'
-import UpdateNotification from './components/UpdateNotification'
+import '@utils/i18n'
+import { getData } from '@utils/appStorage'
+import Logger from '@utils/logger'
+import DefaultLayout from '@layouts/layout_default'
+import UpdateNotification from '@components/UpdateNotification'
+import Footer from '@components/Footer'
 
 /**
  ** DEFAULT THEME OVERRIDE
  ** If you want to set your own custom theme colors, uncomment the next import
  ** and the commented line inside extendTheme
  */
-import { customTheme } from './utils/theme'
+import { customTheme } from '@utils/theme'
 
 export default function App({ swUpdate, registration }) {
 	const [systemSync, setSystemSync] = useState(false)
 
 	const currentTheme = extendTheme(
 		extendTheme({
-			//* Uncomment next line for theme override
 			...customTheme,
 			config: {
 				initialColorMode: 'dark',
 				useSystemColorMode: systemSync,
 			},
 		}),
-		withDefaultColorScheme({ colorScheme: 'blue' })
+		withDefaultColorScheme({ colorScheme: 'yellow' })
 	)
 
 	useEffect(() => {
@@ -51,8 +51,12 @@ export default function App({ swUpdate, registration }) {
 			<ColorModeScript initialColorMode="dark" />
 			<ChakraProvider resetCSS theme={currentTheme}>
 				<ThemeEditorProvider>
-					{swUpdate && <UpdateNotification registration={registration} />}
+					<UpdateNotification
+						isUpdateAvailable={swUpdate}
+						registration={registration}
+					/>
 					<DefaultLayout />
+					<Footer />
 				</ThemeEditorProvider>
 			</ChakraProvider>
 		</>
