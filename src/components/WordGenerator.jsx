@@ -16,20 +16,20 @@ import { useAppContext } from '../layouts/AppContext'
 import { useLocalForage } from '../utils/appStorage'
 import { ReactComponent as GhostIcon } from '../assets/icons/ghost.svg'
 
-// Global variables: cache responses and prevent refetching when its not needed
+// Global variables: cache responses and prevent refetching when is unneeded
 let wasRendered = false
 let fetched = false
 let nouns = null
 let adjs = null
 
-async function fetchWordSets() {
+async function fetchWordSets(nounLang = 'en', adjLang = 'en') {
 	if (fetched && nouns && adjs) return
 
 	await Promise.all([
-		fetch(`/wordsets/noun.json`)
+		fetch(`/wordsets/${nounLang}/noun.json`)
 			.then((res) => res.json())
 			.then((e) => (nouns = shuffleArray(e))),
-		fetch(`/wordsets/adj.json`)
+		fetch(`/wordsets/${adjLang}/adj.json`)
 			.then((res) => res.json())
 			.then((e) => (adjs = shuffleArray(e))),
 	])
