@@ -18,14 +18,17 @@ const settings = [
 	{
 		name: 'appearance',
 		content: Appearance,
+		dark: false,
 	},
 	{
 		name: 'interface',
 		content: Interface,
+		dark: true,
 	},
 	{
 		name: 'accessibility',
 		content: Accessibility,
+		dark: true,
 	},
 ]
 
@@ -52,7 +55,13 @@ export default function SettingsPage() {
 							: 'polygon(-1px 15px, 0px 15px, 15px 0px, 15px 0px, 15px 0px, 15px 0px, 15px -1px, calc(50% - 22.5px) -1px, calc(50% - 22.5px) 0px, calc(50% - 7.5px) 15px, calc(50% + 7.5px) 15px, calc(50% + 22.5px) 0px, calc(50% + 22.5px) -1px, calc(100% - 15px) -1px, calc(100% - 15px) 0px, 100% 15px, 100% 15px, 100% 15px, 100% 15px, calc(100% + 1px) 15px, 100% 100%, 0 100%)'
 					}
 				>
-					<page.content />
+					{page.dark ? (
+						<DarkMode>
+							<page.content />
+						</DarkMode>
+					) : (
+						<page.content />
+					)}
 				</Box>
 			</Box>
 		))
@@ -68,9 +77,7 @@ export default function SettingsPage() {
 			clipPath="polygon(0 0,25% 0,calc(25% + 15px) 15px,calc(75% - 15px) 15px,75% 0,100% 0,100% 100%,60% 100%,calc(60% - 8px) calc(100% - 8px),calc(40% + 8px) calc(100% - 8px),40% 100%,0 100%)"
 		>
 			<Suspense fallback={<LoadingAnimationContainer />}>
-				<DarkMode>
-					<SettingsColumns />
-				</DarkMode>
+				<SettingsColumns />
 			</Suspense>
 		</Flex>
 	)
