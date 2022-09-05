@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react'
-import { Box, Flex, DarkMode } from '@chakra-ui/react'
+import { Box, DarkMode } from '@chakra-ui/react'
 import { LoadingAnimationContainer } from '../common/LoadingAnimation'
 import { useTranslation } from 'react-i18next'
 
@@ -67,11 +67,11 @@ export default function SettingsPage() {
 		))
 
 	return (
-		<Flex
+		<Box
 			as="section"
 			aria-label={t('settings.title')}
 			role="list"
-			direction="column"
+			mb={-8}
 			bgGradient="linear-gradient(to top, #1C2F68, #6F50D0)"
 			borderRadius="20px"
 			clipPath="polygon(0 0,25% 0,calc(25% + 15px) 15px,calc(75% - 15px) 15px,75% 0,100% 0,100% 100%,60% 100%,calc(60% - 8px) calc(100% - 8px),calc(40% + 8px) calc(100% - 8px),40% 100%,0 100%)"
@@ -79,6 +79,6 @@ export default function SettingsPage() {
 			<Suspense fallback={<LoadingAnimationContainer />}>
 				<SettingsColumns />
 			</Suspense>
-		</Flex>
+		</Box>
 	)
 }
