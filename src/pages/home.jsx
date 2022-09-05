@@ -1,30 +1,27 @@
 import { lazy, Suspense } from 'react'
-import { Flex, Center } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
+import GenerateButton from '@components/common/GenerateButton'
+import DesktopTimer from '@components/timer/DesktopTimer'
+import { LoadingAnimationContainer } from '@components/common/LoadingAnimation'
 
-import { useAppContext } from '../layouts/AppContext'
-import GenerateButton from '../components/common/GenerateButton'
-
-const WordGenerator = lazy(() => import('../components/WordGenerator'))
-const DesktopTimer = lazy(() => import('../components/timer/DesktopTimer'))
+const WordGenerator = lazy(() => import('@components/WordGenerator'))
 
 export default function Home() {
-	const { isInMobileView } = useAppContext()
-
 	return (
-		<>
-			<Flex flexBasis="100%" justify="space-around">
-				<Suspense fallback={<p>Loading word sets...</p>}>
-					<WordGenerator />
-				</Suspense>
-				{!isInMobileView && (
-					<Center flexDirection="column" w="clamp(1%, 25rem, 50%)">
-						<Suspense fallback={<p>Loading timer...</p>}>
-							<DesktopTimer />
-						</Suspense>
-					</Center>
-				)}
-			</Flex>
+		<Flex as="section" direction="column" align="center">
+			<Suspense
+				fallback={
+					<LoadingAnimationContainer
+						min-height="15em"
+						transform="scale(0.7)"
+						transformOrigin="bottom"
+					/>
+				}
+			>
+				<WordGenerator />
+			</Suspense>
 			<GenerateButton />
-		</>
+			<DesktopTimer />
+		</Flex>
 	)
 }
