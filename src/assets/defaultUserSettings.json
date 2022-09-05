@@ -17,6 +17,21 @@
     "max": 359999
   },
   {
+    "key": "words_lang",
+    "type": "string",
+    "value": "en"
+  },
+  {
+    "key": "lang_adj",
+    "type": "string",
+    "value": "en"
+  },
+  {
+    "key": "lang_noun",
+    "type": "string",
+    "value": "en"
+  },
+  {
     "key": "notify_enabled",
     "type": "boolean",
     "value": false
