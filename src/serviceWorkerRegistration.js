@@ -10,7 +10,7 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://cra.link/PWA
 
-import Logger from './utils/logger'
+import Logger from '@utils/logger'
 
 const isLocalhost = Boolean(
 	window.location.hostname === 'localhost' ||

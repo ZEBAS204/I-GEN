@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorkerRegistration'
 import Logger from '@utils/logger'
 import { localforage } from '@utils/appStorage'
 
-import './utils/i18n'
+import '@utils/i18n'
 import defaultSettings from '@utils/defaultSettings'
 import App from './App'
 
