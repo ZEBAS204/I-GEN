@@ -1,7 +1,6 @@
 import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import * as serviceWorker from './serviceWorkerRegistration'
-import '@hookstate/devtools'
 
 import Logger from '@utils/logger'
 import { localforage } from '@utils/appStorage'
