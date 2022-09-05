@@ -21,7 +21,9 @@
 		"sourceType": "module"
 	},
 	"rules": {
-		"no-unused-vars": "warn"
+		"no-unused-vars": "warn",
+		"react/prop-types": "off",
+		"react/display-name": "off"
 	},
 	"plugins": ["react", "import", "jsx-a11y", "react-hooks", "prettier"]
 }
