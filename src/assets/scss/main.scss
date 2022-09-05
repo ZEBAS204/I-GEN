@@ -1,153 +1,72 @@
-:root {
-	// Firefox 64 compatibility
-	scrollbar-color: #858688 rgba(0, 0, 0, 0.25);
-	// Firefox 63 compatibility
-	scrollbar-face-color: #858688;
-	scrollbar-track-color: rgba(0, 0, 0, 0.25);
-	scrollbar-width: thin;
+body {
+	margin: 0;
 }
 
 #root {
-	height: 100vh;
-}
-
-#content {
-	height: 100%;
-}
-
-#content-container {
-	border-radius: var(--chakra-radii-md);
-	flex-basis: auto;
-	flex-grow: 1;
+	min-height: 100vh;
+	display: flex;
 	flex-direction: column;
-	padding: var(--chakra-space-5);
-
-	&::before {
-		// Create a GRID effect in the background
-		content: '';
-		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(15 23 42 / 0.04)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
-		background-position: center;
-		-webkit-mask-image: linear-gradient(to bottom, transparent, #000);
-		mask-image: linear-gradient(to bottom, transparent, #000);
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		pointer-events: none;
-	}
-}
-
-// Fixes blur effect when running animations
-#animation-container {
-	position: fixed;
-	z-index: 3;
-	height: 100vh;
-	width: 100vw;
-	padding: 1rem;
-}
-
-#blur-background {
-	height: 100vh;
-	width: 100vw;
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 2;
-
-	// Blur background effect
-	-webkit-backdrop-filter: blur(10px);
-	backdrop-filter: blur(20px);
-}
-
-// Fallback background if blur is not supported
-@supports not ((backdrop-filter: none) or (-webkit-backdrop-filter: none)) {
-	body.chakra-ui-light #blur-background {
-		background-color: #fff;
-	}
-	body.chakra-ui-dark #blur-background {
-		background-color: #1a202c;
-	}
+	overflow: hidden;
 }
 
 .scrollable {
 	overflow: hidden auto;
 }
 
-@media screen and (max-width: 650px) {
-	// Increase font size in mobile devices
-	html {
-		font-size: 18px;
-	}
-
-	#content-container {
-		border-radius: 0 !important;
-		padding: 0;
-
-		// Center word sets
-		margin-top: clamp(-10vh, -3.5rem, -4rem);
-	}
-
-	// Remove padding from the settings buttons
-	#animation-container {
-		padding: 0;
-	}
-}
-
-@media (orientation: landscape) {
-	// Fixes unwanted side blank spaces in landscape mode
-	html,
-	body {
-		width: 100%;
-		overflow: hidden;
-	}
-}
-
-::-webkit-scrollbar {
-	width: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-	background: #85868873;
-	border: 0;
-	border-radius: 30px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-	background: #858688;
-}
-
-::-webkit-scrollbar-track {
-	background: rgba(0, 0, 0, 0.1);
-	border-radius: inherit;
-}
-
-@keyframes slide-in {
-	100% {
-		transform: translateY(-50px);
-	}
-}
-
-#mobile-countdown {
+#loading-screen {
 	position: fixed;
-	bottom: -50px;
-	left: 0;
+	display: flex;
+	height: 100vh;
+	width: 100vw;
+	background: #1a202c;
+	z-index: 9999999;
+}
+
+.spinner {
+	margin: auto;
 	width: 100%;
-	text-align: left;
-	padding: 10px;
-	padding-bottom: clamp(12vh, 3.5rem, 6rem);
-	animation: slide-in 0.25s forwards;
+	height: 100px;
+	text-align: center;
+	font-size: 10px;
+	transform: scale(2);
+}
 
-	&-progress {
-		position: absolute;
-		top: 0;
-		left: 0;
-		height: 5px;
-		width: 100%;
+.spinner > div {
+	background-color: #9700ff;
+	height: 100%;
+	width: 8px;
+	display: inline-block;
+	animation: sk-stretchdelay 1.2s infinite ease-in-out;
+	margin-right: 10px;
+}
 
-		// Chakra automatically applies a transition to the
-		// progress width, the only wrong is that the transition
-		// is almost nonexistent
-		& > div {
-			transition: width 1s linear;
-		}
+.spinner .rect2 {
+	-webkit-animation-delay: -1.1s;
+	animation-delay: -1.1s;
+}
+
+.spinner .rect3 {
+	-webkit-animation-delay: -1s;
+	animation-delay: -1s;
+}
+
+.spinner .rect4 {
+	-webkit-animation-delay: -0.9s;
+	animation-delay: -0.9s;
+}
+
+.spinner .rect5 {
+	-webkit-animation-delay: -0.8s;
+	animation-delay: -0.8s;
+}
+
+@keyframes sk-stretchdelay {
+	0%,
+	40%,
+	100% {
+		transform: scaleY(0.4);
+	}
+	20% {
+		transform: scaleY(1);
 	}
 }
