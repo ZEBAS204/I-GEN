@@ -1,40 +1,58 @@
 {
-  "buttons": {
-    "home": "Inicio",
-    "regenerate": "Regenerar",
+  "common": {
+    "loading": "Cargando",
+    "noun": "Sustantivo",
+    "adjective": "Adjetivo",
     "timermode": "Contratiempo",
+    "settings": "Configuración",
+    "new_version": "¡Hay una nueva versión disponible!"
+  },
+  "buttons": {
+    "regenerate": "Regenerar",
     "settings": "Configuración",
     "play_btn": "Iniciar",
     "stop_btn": "Detener",
     "reset_btn": "Reiniciar",
-    "selected": "Seleccionado"
+    "timermode": "Temporizador",
+    "new_version_btn": "Refrescar"
   },
   "settings": {
-    "interface": "Interfaz",
-    "appearance": "Apariencia",
-    "accessibility": "Accesibilidad",
-    "keybinds": "Atajos de teclado",
-    "advanced": "Avanzado",
-    "about": "Acerca de {{app_name}}",
-    "language": "Idioma",
     "theme": "Tema",
+    "theme_toggle": "Cambiar tema",
+    "theme_dark": "Oscuro",
+    "theme_light": "Claro",
+    "theme_sync": "Sincronizar con ordenador (aplicado al reiniciar)",
+    "language": "Idioma",
+    "language_words": "Idioma de palabras",
+    "language_words_desc": "Idioma utilizado para las palabras generadas.",
+    "language_word_custom": "Personalizado",
+    "language_contribute": "Contribuír a las traducciones",
     "tts": "Texto a voz",
-    "service_worker": "Service worker",
-    "debugging": "Debugging"
+    "tts_dropdown": "Seleccionar voz del Texto a voz",
+    "tts_speech_timer": "Habilitar solo con el temporizador",
+    "tts_volume": "Volumen",
+    "tts_rate": "Velocidad",
+    "tts_lower": "Bajo",
+    "tts_higher": "Alto",
+    "tts_slower": "Lento",
+    "tts_faster": "Rápido",
+    "tts_test_btn": "Previsualizar",
+    "tts_test_stop_btn": "Detener",
+    "tts_test_input": "Previsualizar texto a voz"
   },
-  "themes": {
-    "blue": "Azul",
-    "gray": "Gris",
-    "red": "Rojo",
-    "green": "Verde",
-    "purple": "Morado",
-    "pink": "Rosa",
-    "yellow": "Amarillo",
-    "orange": "Naranja",
-    "cyan": "Celeste",
-    "teal": "Verde azulado",
-    "whatsapp": "Whorapp",
-    "twitter": "Twitha",
-    "telegram": "Telegram"
+  "about": {
+    "title": "Acerca de {{app_name}}",
+    "desc": "{{app_name}} es una aplicación para generar conjuntos de palabras aleatorias compuestas de un sustantivo y adjetivo."
+  },
+  "keybinds": {
+    "title": "Atajos de teclado",
+    "desc_alert": "¡Recuerda!",
+    "desc_keybinds": "Siempre puedes utilizar {{tab}} y {{shift}}{{tab}} para moverte por toda la página.",
+    "words": "Palabras",
+    "words_desc": "Generar nuevo conjunto de palabras",
+    "timer": "Temporizador",
+    "timer_desc": "Pausar/Resumir temporizador",
+    "timer_desc2": "Reiniciar temporizador",
+    "words_title": ""
   }
 }

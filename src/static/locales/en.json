@@ -1,40 +1,63 @@
 {
+  "common": {
+    "loading": "Loading",
+    "noun": "Noun",
+    "adjective": "Adjective",
+    "settings": "Settings",
+    "timermode": "Timer",
+    "new_version": "A new version is available!"
+  },
   "buttons": {
-    "home": "Home",
     "regenerate": "Regenerate",
     "timermode": "Timer",
-    "settings": "Settings",
     "play_btn": "Resume",
     "stop_btn": "Pause",
     "reset_btn": "Reset",
-    "selected": "Selected"
+    "settings": "Settings",
+    "new_version_btn": "Refresh"
   },
   "settings": {
-    "interface": "Interface",
-    "appearance": "Appearance",
-    "accessibility": "Accessibility",
-    "keybinds": "Keybinds",
-    "advanced": "Advanced",
-    "about": "About {{app_name}}",
-    "language": "Language",
     "theme": "Theme",
+    "theme_toggle": "Toggle theme",
+    "theme_dark": "Dark",
+    "theme_light": "Light",
+    "theme_sync": "Sync with system (applied on restart)",
+    "language": "Language",
+    "language_words": "Wordsets language",
+    "language_words_desc": "Select the language to use for the wordsets.",
+    "language_word_custom": "Personalized",
+    "language_contribute": "Contribute to translations",
     "tts": "Text To Speech",
-    "service_worker": "Service worker",
-    "debugging": "Debugging"
+    "tts_dropdown": "Select Text-to-Speech voice",
+    "tts_speech_timer": "Speech only on timer",
+    "tts_volume": "Volume",
+    "tts_rate": "Rate",
+    "tts_lower": "Lower",
+    "tts_higher": "Higher",
+    "tts_slower": "Slower",
+    "tts_faster": "Faster",
+    "tts_test_btn": "Preview",
+    "tts_test_stop_btn": "Stop",
+    "tts_test_input": "Preview TTS voice"
   },
-  "themes": {
-    "blue": "Blue",
-    "gray": "Gray",
-    "red": "Red",
-    "green": "Green",
-    "purple": "Purple",
-    "pink": "Pink",
-    "yellow": "Yellow",
-    "orange": "Orange",
-    "cyan": "Cyan",
-    "teal": "Teal",
-    "whatsapp": "Whorapp",
-    "twitter": "Twitha",
-    "telegram": "Telegram"
+  "about": {
+    "title": "About",
+    "desc": "{{app_name}} is a free and open source application that generates random wordsets for you to practice."
+  },
+  "keybinds": {
+    "title": "Keybinds",
+    "desc_alert": "Remember!",
+    "desc_keybinds": "You can always use {{tab}} and {{shift}}{{tab}} to move around the hole page!",
+    "words": "Words",
+    "words_desc": "Generate new pairs of words",
+    "timer": "Timer",
+    "timer_desc": "Pause/Resume countdown",
+    "timer_desc2": "Reset countdown"
+  },
+  "languages": {
+    "custom": "Custom",
+    "en": "English",
+    "es": "Spanish",
+    "fr": "French"
   }
 }
