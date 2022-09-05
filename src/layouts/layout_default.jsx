@@ -3,7 +3,7 @@ import { Grid } from '@chakra-ui/react'
 import { AppContextProvider } from './AppContext'
 import Settings from '@components/settings'
 import Home from '@pages/home'
-import About from '@components/About'
+import About from '@components/about'
 import '@assets/scss/main.scss'
 
 export default function DefaultLayout() {
