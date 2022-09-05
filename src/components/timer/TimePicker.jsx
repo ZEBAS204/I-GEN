@@ -1,8 +1,20 @@
 import { useState, useRef } from 'react'
-import { Grid, Box, Button, Input, Heading, Text } from '@chakra-ui/react'
+import { Grid, Box, Button, Input, Text } from '@chakra-ui/react'
 import { RiArrowUpSLine, RiArrowDownSLine } from 'react-icons/ri'
 import { useLifecycles, useUpdateEffect } from 'react-use'
-import { useAppContext } from '../../layouts/AppContext'
+import { useTimerContext } from './TimerContext'
+
+const ArrowButton = (props) => (
+	<Button variant="ghost" size="xs" w="90%" {...props} />
+)
+
+const NumText = ({ children }) => <Text fontSize="lg">{children}</Text>
+
+const PresetButton = ({ preset, ...props }) => (
+	<Button variant="outline" border="2px solid" {...props}>
+		{preset}
+	</Button>
+)
 
 const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 	const [picker, setPicked] = useState({
@@ -30,25 +42,26 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 	useUpdateEffect(() => onSelect(picker.current), [picker.current])
 
 	//* Update if parent change time
-	useUpdateEffect(() => changeTime(time), [time])
+	useUpdateEffect(() => {
+		if (time !== picker.current) changeTime(time)
+	}, [time])
 
 	//* Restore time from parent
 	useLifecycles(() => time && changeTime(time))
-
-	const ArrowButton = (props) => (
-		<Button variant="ghost" size="xs" w="90%" {...props} />
-	)
-	const NumText = ({ children }) => <Text fontSize="lg">{children}</Text>
 
 	return (
 		<Box
 			display="flex"
 			flexDir="column"
 			alignItems="center"
-			bgGradient="linear(to-t, blackAlpha.400, transparent, blackAlpha.400)"
+			bgGradient="linear(to-t, gray.200, transparent, gray.200)"
+			_dark={{
+				bgGradient: 'linear(to-t, blackAlpha.400, transparent, blackAlpha.400)',
+			}}
 			borderRadius="20px"
+			mx="15px"
 			gap={2}
-			p={3}
+			p={4}
 		>
 			<ArrowButton as={RiArrowUpSLine} onClick={increment} />
 			<NumText>{picker.next}</NumText>
@@ -58,6 +71,10 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 				fontWeight="bold"
 				textAlign="center"
 				w="90%"
+				bg="blackAlpha.100"
+				_dark={{
+					bg: 'whiteAlpha.100',
+				}}
 				value={picker.current}
 				onChange={(e) => changeTime(parseInt(e.target.value) || 0)}
 			/>
@@ -68,7 +85,7 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 }
 
 export default function TimePicker() {
-	const { time, changeTime } = useAppContext()
+	const { time, changeTime } = useTimerContext()
 
 	const [hours, setHours] = useState(null)
 	const [minutes, setMinutes] = useState(null)
@@ -79,7 +96,7 @@ export default function TimePicker() {
 	const updateSeconds = (e) => setSeconds(e)
 
 	/*
-	 * Will save the last converted time.
+	 * Will save the lastest converted time.
 	 * Force React to allways get the last
 	 * updated states
 	 */
@@ -104,61 +121,43 @@ export default function TimePicker() {
 		() => newTime.current && changeTime(newTime.current)
 	)
 
-	const PresetButton = (props) => (
-		<Button
-			variant="outline"
-			sx={{
-				border: '2px solid',
-			}}
-			{...props}
-		>
-			{props.preset}
-		</Button>
-	)
-
 	return (
-		<>
-			<Heading size="md" textAlign="center">
-				Set time
-			</Heading>
-			<br />
-			<Grid
-				templateColumns="repeat(3, 1fr)"
-				textAlign="center"
-				gap={[4, 8]}
-				p={[4, 8]}
-			>
-				<p>Hours</p>
-				<p>Minutes</p>
-				<p>Seconds</p>
-				<NumSelector time={hours} onSelect={updateHours} max={99} />
-				<NumSelector time={minutes} onSelect={updateMinutes} />
-				<NumSelector time={seconds} onSelect={updateSeconds} />
-				<PresetButton
-					preset="01:00:00"
-					onClick={() => {
-						updateHours(1)
-						updateMinutes(0)
-						updateSeconds(0)
-					}}
-				/>
-				<PresetButton
-					preset="00:30:00"
-					onClick={() => {
-						updateHours(0)
-						updateMinutes(30)
-						updateSeconds(0)
-					}}
-				/>
-				<PresetButton
-					preset="00:10:00"
-					onClick={() => {
-						updateHours(0)
-						updateMinutes(10)
-						updateSeconds(0)
-					}}
-				/>
-			</Grid>
-		</>
+		<Grid
+			templateColumns="repeat(3, 1fr)"
+			textAlign="center"
+			gap={[4, 8]}
+			p={[4, 8]}
+		>
+			<p>Hours</p>
+			<p>Minutes</p>
+			<p>Seconds</p>
+			<NumSelector time={hours} onSelect={updateHours} max={99} />
+			<NumSelector time={minutes} onSelect={updateMinutes} />
+			<NumSelector time={seconds} onSelect={updateSeconds} />
+			<PresetButton
+				preset="01:00:00"
+				onClick={() => {
+					updateHours(1)
+					updateMinutes(0)
+					updateSeconds(0)
+				}}
+			/>
+			<PresetButton
+				preset="00:30:00"
+				onClick={() => {
+					updateHours(0)
+					updateMinutes(30)
+					updateSeconds(0)
+				}}
+			/>
+			<PresetButton
+				preset="00:10:00"
+				onClick={() => {
+					updateHours(0)
+					updateMinutes(10)
+					updateSeconds(0)
+				}}
+			/>
+		</Grid>
 	)
 }

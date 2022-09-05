@@ -1,25 +1,29 @@
-import { Heading } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 
-import { TimeManager, CountDown } from './CountDown'
+import { TimerContextProvider } from './TimerContext'
+import TimeManager from './TimeManager'
+import CountDown from './CountDown'
 
 export default function DesktopTimer() {
 	const { t } = useTranslation()
-	const currentColor = 'blue'
 
 	return (
-		<>
-			<Heading
-				fontSize="xx-large"
-				lineHeight="2em"
-				fontWeight="bold"
-				color={`${currentColor}.300`}
-			>
-				{t('buttons.timermode')}
-			</Heading>
-			<TimeManager>
-				<CountDown />
-			</TimeManager>
-		</>
+		<Flex
+			as="section"
+			aria-label={t('buttons.timermode')}
+			w="100%"
+			h="100%"
+			p={10}
+			pt={0}
+			flexDir="column"
+			alignItems="center"
+		>
+			<TimerContextProvider>
+				<TimeManager>
+					<CountDown />
+				</TimeManager>
+			</TimerContextProvider>
+		</Flex>
 	)
 }

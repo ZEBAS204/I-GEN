@@ -1,207 +1,95 @@
-import { useState, useEffect, cloneElement, useMemo } from 'react'
-import { useInterval } from 'react-use'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-	useColorModeValue,
-	Text,
-	Flex,
-	Spacer,
-	ButtonGroup,
-	Button,
-	IconButton,
-	Progress,
-} from '@chakra-ui/react'
-import { RiTimeFill } from 'react-icons/ri'
+import { Flex, Button } from '@chakra-ui/react'
+import { FaPause, FaPlay, FaWrench, FaRedoAlt } from 'react-icons/fa'
 
-import { useAppContext } from '../../layouts/AppContext'
-import Clock from './Clock'
+import { useTimerContext } from './TimerContext'
 import TimePicker from './TimePicker'
+import Clock from './Clock'
 
-/** Default fallback of the remaining time if not time is provided (10min) */
-const defaultTime = 600
+const ShapeButton = (props) => (
+	<Button
+		minW="30%"
+		size="lg"
+		justifyContent="flex-start"
+		borderRadius={0}
+		leftIcon={props.icon}
+		transition="ease-out 100ms max-width"
+		{...props}
+	>
+		{props.children}
+	</Button>
+)
 
-/**
- * Converts the number to a string and add a leading zero
- * @param {number} num Number to convert
- * @returns {string} Formated number
- * @example padWithZero(3) // returns '03'
- */
-const padWithZero = (num = 0) => String(num).padStart(2, '0')
-
-/**
- * If the number is not zero, returns number it's type as strings
- * @param {number} num
- * @param {string|'h'|'m'|'s'} type Time type
- * @returns {string}
- * @example ifNotZero(3, 's') // returns '3s'
- */
-const ifNotZero = (num, type) => (num ? num + type : '')
-
-const TimeManager = ({ children }) => {
-	const { time, isRunning, generateWord, reset } = useAppContext()
-
-	const [totalTime, setTotalTime] = useState(time || defaultTime)
-	const [secondsRemaining, setSecondsRemaining] = useState(time || defaultTime)
-
-	const secondsToDisplay = secondsRemaining % 60
-	const minutesRemaining = (secondsRemaining - secondsToDisplay) / 60
-	const minutesToDisplay = minutesRemaining % 60
-	const hoursToDisplay = (minutesRemaining - minutesToDisplay) / 60
-
-	//* Allows to return memoized values of the total time
-	//* without having to deal with extra arguments
-	const _ = useMemo(
-		() => ({
-			hours: hoursToDisplay,
-			min: minutesToDisplay,
-			sec: secondsToDisplay,
-		}),
-		[totalTime] // eslint-disable-line react-hooks/exhaustive-deps
-	)
-
-	const remainingtimeToDisplay = `${padWithZero(hoursToDisplay)}:${padWithZero(
-		minutesToDisplay
-	)}:${padWithZero(secondsToDisplay)}`
-
-	const totalTimeToDisplay = `Total ${ifNotZero(_.hours, 'h')} ${ifNotZero(
-		_.min,
-		'm'
-	)} ${ifNotZero(_.sec, 's')}`
-
-	// Update total time with context
-	useEffect(() => {
-		setTotalTime(time)
-		setSecondsRemaining(time)
-	}, [time]) // eslint-disable-line react-hooks/exhaustive-deps
-
-	const [parentRunning, setParentRunning] = useState(isRunning)
-	useEffect(() => setParentRunning(() => isRunning), [isRunning]) // eslint-disable-line react-hooks/exhaustive-deps
-
-	// Allow parent to reset timer
-	const resetTimer = () => setSecondsRemaining(totalTime)
-	useEffect(() => resetTimer(), [reset]) // eslint-disable-line react-hooks/exhaustive-deps
-
-	useInterval(
-		() => {
-			if (parentRunning && secondsRemaining > 0)
-				setSecondsRemaining((e) => e - 1)
-			else {
-				generateWord()
-				resetTimer()
-			}
-		},
-		// passing null stops the interval
-		parentRunning ? 1000 : null
-	)
-
-	if (!children) throw Error('TimeManager component requires a children')
-
-	return cloneElement(children, {
-		parentRunning,
-		totalTime,
-		remainingTime: secondsRemaining,
-		remainingtimeToDisplay,
-		totalTimeToDisplay,
-	})
-}
-
-const MobileCountDown = ({
+export default function CountDown({
 	parentRunning = false,
-	totalTime = 0,
-	remainingTime = 0,
-	remainingtimeToDisplay = 0,
-	totalTimeToDisplay = 0,
-}) => {
+	remainingtimeToDisplay,
+}) {
 	const { t } = useTranslation()
-	const currentColor = 'blue'
-	const fillColor = useColorModeValue('700', '600')
-	const bgColor = useColorModeValue('#d6d6d6', '#303b52')
-	const {
-		isInMobileView,
-		toggleRunning,
-		toggleTimePickerVisible,
-		isTimerVisible,
-	} = useAppContext()
-
-	if (!isInMobileView || !isTimerVisible) return <></>
-
-	return (
-		<Flex
-			id="mobile-countdown"
-			fontFamily="consolas"
-			alignItems="center"
-			textAlign="center"
-			bg={bgColor}
-		>
-			<Progress
-				id="mobile-countdown-progress"
-				value={totalTime - remainingTime}
-				max={totalTime}
-				size="xs"
-				colorScheme={currentColor}
-				bg={`${currentColor}.${fillColor}`}
-				color={`${currentColor}.${fillColor}`}
-			/>
-			<div>
-				<Text fontWeight="bold" fontSize="2xl" lineHeight="20px">
-					{remainingtimeToDisplay}
-				</Text>
-				<Text fontSize={15}>{totalTimeToDisplay}</Text>
-			</div>
-			<Spacer />
-			<ButtonGroup colorScheme={parentRunning ? 'red' : null} isAttached>
-				<IconButton
-					icon={<RiTimeFill />}
-					onClick={toggleTimePickerVisible}
-					title="Change Time"
-					aria-label="Change time"
-					rounded="full"
-					fontSize="20px"
-					disabled={parentRunning}
-				/>
-				<Button onClick={toggleRunning}>
-					{parentRunning ? t('buttons.stop_btn') : t('buttons.play_btn')}
-				</Button>
-			</ButtonGroup>
-		</Flex>
-	)
-}
-
-const CountDown = ({
-	parentRunning = false,
-	totalTime = 0,
-	remainingTime = 0,
-	remainingtimeToDisplay = '',
-	totalTimeToDisplay = '',
-}) => {
-	const { t } = useTranslation()
-	const { toggleRunning, sendReset } = useAppContext()
+	const { toggleRunning, sendReset } = useTimerContext()
 	const [isPickerVisible, setPickerVisible] = useState(false)
 
 	const handleTogglePicker = () => setPickerVisible(!isPickerVisible)
 
 	return (
 		<>
-			{!isPickerVisible && (
-				<Clock
-					totalTime={totalTime}
-					remainingTime={remainingTime}
-					remainingtimeToDisplay={remainingtimeToDisplay}
-					totalTimeToDisplay={totalTimeToDisplay}
-				/>
-			)}
+			<Flex
+				justifyContent="center"
+				alignItems="center"
+				borderRadius="20px"
+				px={16}
+				minW="90%"
+				bg="#fff"
+				boxShadow="inset 0 0 3px #000"
+				_dark={{
+					bg: '#363e4d',
+					boxShadow: 'none',
+				}}
+				clipPath="polygon(0 0,25% 0,calc(25% + 15px) 15px,calc(75% - 15px) 15px,75% 0,100% 0,100% 100%,60% 100%,calc(60% - 15px) calc(100% - 15px),calc(40% + 15px) calc(100% - 15px),40% 100%,0 100%)"
+			>
+				{isPickerVisible ? (
+					<TimePicker />
+				) : (
+					<Clock remainingtimeToDisplay={remainingtimeToDisplay} />
+				)}
+			</Flex>
 
-			{isPickerVisible && <TimePicker />}
-
-			<ButtonGroup colorScheme={parentRunning ? 'red' : null}>
-				<Button onClick={sendReset}>{t('buttons.reset_btn')}</Button>
-				<Button onClick={toggleRunning}>
+			<Flex
+				p={10}
+				gap={3}
+				minW="30vw"
+				boxShadow="inset 0 -1px 3px #000"
+				bg="#fff"
+				_dark={{
+					bg: '#363e4d',
+					boxShadow: 'none',
+				}}
+				justifyContent="space-between"
+				borderRadius="0 0 20px 20px"
+				clipPath="polygon(0 0,25% 0,calc(25% + 15px) 15px,calc(75% - 15px) 15px,75% 0,100% 0,100% 100%,60% 100%,calc(60% - 8px) calc(100% - 8px),calc(40% + 8px) calc(100% - 8px),40% 100%,0 100%)"
+			>
+				<ShapeButton
+					icon={<FaRedoAlt />}
+					onClick={isPickerVisible ? null : sendReset}
+					isDisabled={isPickerVisible}
+				>
+					{t('buttons.reset_btn')}
+				</ShapeButton>
+				<ShapeButton
+					icon={parentRunning ? <FaPause /> : <FaPlay />}
+					onClick={isPickerVisible ? null : toggleRunning}
+					isDisabled={isPickerVisible}
+				>
 					{parentRunning ? t('buttons.stop_btn') : t('buttons.play_btn')}
-				</Button>
-				<Button onClick={handleTogglePicker}>Edit</Button>
-			</ButtonGroup>
+				</ShapeButton>
+				<ShapeButton
+					icon={<FaWrench />}
+					onClick={handleTogglePicker}
+					isDisabled={parentRunning}
+				>
+					Edit
+				</ShapeButton>
+			</Flex>
 		</>
 	)
 }
-
-export { TimeManager, CountDown, MobileCountDown }
