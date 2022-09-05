@@ -15,6 +15,27 @@ const components = {
 			fontWeight: 600,
 		},
 	},
+	Select: {
+		variants: {
+			filled: {
+				field: {
+					color: '#fff',
+					bg: 'blackAlpha.400',
+					_hover: {
+						bg: 'blackAlpha.500',
+					},
+				},
+			},
+		},
+	},
+	Kbd: {
+		baseStyle: {
+			color: '#000',
+			_dark: {
+				color: '#f0f0f0',
+			},
+		},
+	},
 }
 
 const customTheme = {
@@ -57,12 +78,8 @@ const customTheme = {
 
 			body: {
 				// Lightmode - Darkmode
-				color: mode(null, '#f0f0f0')(props),
-				// bg: mode(null, '#2f343f')(props),
-				bgGradient: mode(
-					'linear(to-t, gray.50, gray.100)',
-					'linear(to-t, gray.800, gray.700)'
-				)(props),
+				color: '#f0f0f0',
+				bg: mode('#e9ecef', '#1c1b22')(props),
 
 				fontFamily: 'Poppins, Arial',
 			},
