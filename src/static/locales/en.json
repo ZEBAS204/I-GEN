@@ -3,27 +3,24 @@
     "loading": "Loading",
     "noun": "Noun",
     "adjective": "Adjective",
-    "settings": "Settings",
-    "timermode": "Timer",
     "new_version": "A new version is available!"
   },
   "buttons": {
     "regenerate": "Regenerate",
-    "timermode": "Timer",
     "play_btn": "Resume",
     "stop_btn": "Pause",
     "reset_btn": "Reset",
-    "settings": "Settings",
     "new_version_btn": "Refresh"
   },
   "settings": {
+    "title": "Settings",
     "theme": "Theme",
     "theme_toggle": "Toggle theme",
     "theme_dark": "Dark",
     "theme_light": "Light",
     "theme_sync": "Sync with system (applied on restart)",
     "language": "Language",
-    "language_words": "Wordsets language",
+    "language_words": "Word language",
     "language_words_desc": "Select the language to use for the wordsets.",
     "language_word_custom": "Personalized",
     "language_contribute": "Contribute to translations",
@@ -55,9 +52,15 @@
     "timer_desc2": "Reset countdown"
   },
   "languages": {
-    "custom": "Custom",
     "en": "English",
     "es": "Spanish",
     "fr": "French"
+  },
+  "timer": {
+    "title": "Timer",
+    "presets": "Presets",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds"
   }
 }

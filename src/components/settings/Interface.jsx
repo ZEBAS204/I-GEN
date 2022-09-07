@@ -73,7 +73,7 @@ export default function Interface() {
 							</option>
 						))
 					}
-					<option value="custom">{t('languages.custom')}</option>
+					<option value="custom">{t('settings.language_word_custom')}</option>
 				</Select>
 			</Stack>
 

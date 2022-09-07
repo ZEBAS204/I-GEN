@@ -3,27 +3,24 @@
     "loading": "Chargement",
     "noun": "Nom",
     "adjective": "Adjectif",
-    "settings": "Paramètres",
-    "timermode": "Minuteur",
     "new_version": "Une nouvelle version est disponible!"
   },
   "buttons": {
     "regenerate": "Générer",
-    "timermode": "Minuteur",
     "play_btn": "Démarrer",
     "stop_btn": "Arrêter",
     "reset_btn": "Réinitialiser",
-    "settings": "Paramétres",
     "new_version_btn": "Rafraîchir"
   },
   "settings": {
+    "title": "Paramètres",
     "theme": "Thème",
-    "theme_toggle": "Toggle theme",
+    "theme_toggle": "Changer de thème",
     "theme_dark": "Sombre",
     "theme_light": "Clair",
     "theme_sync": "Synchroniser avec l'ordinateur (appliqué au redémarrage)",
     "language": "Langue",
-    "language_words": "",
+    "language_words": "Langage des mots",
     "language_words_desc": "Langue utilisée pour les mots.",
     "language_word_custom": "Personnalisé",
     "language_contribute": "Contribuer aux traductions",
@@ -47,12 +44,18 @@
   "keybinds": {
     "title": "Raccourcis clavier",
     "desc_alert": "Rappelle!",
-    "desc_keybinds": "Tu pouvez utiliser les touches flèches pour déplacer la sélection.",
+    "desc_keybinds": "Tu peux utiliser les touches flèches pour déplacer la sélection.",
     "words": "Mots",
     "words_desc": "Genère des mots aléatoires",
     "timer": "Minuteur",
     "timer_desc": "Arrêter/Démarrer le minuteur",
-    "timer_desc2": "Réinitialiser le minuteur",
-    "words_title": ""
+    "timer_desc2": "Réinitialiser le minuteur"
+  },
+  "timer": {
+    "title": "Minuteur",
+    "presets": "Préconfigurations",
+    "hours": "Heures",
+    "minutes": "Minutes",
+    "seconds": "Secondes"
   }
 }

@@ -11,7 +11,7 @@ export default function DesktopTimer() {
 	return (
 		<Flex
 			as="section"
-			aria-label={t('buttons.timermode')}
+			aria-label={t('timer.title')}
 			w="100%"
 			h="100%"
 			p={10}
