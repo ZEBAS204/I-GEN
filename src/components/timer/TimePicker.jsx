@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import {
+	Icon,
 	Grid,
 	Flex,
 	Button,
@@ -19,7 +20,9 @@ const Heading = (props) => (
 )
 
 const ArrowButton = (props) => (
-	<Button variant="ghost" size="xs" w="90%" {...props} />
+	<Button variant="ghost" size="xs" w="90%" {...props}>
+		<Icon as={props.asIcon} w={6} h={6} />
+	</Button>
 )
 
 const NumText = ({ children }) => <Text fontSize="lg">{children}</Text>
@@ -77,7 +80,7 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 			gap={2}
 			p={4}
 		>
-			<ArrowButton as={RiArrowUpSLine} onClick={increment} />
+			<ArrowButton asIcon={RiArrowUpSLine} onClick={increment} />
 			<NumText>{picker.next}</NumText>
 			<Input
 				type="number"
@@ -93,7 +96,7 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 				onChange={(e) => changeTime(parseInt(e.target.value) || 0)}
 			/>
 			<NumText>{picker.prev}</NumText>
-			<ArrowButton as={RiArrowDownSLine} onClick={decrement} />
+			<ArrowButton asIcon={RiArrowDownSLine} onClick={decrement} />
 		</Flex>
 	)
 }
