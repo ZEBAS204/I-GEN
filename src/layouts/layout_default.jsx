@@ -13,6 +13,7 @@ export default function DefaultLayout() {
 			w="100vw"
 			pt={5}
 			mx="1.5%"
+			mb={-8}
 			templateColumns="20% 50% 20%"
 			templateRows="1fr"
 			gap="3.5%"
