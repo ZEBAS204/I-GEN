@@ -28,9 +28,9 @@ const Select = (props) => (
 export default function Interface() {
 	const { t, i18n } = useTranslation()
 
-	const [wordsLang, setWordsLang] = useLocalForage('settings.words_lang')
-	const [nounLang, setNounLang] = useLocalForage('settings.lang_noun')
-	const [adjLang, setAdjLang] = useLocalForage('settings.lang_adj')
+	const [wordsLang, setWordsLang] = useLocalForage('settings.words_lang', 'en')
+	const [nounLang, setNounLang] = useLocalForage('settings.lang_noun', 'en')
+	const [adjLang, setAdjLang] = useLocalForage('settings.lang_adj', 'en')
 
 	return (
 		<>
