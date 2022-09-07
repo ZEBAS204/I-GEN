@@ -1,8 +1,22 @@
 import { useState, useRef } from 'react'
-import { Grid, Box, Button, Input, Text } from '@chakra-ui/react'
+import {
+	Grid,
+	Flex,
+	Button,
+	Input,
+	Text,
+	Heading as CHeading,
+} from '@chakra-ui/react'
 import { RiArrowUpSLine, RiArrowDownSLine } from 'react-icons/ri'
 import { useLifecycles, useUpdateEffect } from 'react-use'
+import { useTranslation } from 'react-i18next'
 import { useTimerContext } from './TimerContext'
+
+const Heading = (props) => (
+	<CHeading size="md" {...props}>
+		{props.children}
+	</CHeading>
+)
 
 const ArrowButton = (props) => (
 	<Button variant="ghost" size="xs" w="90%" {...props} />
@@ -32,8 +46,8 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 		if (current <= min - 1) current = max
 
 		setPicked({
+			current,
 			next: current === max ? min : current + 1,
-			current: current,
 			prev: current === min ? max : current - 1,
 		})
 	}
@@ -50,8 +64,7 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 	useLifecycles(() => time && changeTime(time))
 
 	return (
-		<Box
-			display="flex"
+		<Flex
 			flexDir="column"
 			alignItems="center"
 			bgGradient="linear(to-t, gray.200, transparent, gray.200)"
@@ -59,7 +72,8 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 				bgGradient: 'linear(to-t, blackAlpha.400, transparent, blackAlpha.400)',
 			}}
 			borderRadius="20px"
-			mx="15px"
+			boxShadow="md"
+			mx={2}
 			gap={2}
 			p={4}
 		>
@@ -80,11 +94,12 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 			/>
 			<NumText>{picker.prev}</NumText>
 			<ArrowButton as={RiArrowDownSLine} onClick={decrement} />
-		</Box>
+		</Flex>
 	)
 }
 
 export default function TimePicker() {
+	const { t } = useTranslation()
 	const { time, changeTime } = useTimerContext()
 
 	const [hours, setHours] = useState(null)
@@ -123,41 +138,51 @@ export default function TimePicker() {
 
 	return (
 		<Grid
-			templateColumns="repeat(3, 1fr)"
+			templateColumns="60% 30%"
+			templateRows="1fr"
+			gap="10%"
+			py={10}
 			textAlign="center"
-			gap={[4, 8]}
-			p={[4, 8]}
+			color="#000"
+			_dark={{
+				color: '#fff',
+			}}
 		>
-			<p>Hours</p>
-			<p>Minutes</p>
-			<p>Seconds</p>
-			<NumSelector time={hours} onSelect={updateHours} max={99} />
-			<NumSelector time={minutes} onSelect={updateMinutes} />
-			<NumSelector time={seconds} onSelect={updateSeconds} />
-			<PresetButton
-				preset="01:00:00"
-				onClick={() => {
-					updateHours(1)
-					updateMinutes(0)
-					updateSeconds(0)
-				}}
-			/>
-			<PresetButton
-				preset="00:30:00"
-				onClick={() => {
-					updateHours(0)
-					updateMinutes(30)
-					updateSeconds(0)
-				}}
-			/>
-			<PresetButton
-				preset="00:10:00"
-				onClick={() => {
-					updateHours(0)
-					updateMinutes(10)
-					updateSeconds(0)
-				}}
-			/>
+			<Grid templateColumns="repeat(3, 1fr)" gap="5%">
+				<Heading>{t('timer.hours')}</Heading>
+				<Heading>{t('timer.minutes')}</Heading>
+				<Heading>{t('timer.seconds')}</Heading>
+				<NumSelector time={hours} onSelect={updateHours} max={99} />
+				<NumSelector time={minutes} onSelect={updateMinutes} />
+				<NumSelector time={seconds} onSelect={updateSeconds} />
+			</Grid>
+			<Flex direction="column" gap={6}>
+				<Heading>{t('timer.presets')}</Heading>
+				<PresetButton
+					preset="01:00:00"
+					onClick={() => {
+						updateHours(1)
+						updateMinutes(0)
+						updateSeconds(0)
+					}}
+				/>
+				<PresetButton
+					preset="00:30:00"
+					onClick={() => {
+						updateHours(0)
+						updateMinutes(30)
+						updateSeconds(0)
+					}}
+				/>
+				<PresetButton
+					preset="00:10:00"
+					onClick={() => {
+						updateHours(0)
+						updateMinutes(10)
+						updateSeconds(0)
+					}}
+				/>
+			</Flex>
 		</Grid>
 	)
 }
