@@ -53,9 +53,16 @@ i18n
 			allowMultiLoading: false,
 		},
 
-		keySeparator: '.', // Allow nesting keys with dots (def dot)
+		keySeparator: '.', // Character used to separate keys in nested translated objects
 		interpolation: {
 			escapeValue: false, // Not needed for react as it escapes by default
 		},
 	})
 // for all options read: https://www.i18next.com/overview/configuration-options
+
+//* Hacky way to include global variables since the official way doesn't work
+// Global variables to use in interpolation replacements
+// eg. {{i18n_variable}}
+i18n.options.interpolation.defaultVariables = {
+	app_name: 'I-GEN',
+}
