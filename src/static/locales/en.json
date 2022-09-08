@@ -3,14 +3,14 @@
     "loading": "Loading",
     "noun": "Noun",
     "adjective": "Adjective",
-    "new_version": "A new version is available!"
+    "new_version": "A new version is available!",
+    "refresh": "Refresh"
   },
   "buttons": {
     "regenerate": "Regenerate",
     "play_btn": "Resume",
     "stop_btn": "Pause",
-    "reset_btn": "Reset",
-    "new_version_btn": "Refresh"
+    "reset_btn": "Reset"
   },
   "settings": {
     "title": "Settings",
@@ -22,7 +22,7 @@
     "language": "Language",
     "language_words": "Word language",
     "language_words_desc": "Select the language to use for the wordsets.",
-    "language_word_custom": "Personalized",
+    "language_word_custom": "Custom",
     "language_contribute": "Contribute to translations",
     "tts": "Text To Speech",
     "tts_dropdown": "Select Text-to-Speech voice",

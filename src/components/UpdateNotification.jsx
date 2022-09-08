@@ -45,7 +45,7 @@ const ServiceWorkerUpdate = ({ isUpdateAvailable, registration }) => {
 					<AlertTitle>{t('common.new_version')}</AlertTitle>
 					<Spacer />
 					<Button variant="solid" size="sm" ml={1} onClick={reloadPage}>
-						{t('buttons.new_version_btn')}
+						{t('common.refresh')}
 					</Button>
 				</>
 			)}

@@ -3,14 +3,14 @@
     "loading": "Chargement",
     "noun": "Nom",
     "adjective": "Adjectif",
-    "new_version": "Une nouvelle version est disponible!"
+    "new_version": "Une nouvelle version est disponible!",
+    "refresh": "Rafraîchir"
   },
   "buttons": {
     "regenerate": "Générer",
     "play_btn": "Démarrer",
     "stop_btn": "Arrêter",
-    "reset_btn": "Réinitialiser",
-    "new_version_btn": "Rafraîchir"
+    "reset_btn": "Réinitialiser"
   },
   "settings": {
     "title": "Paramètres",

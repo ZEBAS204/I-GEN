@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useLifecycles, useUpdateEffect } from 'react-use'
 import { Grid, Box, Text, Skeleton, Icon, Button } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { RiAddLine } from 'react-icons/ri'
 
 import TTS from '@utils/tts'
@@ -124,7 +125,7 @@ export default function WordGenerator() {
 				}}
 				isLoading={isResetLoading}
 			>
-				Refresh
+				{t('common.refresh')}
 			</Button>
 		</Grid>
 	)

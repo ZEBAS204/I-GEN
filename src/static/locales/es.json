@@ -3,14 +3,14 @@
     "loading": "Cargando",
     "noun": "Sustantivo",
     "adjective": "Adjetivo",
-    "new_version": "¡Hay una nueva versión disponible!"
+    "new_version": "¡Hay una nueva versión disponible!",
+    "refresh": "Refrescar"
   },
   "buttons": {
     "regenerate": "Regenerar",
     "play_btn": "Iniciar",
     "stop_btn": "Detener",
-    "reset_btn": "Reiniciar",
-    "new_version_btn": "Refrescar"
+    "reset_btn": "Reiniciar"
   },
   "settings": {
     "title": "Configuración",
