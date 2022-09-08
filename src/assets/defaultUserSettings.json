@@ -5,21 +5,11 @@
     "value": false
   },
   {
-    "key": "timer_visible",
-    "type": "boolean",
-    "value": false
-  },
-  {
     "key": "countdown_time",
     "type": "number",
     "value": 600,
     "min": 1,
     "max": 359999
-  },
-  {
-    "key": "words_lang",
-    "type": "string",
-    "value": "en"
   },
   {
     "key": "lang_adj",
@@ -32,17 +22,7 @@
     "value": "en"
   },
   {
-    "key": "notify_enabled",
-    "type": "boolean",
-    "value": false
-  },
-  {
     "key": "tts_enabled",
-    "type": "boolean",
-    "value": false
-  },
-  {
-    "key": "tts_only_timermode",
     "type": "boolean",
     "value": false
   },
