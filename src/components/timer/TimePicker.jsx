@@ -19,9 +19,9 @@ const Heading = (props) => (
 	</CHeading>
 )
 
-const ArrowButton = (props) => (
+const ArrowButton = ({ asIcon }, props) => (
 	<Button variant="ghost" size="xs" w="90%" {...props}>
-		<Icon as={props.asIcon} w={6} h={6} />
+		<Icon as={asIcon} w={6} h={6} />
 	</Button>
 )
 
