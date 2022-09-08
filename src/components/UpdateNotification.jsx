@@ -26,18 +26,11 @@ const ServiceWorkerUpdate = ({ isUpdateAvailable, registration }) => {
 			pb={6}
 			mb={-4}
 			bgGradient="linear(0deg, #7b39dc, #6c39dc)"
-			/*
-			polygon(
-					0 100%, 100% 100%, 100% 80%,
-					calc(75% + 25px) 80%, calc(75% - 25px) 40%, calc(65% + 25px) 40%, calc(65% - 25px) 80%,
-					calc(35% + 25px) 80%, calc(35% - 25px) 40%, calc(25% + 25px) 40%, calc(25% - 25px) 80%,
-					0px 80%
-				)
-			*/
-			clipPath="polygon(0 0, 100% 0, 100% 80%,
-				75% 80%, 74% 40%, 66% 40%, 65% 80%,
-				35% 80%, 34% 40%, 26% 40%, 25% 80%,
-				0 80%)"
+			clipPath="polygon(
+					0 0%, 100% 0%, 100% 80%,
+					calc(75% + 15px) 80%, calc(75% - 15px) 40%, calc(65% + 15px) 40%, calc(65% - 15px) 80%,
+					calc(35% + 15px) 80%, calc(35% - 15px) 40%, calc(25% + 15px) 40%, calc(25% - 15px) 80%,
+					0px 80%)"
 		>
 			{isUpdateAvailable && (
 				<>
