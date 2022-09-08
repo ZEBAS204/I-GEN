@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, memo } from 'react'
 import { setData } from '@utils/appStorage'
 import {
 	Box,
@@ -18,6 +18,7 @@ import {
 
 import { useTranslation } from 'react-i18next'
 import { useAppContext } from '@layouts/AppContext'
+import { wrapContext } from '@contexts/contextWrapper'
 import TTS from '@utils/tts'
 
 const VolumeSlider = () => {
@@ -138,24 +139,15 @@ const InputTest = () => {
 	)
 }
 
-export default function Accessibility() {
+const Accessibility = ({ isTTSEnabled, toggleSpeak }) => {
 	const { t } = useTranslation()
-	const { speak, toggleSpeak } = useAppContext()
 
-	const [useTTS, setTTS] = useState(speak)
-	const [onlyTimerTTS, toggleOnlyTimerTTS] = useState(false)
+	const [useTTS, setTTS] = useState(isTTSEnabled)
 
 	const toggleTTS = () => {
 		const newValue = !useTTS
 		setTTS(newValue)
-		setData('tts_enabled', newValue)
 		toggleSpeak(newValue)
-	}
-
-	const toggleTimerModeOnly = () => {
-		const newValue = !onlyTimerTTS
-		toggleOnlyTimerTTS(newValue)
-		setData('tts_only_timermode', newValue)
 	}
 
 	const changeVoice = (voice) => {
@@ -179,18 +171,6 @@ export default function Accessibility() {
 				<Heading size="md">{t('settings.tts')} (TTS)</Heading>
 				<Spacer />
 				<Switch onChange={toggleTTS} isChecked={useTTS} />
-			</Stack>
-
-			<br />
-
-			<Stack direction="row" alignItems="center">
-				<Heading size="md">{t('settings.tts_speech_timer')}</Heading>
-				<Spacer />
-				<Switch
-					onChange={toggleTimerModeOnly}
-					isChecked={onlyTimerTTS}
-					isDisabled={!useTTS}
-				/>
 			</Stack>
 
 			<br />
@@ -246,3 +226,10 @@ export default function Accessibility() {
 		</>
 	)
 }
+
+const contextProps = () => {
+	const { isTTSEnabled, toggleSpeak } = useCallback(useAppContext(), [])
+	return { isTTSEnabled, toggleSpeak }
+}
+
+export default wrapContext(memo(Accessibility), contextProps)

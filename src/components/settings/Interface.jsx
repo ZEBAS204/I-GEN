@@ -1,3 +1,4 @@
+import { useState, useCallback, memo } from 'react'
 import {
 	Box,
 	Text,
@@ -11,7 +12,8 @@ import {
 import { RiExternalLinkLine } from 'react-icons/ri'
 import { useTranslation } from 'react-i18next'
 
-import { useLocalForage } from '@utils/appStorage'
+import { useAppContext } from '@layouts/AppContext'
+import { wrapContext } from '@contexts/contextWrapper'
 import {
 	supportedLanguages,
 	supportedWordsLanguages,
@@ -25,12 +27,20 @@ const Select = (props) => (
 	</Box>
 )
 
-export default function Interface() {
+const Interface = ({ nounLang, adjLang, setNounLang, setAdjLang }) => {
 	const { t, i18n } = useTranslation()
 
-	const [wordsLang, setWordsLang] = useLocalForage('settings.words_lang', 'en')
-	const [nounLang, setNounLang] = useLocalForage('settings.lang_noun', 'en')
-	const [adjLang, setAdjLang] = useLocalForage('settings.lang_adj', 'en')
+	const [wordsLang, setDisplayLang] = useState(
+		nounLang === adjLang ? nounLang : 'custom'
+	)
+
+	const setWordsLang = (lang) => {
+		setDisplayLang(lang)
+		if (lang === 'custom') return
+
+		setNounLang(lang)
+		setAdjLang(lang)
+	}
 
 	return (
 		<>
@@ -59,10 +69,7 @@ export default function Interface() {
 				<Heading size="md">{t('settings.language_words')}</Heading>
 				<Spacer />
 				<Select
-					value={
-						// Get current language without country code
-						wordsLang
-					}
+					value={wordsLang}
 					onChange={(e) => setWordsLang(e.target.value)}
 				>
 					{
@@ -128,3 +135,12 @@ export default function Interface() {
 		</>
 	)
 }
+
+const contextProps = () => {
+	const { nounLang, adjLang } = useAppContext()
+	const { setNounLang, setAdjLang } = useCallback(useAppContext(), [])
+
+	return { nounLang, adjLang, setNounLang, setAdjLang }
+}
+
+export default wrapContext(memo(Interface), contextProps)

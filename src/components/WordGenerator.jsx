@@ -6,17 +6,18 @@ import { RiAddLine } from 'react-icons/ri'
 
 import TTS from '@utils/tts'
 import { useAppContext } from '@layouts/AppContext'
-import { useLocalForage } from '@utils/appStorage'
 import { ReactComponent as GhostIcon } from '@assets/icons/ghost.svg'
 
 // Global variables: cache responses and prevent refetching when is unneeded
 let wasRendered = false
-let fetched = false
+let fetched = []
 let nouns = null
 let adjs = null
 
-async function fetchWordSets(nounLang = 'en', adjLang = 'en') {
-	if (fetched && nouns && adjs) return
+async function fetchWordSets(nounLang, adjLang) {
+	if (!nounLang || !adjLang) return
+	if (nouns && adjs && fetched.toString() == [nounLang, adjLang].toString())
+		return
 
 	await Promise.all([
 		fetch(`/wordsets/${nounLang}/noun.json`)
@@ -26,24 +27,39 @@ async function fetchWordSets(nounLang = 'en', adjLang = 'en') {
 			.then((res) => res.json())
 			.then((e) => (adjs = shuffleArray(e))),
 	])
-		.then((fetched = true))
-		.catch((err) => console.error(err))
+		.then((fetched = [nounLang, adjLang]))
+		.catch((err) => {
+			console.error('Error fetching wordsets\n', err)
+			nouns = null
+			adjs = null
+		})
 }
 
 export default function WordGenerator() {
-	const { gen, speak } = useAppContext()
+	const { t } = useTranslation()
+
+	const { gen, isTTSEnabled, nounLang, adjLang } = useAppContext()
 	const [firstRender, setFirstRender] = useState(wasRendered)
 	const [isResetLoading, setResetLoading] = useState(false)
 
-	const [useTTS] = useLocalForage('tts_enabled', false)
 	const [words, setWords] = useState({})
 
 	useUpdateEffect(() => generateNewWordSets(), [gen])
+	useUpdateEffect(() => {
+		fetchNewWordSets()
+	}, [nounLang, adjLang])
+
+	const fetchNewWordSets = async () => {
+		fetchWordSets(nounLang, adjLang).then(() => generateNewWordSets(true)) // prevent TTS from speaking
+	}
 
 	const getNewPairOfWords = () => ({
 		noun: nouns[Math.floor(Math.random() * nouns.length)],
 		adj: adjs[Math.floor(Math.random() * adjs.length)],
 	})
+
+	const speakWords = ({ noun, adj }) =>
+		isTTSEnabled && new TTS(`${adj} ${noun}`).say()
 
 	const generateNewWordSets = useCallback(
 		(firstRun = false) => {
@@ -52,23 +68,22 @@ export default function WordGenerator() {
 			const { noun, adj } = getNewPairOfWords()
 			setWords({ noun, adj })
 
-			// If user enabled TTS, speak
-			if (useTTS && !firstRun) new TTS(`${adj} ${noun}`).say()
+			if (firstRun) return
+			speakWords({ noun, adj })
 		},
-		[speak]
+		[isTTSEnabled]
 	)
 
 	useLifecycles(
 		// On component mount, we need to fetch the current word sets
 		// and generate a new pair of words
-		async () => {
-			fetchWordSets()
-				.then(() => generateNewWordSets(true)) // prevent TTS from speaking
-				.then(() => {
-					setFirstRender(true)
-					wasRendered = true // Prevent checking for render in future component renders
-				})
+		() => {
+			fetchNewWordSets().finally(() => {
+				setFirstRender(true)
+				wasRendered = true // Prevent checking for render in future component renders
+			})
 		},
+
 		// On component dismount
 		// Just stop TTS if speaking, already has check inside the class function
 		() => TTS.stop()
@@ -118,10 +133,10 @@ export default function WordGenerator() {
 				w="50%"
 				mt={5}
 				colorScheme="teal"
-				onClick={() => {
+				onClick={async () => {
 					setResetLoading(true)
 					setTimeout(() => setResetLoading(false), 3000)
-					fetchWordSets().then(() => generateNewWordSets(true))
+					fetchWordSets(nounLang, adjLang).then(() => generateNewWordSets(true))
 				}}
 				isLoading={isResetLoading}
 			>
@@ -133,7 +148,7 @@ export default function WordGenerator() {
 	//* Prevent showing the ContentError Message on first renders
 	//* Without this, the error message will be shown before the word set
 	//* have been fetched or shuffled
-	if ((!nouns || !adjs) && firstRender) return <ContentError />
+	if (firstRender && (!nouns || !adjs)) return <ContentError />
 
 	return (
 		<Grid
