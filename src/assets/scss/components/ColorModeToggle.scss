@@ -114,7 +114,6 @@
 	border-color: var(--chakra-colors-gray-300);
 }
 
-.react-toggle:focus .react-toggle-track,
-.react-toggle:active .react-toggle-track {
+.react-toggle--focus .react-toggle-track {
 	box-shadow: var(--chakra-shadows-outline);
 }
