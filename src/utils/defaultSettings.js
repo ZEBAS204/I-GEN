@@ -2,81 +2,82 @@ import { getData, setData } from './appStorage'
 import Logger from './logger'
 import defaults from '@assets/defaultUserSettings.json'
 
+/*
+ * Compare all of the local user settings from the default settings
+ * and check if they match the scheme, otherwise restore to their default
+ */
 export default async function defaultSettings() {
-	const setDefaults = () => {
-		// Loop all the settings from the default json and compare
-		// with the stored ones if they exist and their type match
-		defaults.forEach(async (def) => {
-			let isEmpty = false
+	defaults.forEach(async (def) => {
+		let isEmpty = false
 
-			if (!def) isEmpty = true
-			if (!('key' in def) || def.key === undefined) isEmpty = true
-			if (!('type' in def) || def.type === undefined) isEmpty = true
-			if (!('value' in def) || def.value === undefined) isEmpty = true
+		if (!def) isEmpty = true
+		if (!('key' in def) || def.key === undefined) isEmpty = true
+		if (!('type' in def) || def.type === undefined) isEmpty = true
+		if (!('value' in def) || def.value === undefined) isEmpty = true
 
-			// Compare the user value with the default ones
-			if (!isEmpty) {
-				// Get stored value from user
-				let storedValue
+		//* If empty, just ignore it
+		if (isEmpty) {
+			Logger.log(
+				['DS', 'warn'],
+				'Unexpected object passed in defaults settings'
+			)
+			return
+		}
 
-				// Prevent malformed values from breaking when parsing
-				try {
-					storedValue = await getData(def.key)
-				} catch (jsonError) {
-					storedValue = null
-				}
+		// Get stored value from user
+		//* Prevent malformed values from breaking when parsing
+		let storedValue
+		try {
+			storedValue = await getData(def.key)
+		} catch (_jsonError) {
+			storedValue = null
+		}
 
-				if (storedValue !== null) {
-					if (typeof storedValue === def.type) {
-						Logger.log(['DS', 'info'], `Expected value of key "${def.key}"`)
+		//* Key does not exist
+		if (storedValue === null) {
+			Logger.log(
+				['DS', 'info'],
+				`"${def.key}" key not found. Creating a new one...`
+			)
+			setData(def.key, def.value)
+			return
+		}
 
-						// Check min and max values for numbers
-						if (def.type === 'number') {
-							if ('min' in def && storedValue < def.min) {
-								// Key is stored but the expected type exceedes the min value
-								// Set key to default value
-								Logger.log(
-									['DS', 'info'],
-									`Value of key "${def.key}" exceedes minimum value is unexpected! Restoring key default value.`
-								)
-								setData(def.key, def.value)
-							}
-							if ('max' in def && storedValue > def.max) {
-								// Key is stored but the expected type exceedes the max value
-								// Set key to default value
-								Logger.log(
-									['DS', 'info'],
-									`Value of key "${def.key}" exceedes maximum value is unexpected! Restoring key default value.`
-								)
-								setData(def.key, def.value)
-							}
-						}
-					} else {
-						// Key is stored but the expected type is wrong
-						// Set key to default value
-						Logger.log(
-							['DS', 'info'],
-							`Value type of key "${def.key}" is unexpected! Restoring key default value.`
-						)
-						setData(def.key, def.value)
-					}
-				} else {
-					// Key not exist
-					Logger.log(
-						['DS', 'info'],
-						`"${def.key}" key not found. Creating a new one...`
-					)
-					setData(def.key, def.value)
-				}
-			} else {
-				Logger.log(
-					['DS', 'warn'],
-					'Unexpected object passed in defaults settings'
-				)
-			}
-		})
-	}
+		//* Key is stored but the expected type is wrong
+		//* Set key to it's default value
+		if (typeof storedValue !== def.type) {
+			Logger.log(
+				['DS', 'info'],
+				`Value type of key "${def.key}" is unexpected! Restoring key default value.`
+			)
+			setData(def.key, def.value)
+			return
+		}
 
-	// Run at start
-	setDefaults()
+		//* Key type is the expected one
+		Logger.log(['DS', 'info'], `Expected value of key "${def.key}"`)
+		if (def.type !== 'number') return
+
+		//* Key is a number
+		//* Check min and max values for numbers
+		// Key is stored but the expected type exceeds the min value
+		// Set key to default value
+		if ('min' in def && storedValue < def.min) {
+			Logger.log(
+				['DS', 'info'],
+				`Value of key "${def.key}" exceeds minimum value is unexpected! Restoring key default value.`
+			)
+			setData(def.key, def.value)
+		}
+
+		// Key is stored but the expected type exceeds the max value
+		// Set key to default value
+		if ('max' in def && storedValue > def.max) {
+			Logger.log(
+				['DS', 'info'],
+				`Value of key "${def.key}" exceeds maximum value is unexpected! Restoring key default value.`
+			)
+			setData(def.key, def.value)
+		}
+	})
 }
