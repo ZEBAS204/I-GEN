@@ -7,7 +7,7 @@ import { useTimerContext } from './TimerContext'
 import TimePicker from './TimePicker'
 import Clock from './Clock'
 
-const ShapeButton = ({ icon, children }, props) => (
+const ShapeButton = ({ icon, children, ...props }) => (
 	<Button
 		minW="30%"
 		size="lg"
