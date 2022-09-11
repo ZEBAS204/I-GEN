@@ -34,6 +34,7 @@ export default function CountDown({
 	return (
 		<>
 			<Flex
+				aria-label={t(`timer.${isPickerVisible ? 'controls' : 'title'}`)}
 				justifyContent="center"
 				alignItems="center"
 				borderRadius="20px"
@@ -55,6 +56,7 @@ export default function CountDown({
 			</Flex>
 
 			<Flex
+				aria-label={t('timer.controls')}
 				p={10}
 				gap={3}
 				minW="30vw"

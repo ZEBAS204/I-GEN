@@ -29,7 +29,7 @@ const GenerateButton = memo(({ generateWord }) => {
 
 	return (
 		<Button
-			aria-label="Generate new word set"
+			aria-label={t('keybinds.words_desc')}
 			aria-keyshortcuts="Space"
 			onClick={generateWord}
 			fontFamily="Poppins"
