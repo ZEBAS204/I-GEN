@@ -23,6 +23,7 @@
     "language_words": "Langage des mots",
     "language_words_desc": "Langue utilisée pour les mots.",
     "language_word_custom": "Personnalisé",
+    "language_word_flip": "Inverse la position des mots",
     "language_contribute": "Contribuer aux traductions",
     "tts": "Synthèse vocale",
     "tts_dropdown": "Sélectionné Synthèse vocale voix",

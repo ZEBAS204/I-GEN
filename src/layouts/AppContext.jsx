@@ -1,5 +1,6 @@
-import { createContext, useState, useContext, useMemo } from 'react'
+import { createContext, useState, useContext, useMemo, useEffect } from 'react'
 import { useLocalForage } from '@utils/appStorage'
+import { supportedWordsLanguages } from '@utils/supportedLanguages'
 
 // Create context
 const AppContext = createContext()
@@ -7,10 +8,20 @@ const AppContext = createContext()
 const AppContextProvider = ({ children }) => {
 	// the value that will be given to the context
 	const [isTTSEnabled, setTTSEnabled] = useLocalForage('tts_enabled', false)
+	const [isWordDisplayFlip, setWordFlip] = useLocalForage('lang_flip', false)
+
 	const [nounLang, setNounLang] = useLocalForage('lang_noun', 'en')
 	const [adjLang, setAdjLang] = useLocalForage('lang_adj', 'en')
 
 	const [gen, sendGenerate] = useState(false)
+
+	// flip words accordingly
+	useEffect(() => {
+		if (nounLang === adjLang) {
+			const { flip } = supportedWordsLanguages.find((e) => e.code === nounLang)
+			setWordFlip(flip ?? false)
+		}
+	}, [nounLang, adjLang])
 
 	// memoize the full context value
 	const contextValue = useMemo(
@@ -18,8 +29,11 @@ const AppContextProvider = ({ children }) => {
 			gen,
 			generateWord: () => sendGenerate((e) => !e),
 
+			// Settings
 			isTTSEnabled,
-			toggleSpeak: (e) => (e ? setTTSEnabled(e) : setTTSEnabled(!isTTSEnabled)),
+			toggleSpeak: (e) => setTTSEnabled(e ?? !isTTSEnabled),
+			isWordDisplayFlip,
+			toggleWordFlip: (e) => setWordFlip(e ?? !isWordDisplayFlip),
 
 			// Languages
 			nounLang,
@@ -32,6 +46,8 @@ const AppContextProvider = ({ children }) => {
 			sendGenerate,
 			isTTSEnabled,
 			setTTSEnabled,
+			isWordDisplayFlip,
+			setWordFlip,
 			nounLang,
 			adjLang,
 			setNounLang,
@@ -49,10 +65,12 @@ const AppContextProvider = ({ children }) => {
 /**
  * @param {boolean} gen Dummy boolean to trigger word generation
  * @param {boolean} isTTSEnabled If TTS is enabled
+ * @param {boolean} isWordDisplayFlip  If wordsets position should be flipped
  * @param {?string} nounLang Noun language to use when generating wordsets
  * @param {?string} adjLang Adjective language to use when generating wordsets
  * @param {function} generateWord
  * @param {function} toggleSpeak
+ * @param {function} setWordFlip
  * @param {function} setNounLang Set noun language to use
  * @param {function} setAdjLang Set adjective language to use
  * @returns {React.context<AppContext>}

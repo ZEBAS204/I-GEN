@@ -22,6 +22,11 @@
     "value": "en"
   },
   {
+    "key": "lang_flip",
+    "type": "boolean",
+    "value": false
+  },
+  {
     "key": "tts_enabled",
     "type": "boolean",
     "value": false

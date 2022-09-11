@@ -23,6 +23,7 @@
     "language_words": "Word language",
     "language_words_desc": "Select the language to use for the wordsets.",
     "language_word_custom": "Custom",
+    "language_word_flip": "Inverts the position of the words",
     "language_contribute": "Contribute to translations",
     "tts": "Text To Speech",
     "tts_dropdown": "Select Text-to-Speech voice",

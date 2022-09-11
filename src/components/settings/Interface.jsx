@@ -4,12 +4,16 @@ import {
 	Text,
 	Link,
 	Icon,
+	IconButton,
 	Heading,
 	Stack,
 	Select as ChakraSelect,
 	Spacer,
 } from '@chakra-ui/react'
-import { RiExternalLinkLine } from 'react-icons/ri'
+import {
+	RiExternalLinkLine,
+	RiArrowLeftRightLine as FlipIcon,
+} from 'react-icons/ri'
 import { useTranslation } from 'react-i18next'
 
 import { useAppContext } from '@layouts/AppContext'
@@ -27,7 +31,14 @@ const Select = (props) => (
 	</Box>
 )
 
-const Interface = ({ nounLang, adjLang, setNounLang, setAdjLang }) => {
+const Interface = ({
+	nounLang,
+	adjLang,
+	setNounLang,
+	setAdjLang,
+	isWordDisplayFlip,
+	toggleWordFlip,
+}) => {
 	const { t, i18n } = useTranslation()
 
 	const [wordsLang, setDisplayLang] = useState(
@@ -36,6 +47,7 @@ const Interface = ({ nounLang, adjLang, setNounLang, setAdjLang }) => {
 
 	const setWordsLang = (lang) => {
 		setDisplayLang(lang)
+		if (lang === nounLang && lang === adjLang) return
 		if (lang === 'custom') return
 
 		setNounLang(lang)
@@ -85,26 +97,14 @@ const Interface = ({ nounLang, adjLang, setNounLang, setAdjLang }) => {
 			</Stack>
 
 			{
-				// Allow to manually set language options when language="custom"
+				//* Allow to manually set language options when language="custom"
 				wordsLang === 'custom' && (
-					<Stack direction="row" mt={2}>
-						<Stack direction="column" alignItems="center">
-							<Heading size="sm" color="whiteAlpha.800">
-								{t('common.noun')}
-							</Heading>
-							<Select
-								variant="filled"
-								value={nounLang}
-								onChange={(e) => setNounLang(e.target.value)}
-							>
-								{supportedWordsLanguages.map((lang, key) => (
-									<option value={lang.code} key={`wordlng-${lang}-${key}`}>
-										{t(`languages.${lang.code}`)}
-									</option>
-								))}
-							</Select>
-						</Stack>
-						<Spacer />
+					<Stack
+						direction="row"
+						mt={2}
+						justify="space-around"
+						alignItems="center"
+					>
 						<Stack direction="column" alignItems="center">
 							<Heading size="sm" color="whiteAlpha.800">
 								{t('common.adjective')}
@@ -113,6 +113,36 @@ const Interface = ({ nounLang, adjLang, setNounLang, setAdjLang }) => {
 								variant="filled"
 								value={adjLang}
 								onChange={(e) => setAdjLang(e.target.value)}
+							>
+								{
+									// Get all available languages
+									supportedWordsLanguages.map((lang, key) => (
+										<option value={lang.code} key={`wordlng-${lang}-${key}`}>
+											{t(`languages.${lang.code}`)}
+										</option>
+									))
+								}
+							</Select>
+						</Stack>
+
+						<IconButton
+							size="lg"
+							rounded="full"
+							variant="solid"
+							icon={<FlipIcon />}
+							title={t('settings.language_word_flip')}
+							colorScheme={isWordDisplayFlip ? 'green' : 'red'}
+							onClick={() => toggleWordFlip()}
+						/>
+
+						<Stack direction="column" alignItems="center">
+							<Heading size="sm" color="whiteAlpha.800">
+								{t('common.noun')}
+							</Heading>
+							<Select
+								variant="filled"
+								value={nounLang}
+								onChange={(e) => setNounLang(e.target.value)}
 							>
 								{
 									// Get all available languages
@@ -137,10 +167,18 @@ const Interface = ({ nounLang, adjLang, setNounLang, setAdjLang }) => {
 }
 
 const contextProps = () => {
-	const { nounLang, adjLang } = useAppContext()
+	const { nounLang, adjLang, isWordDisplayFlip, toggleWordFlip } =
+		useAppContext()
 	const { setNounLang, setAdjLang } = useCallback(useAppContext(), [])
 
-	return { nounLang, adjLang, setNounLang, setAdjLang }
+	return {
+		nounLang,
+		adjLang,
+		setNounLang,
+		setAdjLang,
+		isWordDisplayFlip,
+		toggleWordFlip,
+	}
 }
 
 export default wrapContext(memo(Interface), contextProps)

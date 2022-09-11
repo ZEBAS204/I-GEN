@@ -23,6 +23,7 @@
     "language_words": "Idioma de palabras",
     "language_words_desc": "Idioma utilizado para las palabras generadas.",
     "language_word_custom": "Personalizado",
+    "language_word_flip": "Invierte la posición las palabras",
     "language_contribute": "Contribuír a las traducciones",
     "tts": "Texto a voz",
     "tts_dropdown": "Seleccionar voz del Texto a voz",
@@ -32,7 +33,7 @@
     "tts_higher": "Alto",
     "tts_slower": "Lento",
     "tts_faster": "Rápido",
-    "tts_test_btn": "Previsualizar",
+    "tts_test_btn": "Probar",
     "tts_test_stop_btn": "Detener",
     "tts_test_input": "Previsualizar texto a voz"
   },

@@ -37,8 +37,14 @@ async function fetchWordSets(nounLang, adjLang) {
 
 export default function WordGenerator() {
 	const { t } = useTranslation()
+	const {
+		gen,
+		isTTSEnabled,
+		isWordDisplayFlip: isWordFlip,
+		nounLang,
+		adjLang,
+	} = useAppContext()
 
-	const { gen, isTTSEnabled, nounLang, adjLang } = useAppContext()
 	const [firstRender, setFirstRender] = useState(wasRendered)
 	const [isResetLoading, setResetLoading] = useState(false)
 
@@ -167,10 +173,11 @@ export default function WordGenerator() {
 			pt={5}
 		>
 			<WordBox
-				word={words.adj}
+				word={isWordFlip ? words.noun : words.adj}
+				aria-label={t(`common.${isWordFlip ? 'noun' : 'adjective'}`)}
 				clipPath="polygon(0 0,25% 0,calc(25% + 15px) 15px,calc(75% - 15px) 15px,75% 0,100% 0,100% 100%,60% 100%,calc(60% - 20px) calc(100% - 20px),calc(40% + 20px) calc(100% - 20px),40% 100%,0 100%)"
 			/>
-			<Box h={0}>
+			<Box h={0} aria-hidden="true">
 				<Icon
 					as={RiAddLine}
 					color="#8a6aec"
@@ -184,7 +191,8 @@ export default function WordGenerator() {
 				/>
 			</Box>
 			<WordBox
-				word={words.noun}
+				word={isWordFlip ? words.adj : words.noun}
+				aria-label={t(`common.${isWordFlip ? 'adjective' : 'noun'}`)}
 				clipPath="polygon(0 0,
 					40% 0px, calc(40% + 20px) 20px, calc(60% - 20px) 20px, 60% 0px,
 					100% 0,100% 100%,60% 100%,calc(60% - 20px) calc(100% - 20px),calc(40% + 20px) calc(100% - 20px),40% 100%,
