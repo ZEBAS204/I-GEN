@@ -64,8 +64,13 @@ export default function WordGenerator() {
 		adj: adjs[Math.floor(Math.random() * adjs.length)],
 	})
 
-	const speakWords = ({ noun, adj }) =>
-		isTTSEnabled && new TTS(`${adj} ${noun}`).say()
+	const speakWords = ({ noun, adj }) => {
+		if (!isTTSEnabled) return
+
+		isWordFlip
+			? new TTS(`${noun} ${adj}`).say()
+			: new TTS(`${adj} ${noun}`).say()
+	}
 
 	const generateNewWordSets = useCallback(
 		(firstRun = false) => {
