@@ -26,8 +26,14 @@
 		<link rel="alternate" hreflang="es" href="/?lang=es" />
 	</head>
 	<body>
-		<div id="loading-screen">
-			<div class="spinner">
+		<div
+			id="loading-screen"
+			role="status"
+			aria-busy="true"
+			aria-live="polite"
+			aria-label="Loading…"
+		>
+			<div class="spinner" aria-hidden="true">
 				<div class="rect1"></div>
 				<div class="rect2"></div>
 				<div class="rect3"></div>

@@ -131,6 +131,7 @@ const Interface = ({
 							variant="solid"
 							icon={<FlipIcon />}
 							title={t('settings.language_word_flip')}
+							aria-label={t('settings.language_word_flip')}
 							colorScheme={isWordDisplayFlip ? 'green' : 'red'}
 							onClick={() => toggleWordFlip()}
 						/>

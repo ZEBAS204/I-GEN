@@ -51,8 +51,15 @@
     "timer_desc": "Arrêter/Démarrer le minuteur",
     "timer_desc2": "Réinitialiser le minuteur"
   },
+  "languages": {
+    "en": "Anglais",
+    "fr": "Français",
+    "es": "Espagnol"
+  },
   "timer": {
     "title": "Minuteur",
+    "picker": "Sélecteur de temps",
+    "controls": "Contrôles",
     "presets": "Préconfigurations",
     "hours": "Heures",
     "minutes": "Minutes",

@@ -12,7 +12,6 @@ const ShapeButton = ({ icon, children, ...props }) => (
 		minW="30%"
 		size="lg"
 		justifyContent="flex-start"
-		borderRadius={0}
 		leftIcon={icon}
 		transition="ease-out 100ms max-width"
 		{...props}
@@ -34,7 +33,8 @@ export default function CountDown({
 	return (
 		<>
 			<Flex
-				aria-label={t(`timer.${isPickerVisible ? 'controls' : 'title'}`)}
+				aria-label={t(`timer.${isPickerVisible ? 'picker' : 'title'}`)}
+				role={isPickerVisible ? null : 'timer'}
 				justifyContent="center"
 				alignItems="center"
 				borderRadius="20px"

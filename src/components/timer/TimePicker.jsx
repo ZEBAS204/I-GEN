@@ -25,7 +25,11 @@ const ArrowButton = ({ asIcon }, props) => (
 	</Button>
 )
 
-const NumText = ({ children }) => <Text fontSize="lg">{children}</Text>
+const NumText = ({ children }) => (
+	<Text fontSize="lg" aria-hidden="true">
+		{children}
+	</Text>
+)
 
 const PresetButton = ({ preset, ...props }) => (
 	<Button variant="outline" border="2px solid" {...props}>

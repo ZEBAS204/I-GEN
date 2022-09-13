@@ -51,8 +51,15 @@
     "timer_desc": "Pausar/Resumir temporizador",
     "timer_desc2": "Reiniciar temporizador"
   },
+  "languages": {
+    "en": "Inglés",
+    "fr": "Francés",
+    "es": "Español"
+  },
   "timer": {
     "title": "Temporizador",
+    "picker": "Selector de tiempo",
+    "controls": "Controles",
     "presets": "Preajustes",
     "hours": "Horas",
     "minutes": "Minutos",

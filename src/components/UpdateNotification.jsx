@@ -21,6 +21,7 @@ const ServiceWorkerUpdate = ({ isUpdateAvailable, registration }) => {
 		<Alert
 			as={Flex}
 			role="alert"
+			aria-hidden={!isUpdateAvailable}
 			status="info"
 			h={16}
 			pb={6}

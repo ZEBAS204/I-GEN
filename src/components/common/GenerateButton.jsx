@@ -39,11 +39,10 @@ const GenerateButton = memo(({ generateWord }) => {
 			p={8}
 			colorScheme="purple"
 			bg="#8969eb"
-			_hover={{
-				bg: '#6e4fcf',
-			}}
-			_active={{
-				bg: '#6e4fcf',
+			sx={{
+				'&:hover, &:active, &:focus-visible': {
+					bg: '#6e4fcf',
+				},
 			}}
 			color="#f0f0f0"
 			clipPath="polygon(0 20px, 20px 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 100% 100%, 0 100%)"

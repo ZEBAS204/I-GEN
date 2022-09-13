@@ -5,18 +5,23 @@ import {
 	TabList,
 	Tab as ChakraTab,
 	TabPanels,
-	TabPanel,
+	TabPanel as CTabPanel,
 } from '@chakra-ui/react'
 
 import { useTranslation } from 'react-i18next'
 import About from './About'
 import Keybinds from './Keybinds'
 
+const TabPanel = (props) => <CTabPanel tabIndex={-1} {...props} />
+
 const Tab = (props) => (
 	<ChakraTab
 		p="4px"
 		display="inline-block"
 		bg="blackAlpha.500"
+		_focusVisible={{
+			bg: 'blue.600',
+		}}
 		_selected={{
 			'&>div': {
 				bg: 'whiteAlpha.400',
