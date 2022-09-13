@@ -30,6 +30,8 @@ async function fetchWordSets(nounLang, adjLang) {
 		.then((fetched = [nounLang, adjLang]))
 		.catch((err) => {
 			console.error('Error fetching wordsets\n', err)
+			//* If an object was already created, may or may not create a
+			//* memory leak in Chromium-based browsers...
 			nouns = null
 			adjs = null
 		})
@@ -82,7 +84,7 @@ export default function WordGenerator() {
 			if (firstRun) return
 			speakWords({ noun, adj })
 		},
-		[isTTSEnabled]
+		[isTTSEnabled, isWordFlip]
 	)
 
 	useLifecycles(
