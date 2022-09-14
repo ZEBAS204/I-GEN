@@ -1,5 +1,4 @@
 import { mode } from '@chakra-ui/theme-tools'
-import { useTheme } from '@chakra-ui/react'
 
 /**
  ** Overrides the default Chakra theme
@@ -13,6 +12,23 @@ const components = {
 	Heading: {
 		baseStyle: {
 			fontWeight: 600,
+			fontFamily: 'Poppins, Arial',
+		},
+	},
+	Input: {
+		variants: {
+			filled: {
+				field: {
+					boxShadow: 'base',
+					bg: 'blackAlpha.400',
+					_hover: {
+						bg: 'blackAlpha.500',
+					},
+					_focus: {
+						bg: 'blackAlpha.200',
+					},
+				},
+			},
 		},
 	},
 	Select: {
@@ -79,7 +95,7 @@ const customTheme = {
 			body: {
 				// Lightmode - Darkmode
 				color: '#f0f0f0',
-				bg: mode('#e9ecef', '#1c1b22')(props),
+				bg: mode('#e6e1f8', '#1c1b22')(props),
 
 				fontFamily: 'Poppins, Arial',
 			},
@@ -87,11 +103,4 @@ const customTheme = {
 	},
 }
 
-/** Exposes the current color scheme */
-function useColorScheme() {
-	const currentColor = useTheme().components.Button.defaultProps.colorScheme
-
-	return currentColor
-}
-
-export { customTheme, useColorScheme }
+export { customTheme }

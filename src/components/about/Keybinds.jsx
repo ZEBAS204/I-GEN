@@ -1,4 +1,4 @@
-import { Heading, Text, Stack, Divider, Kbd, DarkMode } from '@chakra-ui/react'
+import { Heading, Text, Stack, Divider, Kbd } from '@chakra-ui/react'
 import { useTranslation, Trans } from 'react-i18next'
 
 const KbdStack = ({ children }) => (

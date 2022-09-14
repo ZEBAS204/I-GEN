@@ -29,7 +29,7 @@ export default function Footer() {
 					calc(35% + 25px) 80%, calc(35% - 25px) 40%, calc(25% + 25px) 40%, calc(25% - 25px) 80%,
 					0px 80%
 				)"
-				bgGradient="linear(90deg, #00c3ff, #6500f9, #00c3ff)"
+				bgGradient="linear(180deg, #7b39dc, #6c39dc)"
 			/>
 		</Box>
 	)

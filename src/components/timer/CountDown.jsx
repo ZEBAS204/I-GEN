@@ -13,7 +13,6 @@ const ShapeButton = ({ icon, children, ...props }) => (
 		size="lg"
 		justifyContent="flex-start"
 		leftIcon={icon}
-		transition="ease-out 100ms max-width"
 		{...props}
 	>
 		{children}
@@ -39,12 +38,10 @@ export default function CountDown({
 				alignItems="center"
 				borderRadius="20px"
 				px={16}
-				minW="90%"
+				w="100%"
 				bg="#fff"
-				boxShadow="inset 0 0 3px #000"
 				_dark={{
 					bg: '#363e4d',
-					boxShadow: 'none',
 				}}
 				clipPath="polygon(0 0,25% 0,calc(25% + 15px) 15px,calc(75% - 15px) 15px,75% 0,100% 0,100% 100%,60% 100%,calc(60% - 15px) calc(100% - 15px),calc(40% + 15px) calc(100% - 15px),40% 100%,0 100%)"
 			>
@@ -60,11 +57,9 @@ export default function CountDown({
 				p={10}
 				gap={3}
 				minW="30vw"
-				boxShadow="inset 0 -1px 3px #000"
 				bg="#fff"
 				_dark={{
 					bg: '#363e4d',
-					boxShadow: 'none',
 				}}
 				justifyContent="space-between"
 				borderRadius="0 0 20px 20px"

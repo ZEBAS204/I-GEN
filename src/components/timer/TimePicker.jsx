@@ -79,7 +79,6 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 				bgGradient: 'linear(to-t, blackAlpha.400, transparent, blackAlpha.400)',
 			}}
 			borderRadius="20px"
-			boxShadow="md"
 			mx={2}
 			gap={2}
 			p={4}

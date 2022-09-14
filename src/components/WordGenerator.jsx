@@ -107,9 +107,7 @@ export default function WordGenerator() {
 			bg="#fff"
 			_dark={{
 				bg: 'linear-gradient(to right, #6b4ecb 1%, #363e4d 1%, #363e4d 99%, #6b4ecb 99%)',
-				boxShadow: 'none',
 			}}
-			boxShadow="inset 0 0 3px #000"
 			rounded="20px"
 			p={8}
 			{...props}

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, memo } from 'react'
 import { setData } from '@utils/appStorage'
 import {
 	Box,
+	Divider,
 	Switch,
 	Stack,
 	Spacer,
@@ -196,7 +197,7 @@ const Accessibility = ({ isTTSEnabled, toggleSpeak }) => {
 			</Box>
 
 			<br />
-			<hr />
+			<Divider />
 			<br />
 
 			<Stack direction="column" px={3} gap={5}>
