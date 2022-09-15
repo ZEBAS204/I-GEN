@@ -2,6 +2,7 @@ import localforage from 'localforage'
 import Logger from './logger'
 import { useState, useEffect } from 'react'
 
+const log = Logger.getLogger('app-storage')
 localforage.config({
 	// This will rename the database from "storage" to "Settings"
 	name: 'Settings',
@@ -47,10 +48,11 @@ function clearData() {
 					localStorage.clear()
 				sessionStorage.clear()
 
+				log.info(['storage'], 'Cleared storage')
 				resolve()
 			})
 			.catch((err) => {
-				console.error(err)
+				log.error(['storage'], err)
 				reject(err)
 			})
 	})
@@ -85,10 +87,14 @@ const useLocalForage = (key, initialValue = null) => {
 				getData(key)
 					.then((value) => {
 						setStoredValue(value)
-						Logger.info(`Got value from "${key}"`, value)
+						log.info(['storage'], `Got value from "${key}"`, value)
 					})
 					.catch((err) => {
-						Logger.error(`Error getting stored value from "${key}"`, err)
+						log.error(
+							['storage'],
+							`Error getting stored value from "${key}"`,
+							err
+						)
 						return initialValue
 					})
 			})
@@ -101,10 +107,10 @@ const useLocalForage = (key, initialValue = null) => {
 			setData(key, value)
 				.then(() => {
 					setStoredValue(value)
-					Logger.info(`Set value to "${key}"`, value)
+					log.info(['storage'], `Set value to "${key}"`, value)
 				})
 				.catch((err) => {
-					Logger.error(`Error setting the key "${key}"`, err)
+					log.error(['storage'], `Error setting the key "${key}"`, err)
 					return initialValue
 				})
 		})()
@@ -116,10 +122,14 @@ const useLocalForage = (key, initialValue = null) => {
 			remData(key)
 				.then(() => {
 					setStoredValue(null)
-					Logger.info(`Removed value from "${key}"`)
+					log.info(['storage'], `Removed value from "${key}"`)
 				})
 				.catch((err) =>
-					Logger.error(`Error deleting the stored value from "${key}"`, err)
+					log.error(
+						['storage'],
+						`Error deleting the stored value from "${key}"`,
+						err
+					)
 				)
 		})()
 	}

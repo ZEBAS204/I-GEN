@@ -12,6 +12,8 @@
 
 import Logger from '@utils/logger'
 
+const log = Logger.getLogger('SW')
+
 const isLocalhost = Boolean(
 	window.location.hostname === 'localhost' ||
 		// [::1] is the IPv6 localhost address.
@@ -40,19 +42,19 @@ export function register(config) {
 				// This is running on localhost. Let's check if a service worker still exists or not.
 				checkValidServiceWorker(swUrl, config)
 
-				Logger.log(['SW', 'info'], 'Service Worker Registered!')
+				log.info(['SW'], 'Service Worker Registered!')
 
 				// Add some additional logging to localhost, pointing developers to the
 				// service worker/PWA documentation.
 				navigator.serviceWorker.ready.then(() => {
-					Logger.log(
-						['SW', 'info'],
+					log.info(
+						['SW'],
 						'This web app is being served cache-first by a service worker.'
 					)
 				})
 			} else {
 				// Is not localhost. Just register service worker
-				Logger.log('[SW] Register valid service worker!')
+				log.info(['SW'], 'Register valid service worker!')
 				registerValidSW(swUrl, config)
 			}
 		})
@@ -74,8 +76,8 @@ function registerValidSW(swUrl, config) {
 							// At this point, the updated precached content has been fetched,
 							// but the previous service worker will still serve the older
 							// content until all client tabs are closed.
-							Logger.log(
-								['SW', 'info'],
+							log.info(
+								['SW'],
 								'New content is available and will be used when all tabs for this page are closed.'
 							)
 
@@ -87,7 +89,7 @@ function registerValidSW(swUrl, config) {
 							// At this point, everything has been precached.
 							// It's the perfect time to display a
 							// "Content is cached for offline use." message.
-							Logger.log(['SW', 'info'], 'Content is cached for offline use.')
+							log.info(['SW'], 'Content is cached for offline use.')
 
 							// Execute callback
 							if (config && config.onSuccess) {
@@ -99,10 +101,7 @@ function registerValidSW(swUrl, config) {
 			}
 		})
 		.catch((error) => {
-			Logger.log(
-				['SW', 'error'],
-				`Error during service worker registration: ${error}`
-			)
+			log.error(['SW'], `Error during service worker registration: ${error}`)
 		})
 }
 
@@ -130,8 +129,8 @@ function checkValidServiceWorker(swUrl, config) {
 			}
 		})
 		.catch(() => {
-			Logger.log(
-				['SW', 'info'],
+			log.info(
+				['SW'],
 				'No internet connection found. App is running in offline mode.'
 			)
 		})
@@ -144,7 +143,7 @@ export function unregister() {
 				registration.unregister()
 			})
 			.catch((error) => {
-				Logger.log(['SW', 'error'], error.message)
+				log.error(['SW'], error.message)
 			})
 	}
 }

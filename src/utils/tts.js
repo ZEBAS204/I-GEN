@@ -1,6 +1,7 @@
 import Logger from './logger'
 import { getData } from './appStorage'
 
+const log = Logger.getLogger('TTS')
 const isSupported = window.speechSynthesis !== null ? true : false
 const synth = window.speechSynthesis
 
@@ -73,7 +74,7 @@ export default class TTS {
 				const voice = voices[i]
 
 				if (voice.default) {
-					Logger.log(['TTS', 'info'], `Voice[${i}] is device default voice`)
+					log.info(['TTS'], `Voice[${i}] is device default voice`)
 					// Enforce first element of voices array to be the default voice
 					voices.unshift(voice[i])
 					voices.splice(i + 1, 1)
@@ -97,7 +98,7 @@ export default class TTS {
 
 		if (typeof newVoice === 'number') {
 			if (newVoice <= TTS._voices.length && newVoice >= 0) {
-				Logger.log(['TTS'], 'Changed voice', TTS._voices[newVoice])
+				log.info(['TTS'], 'Changed voice', TTS._voices[newVoice])
 				TTS._voice = TTS._voices[newVoice]
 			}
 		}
@@ -170,10 +171,10 @@ export default class TTS {
 		}, 50)
 	})
 		.catch(() => {
-			Logger.log(['TTS', 'warn'], 'Voices exceeded max tries')
+			log.warn(['TTS'], 'Voices exceeded max tries')
 		})
 		.then(() => {
-			Logger.log(['TTS', 'info'], 'Voices loaded!')
+			log.info(['TTS'], 'Voices loaded!')
 			TTS.getVoices() // populate array
 		})
 		.then(async () => {

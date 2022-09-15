@@ -9,13 +9,14 @@ import '@utils/i18n'
 import defaultSettings from '@utils/defaultSettings'
 import App from './App'
 
-function EnsureDataLoad() {
+const log = Logger.getLogger('index')
+const EnsureDataLoad = () => {
 	const [loaded, setLoaded] = useState(false)
 	const [swUpdate, setSWUpdate] = useState(false)
 	const [waitingWorker, setWaitingWorker] = useState(null)
 
 	useEffect(() => {
-		Logger.log(['SW', 'info'], 'Registering Service Worker...')
+		log.info(['index'], 'Registering Service Worker...')
 
 		serviceWorker.register({
 			onUpdate: (registration) => {

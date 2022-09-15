@@ -21,6 +21,7 @@ import Footer from '@components/Footer'
  */
 import { customTheme } from '@utils/theme'
 
+const log = Logger.getLogger('app')
 export default function App({ swUpdate, registration }) {
 	const [systemSync, setSystemSync] = useState(false)
 
@@ -39,7 +40,7 @@ export default function App({ swUpdate, registration }) {
 		;(async () => {
 			await getData('useSystemColorMode').then((sync) => {
 				if (sync && typeof sync === 'boolean') {
-					Logger.log(['APP', 'info'], `Is using system color mode?: ${sync}`)
+					log.info(['APP'], `Is using system color mode?: ${sync}`)
 					setSystemSync(sync)
 				}
 			})
