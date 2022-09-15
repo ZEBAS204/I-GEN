@@ -1,4 +1,4 @@
-import fs from 'fs/promises'
+import { readFile, readFileSync } from 'fs'
 import { resolve } from 'path'
 
 import { defineConfig } from 'vite'
@@ -6,6 +6,37 @@ import react from '@vitejs/plugin-react'
 import svgrPlugin from 'vite-plugin-svgr'
 import progress from 'vite-plugin-progress'
 import { ViteWebfontDownload } from 'vite-plugin-webfont-dl'
+
+const getGitRevision = () => {
+	try {
+		const rev = readFileSync('.git/HEAD').toString().trim()
+		if (rev.indexOf(':') === -1) {
+			return rev
+		}
+
+		return readFileSync(`.git/${rev.substring(5)}`)
+			.toString()
+			.trim()
+			.slice(0, 7)
+	} catch (err) {
+		console.error('Failed to get Git revision.', err)
+		return '?'
+	}
+}
+
+const getGitBranch = () => {
+	try {
+		const rev = readFileSync('.git/HEAD').toString().trim()
+		if (rev.indexOf(':') === -1) {
+			return 'DETACHED'
+		}
+
+		return rev.split('/').pop()
+	} catch (err) {
+		console.error('Failed to get Git branch.', err)
+		return '?'
+	}
+}
 
 // https://vitejs.dev/config/
 /** @type {import('vite').UserConfig} */
@@ -15,6 +46,11 @@ export default defineConfig({
 		outDir: 'build',
 	},
 	publicDir: './src/static',
+	define: {
+		// See: https://github.com/revoltchat/revite/blob/master/vite.config.ts
+		__GIT_REVISION__: JSON.stringify(getGitRevision()),
+		__GIT_BRANCH__: JSON.stringify(getGitBranch()),
+	},
 
 	plugins: [
 		react(),
@@ -57,7 +93,7 @@ export default defineConfig({
 					setup(build) {
 						build.onLoad({ filter: /src\\.*\.js$/ }, async (args) => ({
 							loader: 'jsx',
-							contents: await fs.readFile(args.path, 'utf8'),
+							contents: await readFile(args.path, 'utf8'),
 						}))
 					},
 				},
