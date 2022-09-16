@@ -10,7 +10,7 @@ const Logger = /** @type {Logger} */ log
 if (import.meta.env.DEV) log.enableAll()
 
 console.log(
-	`%cI-GEN ${window.__GIT_BRANCH__} (${window.__GIT_REVISION__})`,
+	`%cI-GEN ${__GIT_BRANCH__} (${__GIT_REVISION__})`, // eslint-disable-line
 	'color: #00FF00; background: black; font-size: 2em; padding: 10px; border: 2px solid #00FF00;'
 )
 
