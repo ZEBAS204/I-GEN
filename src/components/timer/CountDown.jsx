@@ -84,7 +84,7 @@ export default function CountDown({
 					onClick={handleTogglePicker}
 					isDisabled={parentRunning}
 				>
-					Edit
+					{t('buttons.edit_btn')}
 				</ShapeButton>
 			</Flex>
 		</>

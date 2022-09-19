@@ -11,7 +11,8 @@
     "regenerate": "Générer",
     "play_btn": "Démarrer",
     "stop_btn": "Arrêter",
-    "reset_btn": "Réinitialiser"
+    "reset_btn": "Réinitialiser",
+    "edit_btn": "Modifier"
   },
   "settings": {
     "title": "Paramètres",
