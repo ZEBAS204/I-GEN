@@ -124,26 +124,22 @@ export default function WordGenerator() {
 		<Grid
 			p={8}
 			mt={5}
+			w="100%"
 			align="center"
+			whiteSpace="pre-line"
 			borderRadius="20px"
 			justifyItems="center"
 			fontSize="2vh"
 			fontWeight={700}
 			fontFamily="Inter, Arial"
-			bgGradient="linear(to-t, #ff4040, #fbca00)"
+			bgGradient="linear(to-t, #9740ff, #e700fb)"
 			clipPath="polygon(0 0,25% 0,calc(25% + 15px) 15px,calc(75% - 15px) 15px,75% 0,100% 0,100% 100%,60% 100%,calc(60% - 20px) calc(100% - 20px),calc(40% + 20px) calc(100% - 20px),40% 100%,0 100%)"
 		>
 			<Box as={GhostIcon} w="8em" h="8em" />
-			<Text>
-				Looks like the word sets have not yet loaded!
-				<br />
-				This could be because of a slow internet connection or something is
-				blocking the data load of the sets files.
-			</Text>
+			<Text>{t('common.error_message')}</Text>
 			<Button
 				w="50%"
 				mt={5}
-				colorScheme="teal"
 				onClick={async () => {
 					setResetLoading(true)
 					setTimeout(() => setResetLoading(false), 3000)

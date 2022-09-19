@@ -4,7 +4,8 @@
     "noun": "Sustantivo",
     "adjective": "Adjetivo",
     "new_version": "¡Hay una nueva versión disponible!",
-    "refresh": "Refrescar"
+    "refresh": "Refrescar",
+    "error_message": "¡Parece que los conjuntos de palabras aún no se han cargado!\nEsto podría deberse a una conexión a Internet lenta o algo está bloqueando la carga de los archivos."
   },
   "buttons": {
     "regenerate": "Regenerar",

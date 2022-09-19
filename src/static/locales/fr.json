@@ -4,7 +4,8 @@
     "noun": "Nom",
     "adjective": "Adjectif",
     "new_version": "Une nouvelle version est disponible!",
-    "refresh": "Rafraîchir"
+    "refresh": "Rafraîchir",
+    "error_message": "Il semble que les ensembles de mots n'aient pas encore été chargés!\nCela peut être dû à une connexion Internet lente ou à quelque chose qui bloque le chargement des fichiers."
   },
   "buttons": {
     "regenerate": "Générer",
