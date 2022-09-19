@@ -1,4 +1,5 @@
-import { readFile, readFileSync } from 'fs'
+import { readFileSync } from 'fs'
+import { readFile } from 'fs/promises'
 import { resolve } from 'path'
 
 import { defineConfig } from 'vite'
