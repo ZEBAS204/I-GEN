@@ -37,7 +37,10 @@ export default function Keybinds() {
 			<Text>
 				<Trans
 					i18nKey="keybinds.desc_keybinds"
-					values={{ tab: 'Tab', shift: 'Shift' }}
+					components={
+						// eslint-disable-next-line react/jsx-key
+						[<Kbd />]
+					}
 				/>
 			</Text>
 

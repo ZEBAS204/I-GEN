@@ -45,7 +45,7 @@
   "keybinds": {
     "title": "Atajos de teclado",
     "desc_alert": "¡Recuerda!",
-    "desc_keybinds": "Siempre puedes utilizar {{tab}} y {{shift}}{{tab}} para moverte por toda la página.",
+    "desc_keybinds": "Siempre puedes utilizar <0>TAB</0> y <0>Shift</0><0>TAB</0> para moverte por toda la página.",
     "words": "Palabras",
     "words_desc": "Generar nuevo conjunto de palabras",
     "timer": "Temporizador",

@@ -45,7 +45,7 @@
   "keybinds": {
     "title": "Raccourcis clavier",
     "desc_alert": "Rappelle!",
-    "desc_keybinds": "Tu peux utiliser les touches flèches pour déplacer la sélection.",
+    "desc_keybinds": "Tu peux toujours utiliser <0>TAB</0> et <0>Shift</0><0>TAB</0> pour vous déplacer sur toute la page!",
     "words": "Mots",
     "words_desc": "Genère des mots aléatoires",
     "timer": "Minuteur",

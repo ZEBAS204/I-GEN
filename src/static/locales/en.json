@@ -45,7 +45,7 @@
   "keybinds": {
     "title": "Keybinds",
     "desc_alert": "Remember!",
-    "desc_keybinds": "You can always use {{tab}} and {{shift}}{{tab}} to move around the hole page!",
+    "desc_keybinds": "You can always use <0>TAB</0> and <0>Shift</0><0>TAB</0> to move around the whole page!",
     "words": "Words",
     "words_desc": "Generate new pairs of words",
     "timer": "Timer",
