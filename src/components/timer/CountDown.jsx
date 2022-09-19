@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useLatest } from 'react-use'
 import { useTranslation } from 'react-i18next'
 import { Flex, Button } from '@chakra-ui/react'
 import { FaPause, FaPlay, FaWrench, FaRedoAlt } from 'react-icons/fa'
@@ -29,6 +30,24 @@ export default function CountDown({
 
 	const handleTogglePicker = () => setPickerVisible(!isPickerVisible)
 
+	// Bind keys to toggle timer and reset it
+	const isPickerSelected = useLatest(isPickerVisible)
+	useEffect(() => {
+		const callback = ({ shiftKey, code: key, target }) => {
+			if (isPickerSelected.current) return
+			if (!shiftKey) return
+			else if (!(key === 'KeyR' || key === 'KeyS')) return
+			else if (target.nodeName === 'INPUT') return
+
+			if (key === 'KeyR') sendReset()
+			if (key === 'KeyS') toggleRunning()
+		}
+		document.addEventListener('keydown', callback)
+		return () => {
+			document.removeEventListener('keydown', callback)
+		}
+	}, [])
+
 	return (
 		<>
 			<Flex
@@ -53,6 +72,7 @@ export default function CountDown({
 			</Flex>
 
 			<Flex
+				as="section"
 				aria-label={t('timer.controls')}
 				p={10}
 				gap={3}
@@ -69,6 +89,7 @@ export default function CountDown({
 					icon={<FaRedoAlt />}
 					onClick={isPickerVisible ? null : sendReset}
 					isDisabled={isPickerVisible}
+					aria-keyshortcuts="Shift+R"
 				>
 					{t('buttons.reset_btn')}
 				</ShapeButton>
@@ -76,6 +97,7 @@ export default function CountDown({
 					icon={parentRunning ? <FaPause /> : <FaPlay />}
 					onClick={isPickerVisible ? null : toggleRunning}
 					isDisabled={isPickerVisible}
+					aria-keyshortcuts="Shift+S"
 				>
 					{parentRunning ? t('buttons.stop_btn') : t('buttons.play_btn')}
 				</ShapeButton>
