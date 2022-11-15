@@ -23,12 +23,17 @@ import { wrapContext } from '@contexts/contextWrapper'
 import TTS from '@utils/tts'
 
 const VolumeSlider = () => {
+	const { t } = useTranslation()
 	const [volume, setVolume] = useState(TTS._volume * 100)
 	const [displayVolumeTooltip, setDisplayVolumeTooltip] = useState(false)
 	const changeVolume = (newVol) => setData('tts_volume', newVol)
 
 	return (
 		<Slider
+			aria-label={t('settings.tts_volume')}
+			aria-valuemin={1}
+			aria-valuemax={100}
+			aria-valuenow={volume}
 			focusThumbOnChange={false} // Prevent stealing focus when using the input from bellow
 			onChange={(val) => setVolume(val)}
 			onChangeStart={() => setDisplayVolumeTooltip(true)}
@@ -43,10 +48,11 @@ const VolumeSlider = () => {
 			max={100}
 			step={1}
 		>
-			<SliderTrack>
+			<SliderTrack aria-hidden="true">
 				<SliderFilledTrack />
 			</SliderTrack>
 			<Tooltip
+				aria-hidden="true"
 				isOpen={displayVolumeTooltip}
 				label={volume}
 				placement="top"
@@ -59,12 +65,17 @@ const VolumeSlider = () => {
 }
 
 const RateSldier = () => {
+	const { t } = useTranslation()
 	const [speed, setSpeed] = useState(TTS._speed * 100)
 	const [displaySpeedTooltip, setDisplaySpeedTooltip] = useState(false)
 	const changeSpeed = (newSpeed) => setData('tts_speed', newSpeed)
 
 	return (
 		<Slider
+			aria-label={t('settings.tts_rate')}
+			aria-valuemin={1}
+			aria-valuemax={100}
+			aria-valuenow={speed}
 			onChange={(vel) => setSpeed(vel)}
 			onChangeStart={() => setDisplaySpeedTooltip(true)}
 			onChangeEnd={(vel) => {
@@ -78,7 +89,7 @@ const RateSldier = () => {
 			max={100}
 			step={1}
 		>
-			<SliderTrack>
+			<SliderTrack aria-hidden="true">
 				<SliderFilledTrack />
 			</SliderTrack>
 			<Tooltip
