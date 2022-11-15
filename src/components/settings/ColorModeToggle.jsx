@@ -14,7 +14,7 @@ const ThemeSwitch = () => {
 	return (
 		<chakra.div
 			as={Toggle}
-			aria-labelledby="switch"
+			role="checkbox"
 			aria-label={t('settings.theme_toggle')}
 			name={t('settings.theme_toggle')}
 			value={t(`settings.theme_${colorMode}`)}
