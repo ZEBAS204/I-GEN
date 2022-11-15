@@ -50,6 +50,7 @@ export default function () {
 	return (
 		<Box
 			as="section"
+			role="contentinfo"
 			px={5}
 			pt={10}
 			pb={14}
