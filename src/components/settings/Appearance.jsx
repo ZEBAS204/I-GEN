@@ -9,7 +9,7 @@ import CustomThemeEditor from './CustomThemeEditor'
 
 import { useTranslation } from 'react-i18next'
 import { useLocalForage } from '@utils/appStorage'
-import { Checkbox, Stack, Spacer, Heading } from '@chakra-ui/react'
+import { Checkbox, Stack, Spacer, Heading, DarkMode } from '@chakra-ui/react'
 import { ColorModeToggle } from './ColorModeToggle'
 
 export default function Appearance() {
@@ -29,13 +29,15 @@ export default function Appearance() {
 				<ColorModeToggle size="lg" />
 				<CustomThemeEditor />
 			</Stack>
-			<Checkbox
-				pl={2}
-				isChecked={systemSync}
-				onChange={(e) => toggleSystemSync(e.target.checked)}
-			>
-				{t('settings.theme_sync')}
-			</Checkbox>
+			<DarkMode>
+				<Checkbox
+					pl={2}
+					isChecked={systemSync}
+					onChange={(e) => toggleSystemSync(e.target.checked)}
+				>
+					{t('settings.theme_sync')}
+				</Checkbox>
+			</DarkMode>
 		</>
 	)
 }
