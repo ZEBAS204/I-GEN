@@ -73,23 +73,25 @@ const customTheme = {
 					scrollbarTrackColor: 'rgba(0, 0, 0, 0.25)',
 				},
 
-				'::-webkit-scrollbar': {
+				'::-webkit-scrollbar, .scrollablebar::-webkit-scrollbar': {
 					width: '8px',
 				},
-				'::-webkit-scrollbar-track-piece': {
-					border: 'none',
-					backgroundColor: 'transparent',
-					margin: 0,
-				},
-				'::-webkit-scrollbar-thumb': {
+				'::-webkit-scrollbar-track-piece, .scrollablebar::-webkit-scrollbar-track-piece':
+					{
+						border: 'none',
+						backgroundColor: 'transparent',
+						margin: 0,
+					},
+				'::-webkit-scrollbar-thumb, .scrollablebar::-webkit-scrollbar-thumb': {
 					background: 'gray',
 					borderRadius: '15px',
 					height: '2px',
 				},
-				'::-webkit-scrollbar-thumb:hover': {
-					background: 'darkGray',
-					maxHeight: '10px',
-				},
+				'::-webkit-scrollbar-thumb:hover, .scrollablebar::-webkit-scrollbar-thumb:hover':
+					{
+						background: 'darkGray',
+						maxHeight: '10px',
+					},
 			},
 
 			body: {

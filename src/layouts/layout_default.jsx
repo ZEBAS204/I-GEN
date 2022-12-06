@@ -14,6 +14,7 @@ const Display = ({ children, ...props }) => {
 			flex="1"
 			overflow="auto hidden"
 			scrollSnapType="x mandatory"
+			className="scrollablebar"
 			{...props}
 			sx={{
 				'& > section': {
