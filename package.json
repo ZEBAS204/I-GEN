@@ -4,16 +4,16 @@
   "private": true,
   "homepage": "./",
   "scripts": {
-    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "analyze": "source-map-explorer 'build/assets/*.js'",
     "start": "vite --host",
     "dev": "npm run start",
     "dev:build": "npm run build && npm run dev:serve",
-    "dev:serve": "vite preview",
+    "dev:serve": "vite preview --host",
     "build": "vite build",
     "lint": "npx eslint src",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "npm run lint --fix",
     "prettier": "npx prettier src --check",
-    "prettier:fix": "npm run prettier -- --write",
+    "prettier:fix": "npm run prettier --write",
     "format": "npm run prettier:fix && npm run lint:fix"
   },
   "dependencies": {
