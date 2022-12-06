@@ -1,15 +1,5 @@
 import { useState, useCallback, memo } from 'react'
-import {
-	Box,
-	Text,
-	Link,
-	Icon,
-	IconButton,
-	Heading,
-	Stack,
-	Select as ChakraSelect,
-	Spacer,
-} from '@chakra-ui/react'
+import { Text, Link, Icon, IconButton } from '@chakra-ui/react'
 import {
 	RiExternalLinkLine,
 	RiArrowLeftRightLine as FlipIcon,
@@ -18,18 +8,11 @@ import { useTranslation } from 'react-i18next'
 
 import { useAppContext } from '@layouts/AppContext'
 import { wrapContext } from '@contexts/contextWrapper'
+import { Stack, SmallHeading, Select } from './_common'
 import {
 	supportedLanguages,
 	supportedWordsLanguages,
 } from '@utils/supportedLanguages'
-
-const Select = (props) => (
-	<Box shadow="base" borderRadius="md">
-		<ChakraSelect variant="filled" {...props}>
-			{props.children}
-		</ChakraSelect>
-	</Box>
-)
 
 const Interface = ({
 	nounLang,
@@ -56,10 +39,7 @@ const Interface = ({
 
 	return (
 		<>
-			<Stack direction="row" alignItems="center">
-				<Heading size="md">{t('settings.language')}</Heading>
-				<Spacer />
-
+			<Stack heading={t('settings.language')} mt={0}>
 				<Select
 					value={
 						// Get current language without country code
@@ -77,9 +57,7 @@ const Interface = ({
 					}
 				</Select>
 			</Stack>
-			<Stack direction="row" alignItems="center" mt={4}>
-				<Heading size="md">{t('settings.language_words')}</Heading>
-				<Spacer />
+			<Stack heading={t('settings.language_words')}>
 				<Select
 					value={wordsLang}
 					onChange={(e) => setWordsLang(e.target.value)}
@@ -99,16 +77,9 @@ const Interface = ({
 			{
 				//* Allow to manually set language options when language="custom"
 				wordsLang === 'custom' && (
-					<Stack
-						direction="row"
-						mt={2}
-						justify="space-around"
-						alignItems="center"
-					>
-						<Stack direction="column" alignItems="center">
-							<Heading size="sm" color="whiteAlpha.800">
-								{t('common.adjective')}
-							</Heading>
+					<Stack mt={2} justify="space-around">
+						<Stack mt={0} direction="column">
+							<SmallHeading>{t('common.adjective')}</SmallHeading>
 							<Select
 								variant="filled"
 								value={adjLang}
@@ -136,10 +107,8 @@ const Interface = ({
 							onClick={() => toggleWordFlip()}
 						/>
 
-						<Stack direction="column" alignItems="center">
-							<Heading size="sm" color="whiteAlpha.800">
-								{t('common.noun')}
-							</Heading>
+						<Stack mt={0} direction="column">
+							<SmallHeading>{t('common.noun')}</SmallHeading>
 							<Select
 								variant="filled"
 								value={nounLang}

@@ -1,26 +1,50 @@
 import { useState, useEffect, useCallback, memo } from 'react'
 import { setData } from '@utils/appStorage'
 import {
-	Box,
 	Divider,
 	Switch,
 	Stack,
-	Spacer,
 	Heading,
 	Button,
-	Select,
 	Tooltip,
-	Slider,
+	Slider as CSlider,
 	SliderTrack,
 	SliderFilledTrack,
 	SliderThumb,
 	Input,
 } from '@chakra-ui/react'
+import { Stack as SpacedStack, Select, SmallHeading } from './_common'
 
 import { useTranslation } from 'react-i18next'
 import { useAppContext } from '@layouts/AppContext'
 import { wrapContext } from '@contexts/contextWrapper'
 import TTS from '@utils/tts'
+
+const Slider = (props) => (
+	<CSlider
+		aria-valuemin={1}
+		aria-valuemax={100}
+		min={1}
+		max={100}
+		step={1}
+		{...props}
+	>
+		<SliderTrack aria-hidden="true">
+			<SliderFilledTrack />
+		</SliderTrack>
+		{props.children}
+	</CSlider>
+)
+const SliderGuidance = ({ left, right }) => (
+	<Stack color="gray.400" direction="row" justifyContent="space-between">
+		<Heading size="xs" as="h4">
+			{left}
+		</Heading>
+		<Heading size="xs" as="h4">
+			{right}
+		</Heading>
+	</Stack>
+)
 
 const VolumeSlider = () => {
 	const { t } = useTranslation()
@@ -29,38 +53,36 @@ const VolumeSlider = () => {
 	const changeVolume = (newVol) => setData('tts_volume', newVol)
 
 	return (
-		<Slider
-			aria-label={t('settings.tts_volume')}
-			aria-valuemin={1}
-			aria-valuemax={100}
-			aria-valuenow={volume}
-			focusThumbOnChange={false} // Prevent stealing focus when using the input from bellow
-			onChange={(val) => setVolume(val)}
-			onChangeStart={() => setDisplayVolumeTooltip(true)}
-			onChangeEnd={(val) => {
-				const decVol = val / 100 // The real value goes from 0 to 1
-				changeVolume(decVol)
-				TTS._volume = decVol // TTS class static var
-				setDisplayVolumeTooltip(false)
-			}}
-			defaultValue={TTS._volume * 100}
-			min={1}
-			max={100}
-			step={1}
-		>
-			<SliderTrack aria-hidden="true">
-				<SliderFilledTrack />
-			</SliderTrack>
-			<Tooltip
-				aria-hidden="true"
-				isOpen={displayVolumeTooltip}
-				label={volume}
-				placement="top"
-				hasArrow
+		<>
+			<Slider
+				aria-label={t('settings.tts_volume')}
+				aria-valuenow={volume}
+				focusThumbOnChange={false} // Prevent stealing focus when using the input from bellow
+				onChange={(val) => setVolume(val)}
+				onChangeStart={() => setDisplayVolumeTooltip(true)}
+				onChangeEnd={(val) => {
+					const decVol = val / 100 // The real value goes from 0 to 1
+					changeVolume(decVol)
+					TTS._volume = decVol // TTS class static var
+					setDisplayVolumeTooltip(false)
+				}}
+				defaultValue={TTS._volume * 100}
 			>
-				<SliderThumb />
-			</Tooltip>
-		</Slider>
+				<Tooltip
+					aria-hidden="true"
+					isOpen={displayVolumeTooltip}
+					label={volume}
+					placement="top"
+					hasArrow
+				>
+					<SliderThumb />
+				</Tooltip>
+			</Slider>
+			<SliderGuidance
+				left={t('settings.tts_lower')}
+				right={t('settings.tts_higher')}
+			/>
+		</>
 	)
 }
 
@@ -71,36 +93,34 @@ const RateSldier = () => {
 	const changeSpeed = (newSpeed) => setData('tts_speed', newSpeed)
 
 	return (
-		<Slider
-			aria-label={t('settings.tts_rate')}
-			aria-valuemin={1}
-			aria-valuemax={100}
-			aria-valuenow={speed}
-			onChange={(vel) => setSpeed(vel)}
-			onChangeStart={() => setDisplaySpeedTooltip(true)}
-			onChangeEnd={(vel) => {
-				const decVel = vel / 100 // The real value goes from 0 to 1
-				changeSpeed(decVel)
-				TTS._rate = decVel // TTS class static var
-				setDisplaySpeedTooltip(false)
-			}}
-			defaultValue={TTS._rate * 100}
-			min={1}
-			max={100}
-			step={1}
-		>
-			<SliderTrack aria-hidden="true">
-				<SliderFilledTrack />
-			</SliderTrack>
-			<Tooltip
-				isOpen={displaySpeedTooltip}
-				label={speed}
-				placement="top"
-				hasArrow
+		<>
+			<Slider
+				aria-label={t('settings.tts_rate')}
+				aria-valuenow={speed}
+				onChange={(vel) => setSpeed(vel)}
+				onChangeStart={() => setDisplaySpeedTooltip(true)}
+				onChangeEnd={(vel) => {
+					const decVel = vel / 100 // The real value goes from 0 to 1
+					changeSpeed(decVel)
+					TTS._rate = decVel // TTS class static var
+					setDisplaySpeedTooltip(false)
+				}}
+				defaultValue={TTS._rate * 100}
 			>
-				<SliderThumb />
-			</Tooltip>
-		</Slider>
+				<Tooltip
+					isOpen={displaySpeedTooltip}
+					label={speed}
+					placement="top"
+					hasArrow
+				>
+					<SliderThumb />
+				</Tooltip>
+			</Slider>
+			<SliderGuidance
+				left={t('settings.tts_slower')}
+				right={t('settings.tts_faster')}
+			/>
+		</>
 	)
 }
 
@@ -118,7 +138,7 @@ const InputTest = () => {
 	}, [])
 
 	return (
-		<Stack direction="row" alignItems="center">
+		<SpacedStack>
 			<Button
 				variant="solid"
 				size="sm"
@@ -147,7 +167,7 @@ const InputTest = () => {
 				onChange={handleTTStest}
 				placeholder={t('settings.tts_test_input')}
 			/>
-		</Stack>
+		</SpacedStack>
 	)
 }
 
@@ -179,61 +199,42 @@ const Accessibility = ({ isTTSEnabled, toggleSpeak }) => {
 
 	return (
 		<>
-			<Stack direction="row" alignItems="center">
-				<Heading size="md">{t('settings.tts')} (TTS)</Heading>
-				<Spacer />
+			<SpacedStack heading={`${t('settings.tts')} (TTS)`} mt={0}>
 				<Switch onChange={toggleTTS} isChecked={useTTS} />
-			</Stack>
+			</SpacedStack>
 
-			<br />
+			<Select
+				mt={6}
+				placeholder={t('settings.tts_dropdown')}
+				onChange={(e) => changeVoice(e.target?.value)}
+			>
+				{
+					// Get all available voices from the OS
+					// As the default value will use the first voice item in array
+					TTS._voices.map((voice, val) => {
+						return (
+							<option value={val} key={`voice-${val}`}>
+								{voice.name}
+							</option>
+						)
+					})
+				}
+			</Select>
 
-			<Box shadow="base" borderRadius="md">
-				<Select
-					variant="filled"
-					placeholder={t('settings.tts_dropdown')}
-					onChange={(e) => changeVoice(e.target?.value)}
-				>
-					{
-						// Get all available voices from the OS
-						// As the default value will use the first voice item in array
-						TTS._voices.map((voice, val) => {
-							return (
-								<option value={val} key={`voice-${val}`}>
-									{voice.name}
-								</option>
-							)
-						})
-					}
-				</Select>
-			</Box>
-
-			<br />
-			<Divider />
-			<br />
+			<Divider my={6} />
 
 			<Stack direction="column" px={3} gap={5}>
-				<Stack direction="column">
-					<Heading size="sm">{t('settings.tts_volume')}</Heading>
+				<Stack>
+					<SmallHeading>{t('settings.tts_volume')}</SmallHeading>
 					<VolumeSlider />
-					<Stack color="gray.400" direction="row">
-						<Heading size="xs">{t('settings.tts_lower')}</Heading>
-						<Spacer />
-						<Heading size="xs">{t('settings.tts_higher')}</Heading>
-					</Stack>
+					<SliderGuidance />
 				</Stack>
-				<Stack direction="column">
-					<Heading size="sm">{t('settings.tts_rate')}</Heading>
+				<Stack>
+					<SmallHeading>{t('settings.tts_rate')}</SmallHeading>
 					<RateSldier />
-					<Stack color="gray.400" direction="row">
-						<Heading size="xs">{t('settings.tts_slower')}</Heading>
-						<Spacer />
-						<Heading size="xs">{t('settings.tts_faster')}</Heading>
-					</Stack>
+					<SliderGuidance />
 				</Stack>
 			</Stack>
-
-			<br />
-
 			<InputTest />
 		</>
 	)

@@ -1,16 +1,17 @@
-/**
- ** Current limitations of this method to allow user to change themes:
- ** ChakraUI trade-off in term of performance footprint can be easy visualized
- ** when changing themes. This performance drop is a noticeable in low-spec devices
- !! With React Developer Tools, this component will take a tiny more to load
+/*
+ * Current limitations of this method to allow user to change themes:
+ * ChakraUI trade-off in term of performance footprint can be easy visualized
+ * when changing themes. This performance drop is a noticeable in low-spec devices
+ ! With React Developer Tools, this component will take a tiny more to load
  */
 
 import CustomThemeEditor from './CustomThemeEditor'
 
 import { useTranslation } from 'react-i18next'
 import { useLocalForage } from '@utils/appStorage'
-import { Checkbox, Stack, Spacer, Heading, DarkMode } from '@chakra-ui/react'
+import { Checkbox, DarkMode } from '@chakra-ui/react'
 import { ColorModeToggle } from './ColorModeToggle'
+import { Stack } from './_common'
 
 export default function Appearance() {
 	const { t } = useTranslation()
@@ -23,9 +24,7 @@ export default function Appearance() {
 
 	return (
 		<>
-			<Stack direction="row" alignItems="center">
-				<Heading size="md">{t('settings.theme')}</Heading>
-				<Spacer />
+			<Stack heading={t('settings.theme')} mt={0}>
 				<ColorModeToggle size="lg" />
 				<CustomThemeEditor />
 			</Stack>
