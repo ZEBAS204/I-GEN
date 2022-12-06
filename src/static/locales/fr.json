@@ -41,7 +41,8 @@
   },
   "about": {
     "title": "À propos de {{app_name}}",
-    "desc": "{{app_name}} est un logiciel libre et gratuit pour générer des mots aléatoires."
+    "desc": "<0>{{app_name}}</0> est une application logiciel libre conçue pour aider les artistes à améliorer leurs compétences en leur fournissant un ensemble diversifié de mots pour s'entraîner.<1></1><1></1>Avec son interface simple et ses paramètres personnalisables, <0>{{app_name}}</0> permet aux artistes de générer rapidement et facilement des ensembles aléatoires de mots qui peuvent être utilisés pour divers exercices créatifs.",
+    "desc_acknowledge": "Les mots utilisés dans ce projet ont été générés automatiquement à partir des <0>dictionnaires de Kaikki</0> à l'aide d'un outil personnalisé. Pour plus d'informations, consultez le <1>source du projet</1>."
   },
   "keybinds": {
     "title": "Raccourcis clavier",

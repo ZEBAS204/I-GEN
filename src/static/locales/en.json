@@ -41,7 +41,8 @@
   },
   "about": {
     "title": "About",
-    "desc": "{{app_name}} is a free and open source application that generates random wordsets for you to practice."
+    "desc": "<0>{{app_name}}</0> is an open-source application designed to help artists improve their skills by providing them with a diverse set of words to practice with.<1></1><1></1>With its simple interface and customizable settings, <0>{{app_name}}</0> allows artists to quickly and easily generate random sets of words that can be used for a variety of creative exercises.",
+    "desc_acknowledge": "The words used in this project were automatically generated from <0>Kaikki's Dictionaries</0> using a custom tool. For more information, check the <1>project source</1>."
   },
   "keybinds": {
     "title": "Keybinds",

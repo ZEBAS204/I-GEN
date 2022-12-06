@@ -41,7 +41,8 @@
   },
   "about": {
     "title": "Acerca de {{app_name}}",
-    "desc": "{{app_name}} es una aplicación para generar conjuntos de palabras aleatorias compuestas de un sustantivo y adjetivo."
+    "desc": "<0>{{app_name}}</0> es una aplicación de código abierto diseñada para ayudar a los artistas a mejorar sus habilidades, proporcionándoles un conjunto diverso de palabras para practicar.<1></1><1></1>Con su interfaz sencilla y configuraciones personalizables, <0>{{app_name}}</0> permite a los artistas generar rápida y fácilmente conjuntos aleatorios de palabras que pueden ser utilizados para una variedad de ejercicios creativos.",
+    "desc_acknowledge": "Las palabras utilizadas en este proyecto se generaron automáticamente a partir de los <0>diccionarios de Kaikki</0> con una herramienta personalizada. Para más información, consulte la <1>fuente del proyecto</1>."
   },
   "keybinds": {
     "title": "Atajos de teclado",

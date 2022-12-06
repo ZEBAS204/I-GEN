@@ -51,6 +51,7 @@ export default defineConfig({
 		// See: https://github.com/revoltchat/revite/blob/master/vite.config.ts
 		__GIT_REVISION__: JSON.stringify(getGitRevision()),
 		__GIT_BRANCH__: JSON.stringify(getGitBranch()),
+		__PROJECT_SOURCE__: JSON.stringify('#'), //TODO: replace with project source repository
 	},
 
 	plugins: [
