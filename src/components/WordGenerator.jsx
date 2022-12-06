@@ -110,6 +110,18 @@ export default function WordGenerator() {
 			}}
 			rounded="20px"
 			p={8}
+			_after={
+				import.meta.env.DEV && {
+					content: 'attr(aria-label)',
+					position: 'relative',
+					display: 'block',
+					transform: 'translate(-50%)',
+					top: '-50%',
+					left: '15%',
+					color: '#00ff00',
+					h: 0,
+				}
+			}
 			{...props}
 		>
 			{!firstRender ? (
