@@ -4,7 +4,7 @@ import GenerateButton from '@components/common/GenerateButton'
 import DesktopTimer from '@components/timer/DesktopTimer'
 import { LoadingAnimationContainer } from '@components/common/LoadingAnimation'
 
-const WordGenerator = lazy(() => import('@components/WordGenerator'))
+const WordGenerator = lazy(() => import('@components/generator'))
 
 export default function Home() {
 	return (
