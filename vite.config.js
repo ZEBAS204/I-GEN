@@ -5,8 +5,11 @@ import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import svgrPlugin from 'vite-plugin-svgr'
-import progress from 'vite-plugin-progress'
 import { ViteWebfontDownload } from 'vite-plugin-webfont-dl'
+import { createHtmlPlugin } from 'vite-plugin-html'
+
+// Supported languages
+import { supportedLanguages } from './src/utils/supportedLanguages'
 
 const getGitRevision = () => {
 	try {
@@ -39,6 +42,17 @@ const getGitBranch = () => {
 	}
 }
 
+const getSupportedLanguages = () =>
+	supportedLanguages.map((lang) => ({
+		injectTo: 'head',
+		tag: 'link',
+		attrs: {
+			rel: 'alternate',
+			href: `/?lang=${lang.code}`,
+			hreflang: lang.code,
+		},
+	}))
+
 // https://vitejs.dev/config/
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
@@ -65,7 +79,24 @@ export default defineConfig({
 			'https://fonts.googleapis.com/css2?family=Inter:wght@600;700',
 			'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700',
 		]),
-		progress(),
+		createHtmlPlugin({
+			verbose: true,
+			minify: true,
+			/**
+			 * After writing entry here, you will not need to add script tags in `index.html`, the original tags need to be deleted
+			 * @default src/main.ts
+			 */
+			entry: 'src/index.jsx',
+			/**
+			 * If you want to store `index.html` in the specified folder, you can modify it, otherwise no configuration is required
+			 * @default index.html
+			 */
+			template: 'index.html',
+
+			inject: {
+				tags: [...getSupportedLanguages()],
+			},
+		}),
 	],
 	resolve: {
 		alias: {
