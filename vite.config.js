@@ -1,4 +1,3 @@
-import { readFileSync } from 'fs'
 import { readFile } from 'fs/promises'
 import { resolve } from 'path'
 
@@ -8,50 +7,8 @@ import svgrPlugin from 'vite-plugin-svgr'
 import { ViteWebfontDownload } from 'vite-plugin-webfont-dl'
 import { createHtmlPlugin } from 'vite-plugin-html'
 
-// Supported languages
-import { supportedLanguages } from './src/utils/supportedLanguages'
-
-const getGitRevision = () => {
-	try {
-		const rev = readFileSync('.git/HEAD').toString().trim()
-		if (rev.indexOf(':') === -1) {
-			return rev
-		}
-
-		return readFileSync(`.git/${rev.substring(5)}`)
-			.toString()
-			.trim()
-			.slice(0, 7)
-	} catch (err) {
-		console.error('Failed to get Git revision.', err)
-		return '?'
-	}
-}
-
-const getGitBranch = () => {
-	try {
-		const rev = readFileSync('.git/HEAD').toString().trim()
-		if (rev.indexOf(':') === -1) {
-			return 'DETACHED'
-		}
-
-		return rev.split('/').pop()
-	} catch (err) {
-		console.error('Failed to get Git branch.', err)
-		return '?'
-	}
-}
-
-const getSupportedLanguages = () =>
-	supportedLanguages.map((lang) => ({
-		injectTo: 'head',
-		tag: 'link',
-		attrs: {
-			rel: 'alternate',
-			href: `/?lang=${lang.code}`,
-			hreflang: lang.code,
-		},
-	}))
+// Custom build scripts
+import { getGitRevision, getGitBranch, headMetadata } from './scripts'
 
 // https://vitejs.dev/config/
 /** @type {import('vite').UserConfig} */
@@ -94,7 +51,12 @@ export default defineConfig({
 			template: 'index.html',
 
 			inject: {
-				tags: [...getSupportedLanguages()],
+				data: {
+					title: 'I-GEN', // TODO: replace with var
+				},
+				tags: [...headMetadata()],
+			},
+		}),
 			},
 		}),
 	],
