@@ -22,6 +22,7 @@ export default defineConfig({
 	root: './',
 	build: {
 		outDir: 'build',
+		sourcemap: true,
 	},
 	publicDir: './src/static',
 	define: {
