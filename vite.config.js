@@ -6,9 +6,15 @@ import react from '@vitejs/plugin-react'
 import svgrPlugin from 'vite-plugin-svgr'
 import { ViteWebfontDownload } from 'vite-plugin-webfont-dl'
 import { createHtmlPlugin } from 'vite-plugin-html'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // Custom build scripts
-import { getGitRevision, getGitBranch, headMetadata } from './scripts'
+import {
+	getGitRevision,
+	getGitBranch,
+	headMetadata,
+	viteServiceWorker,
+} from './scripts'
 
 // https://vitejs.dev/config/
 /** @type {import('vite').UserConfig} */
@@ -52,13 +58,12 @@ export default defineConfig({
 
 			inject: {
 				data: {
-					title: 'I-GEN', // TODO: replace with var
+					title: 'I-GEN',
 				},
 				tags: [...headMetadata()],
 			},
 		}),
-			},
-		}),
+		VitePWA(viteServiceWorker),
 	],
 	resolve: {
 		alias: {

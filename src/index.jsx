@@ -1,6 +1,6 @@
 import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import * as serviceWorker from './serviceWorkerRegistration'
+import { useRegisterSW } from 'virtual:pwa-register/react'
 
 import Logger from '@utils/logger'
 import { localforage } from '@utils/appStorage'
@@ -12,19 +12,19 @@ import App from './App'
 const log = Logger.getLogger('index')
 const EnsureDataLoad = () => {
 	const [loaded, setLoaded] = useState(false)
-	const [swUpdate, setSWUpdate] = useState(false)
-	const [waitingWorker, setWaitingWorker] = useState(null)
+	const { updateServiceWorker, needRefresh } = useRegisterSW({
+		onRegistered(r) {
+			log.info(['index'], 'SW Registered: ', r)
+		},
+		onRegisterError(error) {
+			log.error(['index'], 'Service worker registration error', error)
+		},
+		onOfflineReady() {
+			log.info(['index'], 'Service worker offline ready')
+		},
+	})
 
 	useEffect(() => {
-		log.info(['index'], 'Registering Service Worker...')
-
-		serviceWorker.register({
-			onUpdate: (registration) => {
-				setSWUpdate(true)
-				setWaitingWorker(registration.waiting)
-			},
-		})
-
 		// Set Default User Settings if they are not defined
 		localforage
 			.ready()
@@ -39,7 +39,7 @@ const EnsureDataLoad = () => {
 
 	if (!loaded) return <></>
 
-	return <App swUpdate={swUpdate} registration={waitingWorker} />
+	return <App swUpdate={needRefresh} registration={updateServiceWorker} />
 }
 
 // Change document title if in dev environment

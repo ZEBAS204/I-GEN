@@ -12,10 +12,7 @@ import { FaDownload } from 'react-icons/fa'
 const ServiceWorkerUpdate = ({ isUpdateAvailable, registration }) => {
 	const { t } = useTranslation()
 
-	const reloadPage = () => {
-		registration?.postMessage({ type: 'SKIP_WAITING' })
-		window.location.reload(true)
-	}
+	const reloadPage = () => registration(true)
 
 	return (
 		<Alert

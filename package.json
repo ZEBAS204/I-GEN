@@ -83,7 +83,9 @@
     "stylelint-scss": "^3.21.0",
     "vite": "^3.0.8",
     "vite-plugin-html": "^3.2.0",
+    "vite-plugin-pwa": "^0.14.0",
     "vite-plugin-svgr": "^2.2.1",
-    "vite-plugin-webfont-dl": "^2.2.1"
+    "vite-plugin-webfont-dl": "^2.2.1",
+    "workbox-window": "^6.5.4"
   }
 }
