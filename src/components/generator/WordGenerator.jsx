@@ -72,7 +72,7 @@ export default function WordGenerator() {
 				bg: 'linear-gradient(to right, #6b4ecb 1%, #363e4d 1%, #363e4d 99%, #6b4ecb 99%)',
 			}}
 			rounded="20px"
-			p={8}
+			p={[4, 8]}
 			_after={
 				import.meta.env.DEV && {
 					content: 'attr(aria-label)',
@@ -103,7 +103,7 @@ export default function WordGenerator() {
 	return (
 		<Grid
 			w="100%"
-			fontSize="xxx-large"
+			fontSize={['xx-large', 'xxx-large']}
 			textAlign="center"
 			fontFamily="Inter, Arial"
 			textTransform="capitalize"
@@ -127,7 +127,7 @@ export default function WordGenerator() {
 					color="#8a6aec"
 					position="relative"
 					display="block"
-					top="-73px"
+					top={['-48px', '-73px']}
 					w="3em"
 					h="3em"
 					m="0 auto"

@@ -9,7 +9,7 @@ export default function wClock({ remainingtimeToDisplay = '00:00:00' }) {
 				bgGradient: 'linear(to-b, #5fd4ff, #634dff)',
 			}}
 			bgClip="text"
-			fontSize="6vw"
+			fontSize="max(5em, calc(100vw/17))" //! {['5em', 'calc(100vh / 8)']} || max(5em, calc(100vw/17))
 			fontWeight={700}
 		>
 			{remainingtimeToDisplay}

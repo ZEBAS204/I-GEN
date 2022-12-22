@@ -72,11 +72,12 @@ export default function CountDown({
 			</Flex>
 
 			<Flex
+				flexDir={['column', 'row']}
 				as="section"
 				aria-label={t('timer.controls')}
 				p={10}
 				gap={3}
-				minW="30vw"
+				minW={['90%', '30vw']}
 				bg="#fff"
 				_dark={{
 					bg: '#363e4d',
