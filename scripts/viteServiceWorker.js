@@ -8,7 +8,7 @@ const APP_NAME = 'I-GEN'
  * description (`about.desc`) of the app to use on the PWA manifest.
  * @returns {string}
  */
-const getManifestDescription = () => {
+export const getManifestDescription = () => {
 	const path = resolve(__dirname, '../src/static/locales')
 	const locates = require(`${path}/en.json`)
 

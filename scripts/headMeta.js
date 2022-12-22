@@ -1,3 +1,5 @@
+import { getManifestDescription } from './viteServiceWorker'
+
 import { supportedLanguages } from '../src/utils/supportedLanguages'
 
 /**
@@ -18,4 +20,14 @@ const getSupportedLanguages = () => {
 /**
  * All head metadata to be used with vite-plugin-html
  */
-export const headMetadata = () => [...getSupportedLanguages()]
+export const headMetadata = () => [
+	{
+		injectTo: 'head',
+		tag: 'meta',
+		attrs: {
+			name: 'description',
+			content: getManifestDescription(),
+		},
+	},
+	...getSupportedLanguages(),
+]
