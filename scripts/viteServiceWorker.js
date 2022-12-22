@@ -78,6 +78,7 @@ export const viteServiceWorker = {
 	includeAssets: [
 		// We need to include all other assets.
 		// If not, for some reason they will not be accessible.
+		'robots.txt',
 		'favicon.ico',
 		'apple-touch-icon.png',
 	],
