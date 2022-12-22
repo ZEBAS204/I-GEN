@@ -20,6 +20,7 @@ const Display = ({ children, ...props }) => {
 				'& > section': {
 					width: '100vw',
 					scrollSnapAlign: 'start',
+					scrollSnapStop: 'always',
 					flexShrink: 0,
 					overflowY: 'auto',
 				},
