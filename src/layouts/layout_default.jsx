@@ -29,6 +29,8 @@ const Display = ({ children, ...props }) => {
 		</Flex>
 	) : (
 		<Grid
+			mx="1.5%"
+			gap="3.5%"
 			flex="1 0 auto"
 			templateColumns="20% 50% 20%"
 			templateRows="1fr"
@@ -41,7 +43,7 @@ const Display = ({ children, ...props }) => {
 
 export default function DefaultLayout() {
 	return (
-		<Display as="main" w="100vw" pt={5} mx="1.5%" mb={-8} gap="3.5%">
+		<Display as="main" w="100vw" pt={4} mb={-8}>
 			<AppContextProvider>
 				<Settings />
 				<Home />

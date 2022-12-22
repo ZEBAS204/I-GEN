@@ -14,7 +14,6 @@ export default function DesktopTimer() {
 			aria-label={t('timer.title')}
 			w="100%"
 			h="100%"
-			px={10}
 			flexDir="column"
 			alignItems="center"
 		>
