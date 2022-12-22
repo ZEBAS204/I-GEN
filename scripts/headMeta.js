@@ -29,5 +29,14 @@ export const headMetadata = () => [
 			content: getManifestDescription(),
 		},
 	},
+	{
+		injectTo: 'head',
+		tag: 'meta',
+		attrs: {
+			name: 'keywords',
+			content:
+				'word, words, writing, keyword, random, generator, random word generator, random word, random generator, word generator, noun, nouns, adjective, adjectives',
+		},
+	},
 	...getSupportedLanguages(),
 ]
