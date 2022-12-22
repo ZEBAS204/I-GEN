@@ -6,27 +6,64 @@ const isSupported = window.speechSynthesis !== null ? true : false
 const synth = window.speechSynthesis
 
 /**
- * @param {String} text Text to speak
- * @param {Boolean} awaitEnds Will enable the ability to use callbacks in say() function
- * * Static params:
- * @param {Array} _voice OS supported voice
- * @param {Number} _vol Voice volume
- * @param {Number} _rate Speak velocity
- * @param {Number} _pitch Pitch intensify
- * @param {String} _lang OS supported language
- * @param {Boolean} _allowSpam Allow SpeechSynthesis to queue messages
- * @class
+ * Web Speech API helper wrapper
  * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance
+ * @example
+ * const tts = new TTS('This is a Text to speak example')
+ * // Change current to random voice available on the device
+ * tts.changeVoice(Math.floor(Math.random() * tts.getVoices().length))
+ * tts.say() // speak
+ *
+ * // To prematurely stop the speech
+ * tts.stop()
  */
 export default class TTS {
+	/**
+	 * Synthesis voice language to use (defaults to en-US)
+	 * @type {string}
+	 */
 	static _lang = 'en-US' // Chrome on Android requires an initial language
-	static _voices = []
-	static _voice = null
-	static _volume = 1
-	static _rate = 1
-	static _pitch = 1
-	static _allowSpam = TTS.allowSpam || false // Also know as queue messages
 
+	/**
+	 * Synthesis voice available in the device
+	 * @type {[]|SpeechSynthesisVoice[]}
+	 */
+	static _voices = []
+
+	/**
+	 * Current synthesis voice using
+	 * @type {SpeechSynthesisVoice}
+	 */
+	static _voice = null
+
+	/**
+	 * Synthesis voice volume
+	 * @type {number}
+	 */
+	static _volume = 1
+
+	/**
+	 * Synthesis voice velocity
+	 * @type {number}
+	 */
+	static _rate = 1
+
+	/**
+	 * Synthesis voice pitch intensify
+	 * @type {number}
+	 */
+	static _pitch = 1
+
+	/**
+	 * Allow SpeechSynthesis to queue messages
+	 * @type {boolean}
+	 */
+	static _allowSpam = false
+
+	/**
+	 * @param {string} text Text to speak
+	 * @param {boolean} awaitEnds If true, the callback in `say` function will be called
+	 */
 	constructor(
 		text = 'This is what text to speech sounds like.',
 		awaitEnds = false
@@ -36,79 +73,74 @@ export default class TTS {
 	}
 
 	/**
-	 * Helper function to stop TTS if speaking
+	 * Stop TTS
 	 * @return {void}
 	 * @static
 	 */
 	static stop() {
-		if (!isSupported) return
+		if (!isSupported || !synth.speaking) return
 
-		if (synth.speaking) {
-			synth.cancel()
-
-			// If we don't set this, will give a "memory leak" ignorable warning
-			// when prematurely get stopped
-			this.awaitEnds = null
-		}
+		synth.cancel()
+		// If we don't set this, will give a "memory leak"
+		// ignorable warning when prematurely get stopped
+		this.awaitEnds = null
 	}
 
 	/**
-	 *
-	 * @return {Array} Device supported voices
+	 * Retrieve an array of the synthesis voices available on the device
+	 * @return {[]|SpeechSynthesisVoice[]} Device supported voices
 	 * @static
 	 */
 	static getVoices() {
 		if (!isSupported) return []
 
-		let voices = []
 		/*
 		 * Check if there are already voices saved inside the static voice variable
 		 * If they exist, just return the saved ones
 		 * If any exist, loop all voices and save inside the static voice variable as cache
 		 */
-		if (TTS._voices.length) {
-			voices = TTS._voices
-		} else {
-			const voices = synth.getVoices()
-			for (let i = 0; i < voices.length; i++) {
-				const voice = voices[i]
+		if (TTS._voices.length) return TTS._voices
 
-				if (voice.default) {
-					log.info(['TTS'], `Voice[${i}] is device default voice`)
-					// Enforce first element of voices array to be the default voice
-					voices.unshift(voice[i])
-					voices.splice(i + 1, 1)
-					TTS._voice = TTS._voices[0]
-				} else {
-					TTS._voices.push(voice)
-				}
+		const voices = synth.getVoices()
+		for (let i = 0; i < voices.length; i++) {
+			const voice = voices[i]
+
+			if (!voice.default) {
+				TTS._voices.push(voice)
+				continue
 			}
+
+			// Enforce first element of voices array to be the default voice
+			log.info(['TTS'], `Voice[${i}] is device default voice`)
+			voices.unshift(voice[i])
+			voices.splice(i + 1, 1)
+			TTS._voice = TTS._voices[0]
 		}
 
 		return voices
 	}
 
 	/**
-	 * Helper function to change TTS voice
-	 * @param {Number} newVoice Index number of the voice in TTS._voices array
+	 * Change TTS voice
+	 * @param {number} newVoice Index number of the voice in `TTS._voices` array
 	 * @return {void}
 	 */
 	static changeVoice(newVoice) {
 		if (!isSupported) return
+		if (typeof newVoice !== 'number')
+			throw new TypeError('newVoice is not a number')
 
-		if (typeof newVoice === 'number') {
-			if (newVoice <= TTS._voices.length && newVoice >= 0) {
-				log.info(['TTS'], 'Changed voice', TTS._voices[newVoice])
-				TTS._voice = TTS._voices[newVoice]
-			}
+		if (newVoice <= TTS._voices.length && newVoice >= 0) {
+			log.info(['TTS'], 'Changed voice', TTS._voices[newVoice])
+			TTS._voice = TTS._voices[newVoice]
 		}
 	}
 
 	/**
 	 * Speak the given text with device TTS if supported
-	 * @param {Function} callback When stop speaking. Callback if `this.awaitEnds` is true
+	 * @param {function} [callback] After stop speaking executes callback if `this.awaitEnds` is true
+	 * @return {object} The object itself
 	 * @async
-	 * @return {Object} The object itself
 	 */
 	async say(callback) {
 		if (!isSupported) return this
@@ -170,9 +202,6 @@ export default class TTS {
 			}
 		}, 50)
 	})
-		.catch(() => {
-			log.warn(['TTS'], 'Voices exceeded max tries')
-		})
 		.then(() => {
 			log.info(['TTS'], 'Voices loaded!')
 			TTS.getVoices() // populate array
@@ -189,6 +218,7 @@ export default class TTS {
 				if (typeof vol === 'number') TTS._volume = vol
 			})
 		})
+		.catch((err) => log.warn(['TTS'], err))
 })()
 
 //! Make it accessible from console in dev
