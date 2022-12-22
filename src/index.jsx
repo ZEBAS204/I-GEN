@@ -12,8 +12,11 @@ import App from './App'
 const log = Logger.getLogger('index')
 const EnsureDataLoad = () => {
 	const [loaded, setLoaded] = useState(false)
-	const { updateServiceWorker, needRefresh } = useRegisterSW({
-		onRegistered(r) {
+	const {
+		updateServiceWorker,
+		needRefresh: [needRefresh],
+	} = useRegisterSW({
+		onRegisteredSW(r) {
 			log.info(['index'], 'SW Registered: ', r)
 		},
 		onRegisterError(error) {
