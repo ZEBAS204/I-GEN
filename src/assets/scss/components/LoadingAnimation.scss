@@ -12,7 +12,7 @@ $mug-handle-bottom: #18a5d9;
 	width: 150px;
 	border-bottom-left-radius: 19px;
 	border-bottom-right-radius: 19px;
-	position: absolute;
+	position: relative;
 	background: linear-gradient(to bottom left, $mug-grad-top, $mug-grad-bottom);
 }
 

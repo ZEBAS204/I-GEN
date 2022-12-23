@@ -25,7 +25,7 @@ export const LoadingAnimationContainer = (props) => {
 		>
 			<LoadingAnimation {...animationProps} />
 			{showLabel && (
-				<Text position="relative" top="7em">
+				<Text position="relative" top="1em">
 					{t('common.loading')}...
 				</Text>
 			)}
