@@ -2,8 +2,8 @@ import Logger from './logger'
 import { getData } from './appStorage'
 
 const log = Logger.getLogger('TTS')
-const isSupported = window.speechSynthesis !== null ? true : false
 const synth = window.speechSynthesis
+const isSupported = typeof synth === 'object' ? true : false
 
 /**
  * Web Speech API helper wrapper
@@ -195,7 +195,6 @@ export default class TTS {
 			}
 			tries--
 
-			// FIXME: DuckDuckGo android error undefined error..?
 			if (synth.getVoices().length) {
 				resolve()
 				clearInterval(int)
