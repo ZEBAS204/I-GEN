@@ -32,6 +32,10 @@ export default defineConfig({
 		__PROJECT_SOURCE__: JSON.stringify('#'), //TODO: replace with project source repository
 	},
 
+	server: {
+		port: '3000',
+	},
+
 	plugins: [
 		react(),
 		svgrPlugin({
