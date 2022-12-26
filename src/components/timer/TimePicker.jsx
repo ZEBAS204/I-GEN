@@ -72,6 +72,7 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 
 	return (
 		<Flex
+			w="clamp(1%, 6em, 100%)"
 			flexDir="column"
 			alignItems="center"
 			bgGradient="linear(to-t, gray.200, transparent, gray.200)"
@@ -90,7 +91,7 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 				variant="filled"
 				fontWeight="bold"
 				textAlign="center"
-				w="90%"
+				w="100%"
 				bg="blackAlpha.100"
 				_dark={{
 					bg: 'whiteAlpha.100',
