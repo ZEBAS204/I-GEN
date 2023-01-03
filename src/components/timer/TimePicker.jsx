@@ -155,7 +155,7 @@ export default function TimePicker() {
 				color: '#fff',
 			}}
 		>
-			<Grid templateColumns="repeat(3, 1fr)" gap="5%">
+			<Grid templateColumns="repeat(3, 1fr)" gap="5%" justifyItems="center">
 				<Heading>{t('timer.hours')}</Heading>
 				<Heading>{t('timer.minutes')}</Heading>
 				<Heading>{t('timer.seconds')}</Heading>
