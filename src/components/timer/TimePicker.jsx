@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import {
+	useMediaQuery,
 	Icon,
 	Grid,
 	Flex,
@@ -105,7 +106,7 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 	)
 }
 
-export default function TimePicker() {
+const TimePickerContent = () => {
 	const { t } = useTranslation()
 	const { time, changeTime } = useTimerContext()
 
@@ -149,17 +150,7 @@ export default function TimePicker() {
 	)
 
 	return (
-		<Grid
-			templateColumns="60% 30%"
-			templateRows="1fr"
-			gap="10%"
-			py={10}
-			textAlign="center"
-			color="#000"
-			_dark={{
-				color: '#fff',
-			}}
-		>
+		<>
 			<Grid templateColumns="repeat(3, 1fr)" gap="5%" justifyItems="center">
 				<Heading>{t('timer.hours')}</Heading>
 				<Heading>{t('timer.minutes')}</Heading>
@@ -183,6 +174,42 @@ export default function TimePicker() {
 					onClick={() => updateTime({ minutes: 10 })}
 				/>
 			</Flex>
+		</>
+	)
+}
+
+export default function TimePicker() {
+	const [isSmallDisplay] = useMediaQuery('(max-width: 800px)')
+
+	if (isSmallDisplay)
+		return (
+			<Flex
+				flexDirection="column"
+				gap="1em"
+				py={10}
+				textAlign="center"
+				color="#000"
+				_dark={{
+					color: '#fff',
+				}}
+			>
+				<TimePickerContent />
+			</Flex>
+		)
+
+	return (
+		<Grid
+			templateColumns="60% 30%"
+			templateRows="1fr"
+			gap="10%"
+			py={10}
+			textAlign="center"
+			color="#000"
+			_dark={{
+				color: '#fff',
+			}}
+		>
+			<TimePickerContent />
 		</Grid>
 	)
 }
