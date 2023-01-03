@@ -21,3 +21,29 @@
 
 # vite-plugin-pwa
 /dev-dist
+
+# VSCode
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/i18n-ally-reviews.yml
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
+
+# VSCode Patch
+# Ignore all local history of files
+.history
+.ionide
+
+# environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
