@@ -116,6 +116,11 @@ export default function TimePicker() {
 	const updateHours = (e) => setHours(e)
 	const updateMinutes = (e) => setMinutes(e)
 	const updateSeconds = (e) => setSeconds(e)
+	const updateTime = ({ hours = 0, minutes = 0, seconds = 0 }) => {
+		setHours(hours)
+		setMinutes(!hours && !minutes && !seconds ? 10 : minutes) // default to 10 minutes if no time is specified
+		setSeconds(seconds)
+	}
 
 	/*
 	 * Will save the lastest converted time.
@@ -167,27 +172,15 @@ export default function TimePicker() {
 				<Heading>{t('timer.presets')}</Heading>
 				<PresetButton
 					preset="01:00:00"
-					onClick={() => {
-						updateHours(1)
-						updateMinutes(0)
-						updateSeconds(0)
-					}}
+					onClick={() => updateTime({ hours: 1 })}
 				/>
 				<PresetButton
 					preset="00:30:00"
-					onClick={() => {
-						updateHours(0)
-						updateMinutes(30)
-						updateSeconds(0)
-					}}
+					onClick={() => updateTime({ minutes: 30 })}
 				/>
 				<PresetButton
 					preset="00:10:00"
-					onClick={() => {
-						updateHours(0)
-						updateMinutes(10)
-						updateSeconds(0)
-					}}
+					onClick={() => updateTime({ minutes: 10 })}
 				/>
 			</Flex>
 		</Grid>
