@@ -1,6 +1,7 @@
 import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { useRegisterSW } from 'virtual:pwa-register/react'
+import { inject } from '@vercel/analytics'
 
 import Logger from '@utils/logger'
 import { localforage } from '@utils/appStorage'
@@ -10,6 +11,8 @@ import defaultSettings from '@utils/defaultSettings'
 import App from './App'
 
 const log = Logger.getLogger('index')
+inject()
+
 const EnsureDataLoad = () => {
 	const [loaded, setLoaded] = useState(false)
 	const {

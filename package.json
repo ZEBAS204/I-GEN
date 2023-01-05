@@ -21,6 +21,7 @@
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@hypertheme-editor/chakra-ui": "^0.1.5",
+    "@vercel/analytics": "^0.1.6",
     "framer-motion": "^4.1.17",
     "i18next": "^20.6.1",
     "i18next-browser-languagedetector": "^6.1.5",
