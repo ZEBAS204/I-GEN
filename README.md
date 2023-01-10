@@ -1,4 +1,8 @@
-![I-GEN logo](.github/assets/logo.png)
+<p align="center">
+  <a href="https://i-gen.vercel.app" target="_blank">
+    <img alt="I-GEN Logo" src=".github/assets/logo.png" />
+  </a>
+</p>
 
 # I-GEN 🎨
 
@@ -54,6 +58,6 @@ To this date, previous versions made before the release are still usable to anyo
 
 If you wish to see by yourself any of these previous versions, please refer to their following branches BUT, expect issues, unresponsiveness, performance problems, visual glitches, incomplete features, no words nor translations, and bugs:
 
-- [V1 branch](/tree/v1) -> [V1 APP]()
-- [V2 branch](/tree/v2) -> [V2 APP]()
+- [V1 branch](/tree/v1) -> [V1 APP](https://i-gen-v1.vercel.app/)
+- [V2 branch](/tree/v2) -> [V2 APP](https://i-gen-v2.vercel.app/)
 - The V3 branch is currently the `master` branch
