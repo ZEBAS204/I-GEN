@@ -107,6 +107,7 @@ const RateSldier = () => {
 				defaultValue={TTS._rate * 100}
 			>
 				<Tooltip
+					aria-hidden="true"
 					isOpen={displaySpeedTooltip}
 					label={speed}
 					placement="top"
