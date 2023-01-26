@@ -57,7 +57,6 @@ const VolumeSlider = () => {
 			<Slider
 				aria-label={t('settings.tts_volume')}
 				aria-valuenow={volume}
-				focusThumbOnChange={false} // Prevent stealing focus when using the input from bellow
 				onChange={(val) => setVolume(val)}
 				onChangeStart={() => setDisplayVolumeTooltip(true)}
 				onChangeEnd={(val) => {
