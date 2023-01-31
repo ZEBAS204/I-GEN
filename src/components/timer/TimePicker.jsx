@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
 import {
-	useMediaQuery,
 	Icon,
 	Grid,
 	Flex,
@@ -9,6 +8,7 @@ import {
 	Text,
 	Heading as CHeading,
 } from '@chakra-ui/react'
+import { useMedia } from 'react-use'
 import { RiArrowUpSLine, RiArrowDownSLine } from 'react-icons/ri'
 import { useLifecycles, useUpdateEffect } from 'react-use'
 import { useTranslation } from 'react-i18next'
@@ -179,7 +179,7 @@ const TimePickerContent = () => {
 }
 
 export default function TimePicker() {
-	const [isSmallDisplay] = useMediaQuery('(max-width: 800px)')
+	const isSmallDisplay = useMedia('(max-width: 800px)')
 
 	if (isSmallDisplay)
 		return (

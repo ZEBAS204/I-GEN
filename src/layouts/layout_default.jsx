@@ -1,4 +1,5 @@
-import { useMediaQuery, Grid, Flex } from '@chakra-ui/react'
+import { Grid, Flex } from '@chakra-ui/react'
+import { useMedia } from 'react-use'
 
 import { AppContextProvider } from './AppContext'
 import Settings from '@components/settings'
@@ -7,7 +8,7 @@ import About from '@components/about'
 import '@assets/scss/main.scss'
 
 const Display = ({ children, ...props }) => {
-	const [isSmallDisplay] = useMediaQuery('(max-width: 800px)')
+	const isSmallDisplay = useMedia('(max-width: 800px)')
 
 	return isSmallDisplay ? (
 		<Flex
