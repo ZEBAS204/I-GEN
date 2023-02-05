@@ -2,6 +2,7 @@
   "extends": [
     "stylelint-scss",
     "stylelint-config-sass-guidelines",
+    "stylelint-order",
     "stylelint-config-prettier"
   ],
   "rules": {
