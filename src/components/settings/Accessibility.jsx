@@ -62,7 +62,7 @@ const VolumeSlider = () => {
 				onChangeEnd={(val) => {
 					const decVol = val / 100 // The real value goes from 0 to 1
 					changeVolume(decVol)
-					TTS._volume = decVol // TTS class static var
+					TTS._volume = decVol
 					setDisplayVolumeTooltip(false)
 				}}
 				defaultValue={TTS._volume * 100}
@@ -101,7 +101,7 @@ const RateSldier = () => {
 				onChangeEnd={(vel) => {
 					const decVel = vel / 100 // The real value goes from 0 to 1
 					changeSpeed(decVel)
-					TTS._rate = decVel // TTS class static var
+					TTS._rate = decVel
 					setDisplaySpeedTooltip(false)
 				}}
 				defaultValue={TTS._rate * 100}

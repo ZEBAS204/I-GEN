@@ -6,9 +6,6 @@ import HttpApi from 'i18next-http-backend'
 // Supported Languages. Separated file so can be used in settings page to get all languages
 import { supportedLanguages } from './supportedLanguages'
 
-// shortband for if-else later
-const dev = import.meta.env.DEV
-
 i18n
 	.use(HttpApi)
 	// detect user language
@@ -19,7 +16,7 @@ i18n
 	// init i18next
 	.init({
 		// Enable debug mode if in development mode environment
-		debug: dev,
+		debug: import.meta.env.DEV,
 
 		// Do not use locates country codes (eg. en-CA)
 		load: 'languageOnly',
