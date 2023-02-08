@@ -137,10 +137,15 @@ export default function WordGenerator() {
 			<WordBox
 				word={isWordDisplayFlip ? words.adj : words.noun}
 				aria-label={t(`common.${isWordDisplayFlip ? 'adjective' : 'noun'}`)}
-				clipPath="polygon(0 0,
+				clipPath={[
+					`polygon(0 0, 40% 0, calc(40% + 20px) 20px, calc(60% - 20px) 20px, 60% 0, 100% 0, 100% 100%,
+					75% 100%, calc(75% - 15px) calc(100% - 20px), calc(25% + 15px) calc(100% - 20px), 25% 100%,
+					0 100%)`,
+					`polygon(0 0,
 					40% 0px, calc(40% + 20px) 20px, calc(60% - 20px) 20px, 60% 0px,
 					100% 0,100% 100%,60% 100%,calc(60% - 20px) calc(100% - 20px),calc(40% + 20px) calc(100% - 20px),40% 100%,
-				0 100%)"
+				0 100%)`,
+				]}
 			/>
 		</Grid>
 	)

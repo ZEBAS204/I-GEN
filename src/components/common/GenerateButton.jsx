@@ -35,7 +35,7 @@ const GenerateButton = memo(({ generateWord }) => {
 			fontFamily="Poppins"
 			fontWeight="700"
 			fontSize="2xl"
-			w={['22%', '20%']}
+			w={['4%', '20%']}
 			p={8}
 			colorScheme="purple"
 			bg="#8969eb"
