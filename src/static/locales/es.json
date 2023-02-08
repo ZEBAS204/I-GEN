@@ -55,9 +55,26 @@
     "timer_desc2": "Reiniciar temporizador"
   },
   "languages": {
+    "ar": "Árabe",
+    "cs": "Checo",
+    "da": "Danés",
+    "de": "Alemán",
     "en": "Inglés",
+    "es": "Español",
+    "fi": "Finlandés",
     "fr": "Francés",
-    "es": "Español"
+    "hi": "Hindi",
+    "hu": "Húngaro",
+    "it": "Italiano",
+    "ja": "Japonés",
+    "ko": "Coreano",
+    "nl": "Holandés",
+    "pl": "Polaco",
+    "pt": "Portugués",
+    "ru": "Ruso",
+    "sv": "Sueco",
+    "tr": "Turco",
+    "zh": "Chino"
   },
   "timer": {
     "title": "Temporizador",

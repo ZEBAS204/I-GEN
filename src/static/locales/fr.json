@@ -55,9 +55,26 @@
     "timer_desc2": "Réinitialiser le minuteur"
   },
   "languages": {
+    "ar": "Arabe",
+    "cs": "Tchèque",
+    "da": "Danois",
+    "de": "Allemand",
     "en": "Anglais",
+    "es": "Espagnol",
+    "fi": "Finnois",
     "fr": "Français",
-    "es": "Espagnol"
+    "hi": "Hindi",
+    "hu": "Hongrois",
+    "it": "Italien",
+    "ja": "Japonais",
+    "ko": "Coréen",
+    "nl": "Néerlandais",
+    "pl": "Polonais",
+    "pt": "Portugais",
+    "ru": "Russe",
+    "sv": "Suédois",
+    "tr": "Turc",
+    "zh": "Chinois"
   },
   "timer": {
     "title": "Minuteur",
