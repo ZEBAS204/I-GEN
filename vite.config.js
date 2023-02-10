@@ -26,10 +26,9 @@ export default defineConfig({
 	},
 	publicDir: './src/static',
 	define: {
-		// See: https://github.com/revoltchat/revite/blob/master/vite.config.ts
 		__GIT_REVISION__: JSON.stringify(getGitRevision()),
 		__GIT_BRANCH__: JSON.stringify(getGitBranch()),
-		__PROJECT_SOURCE__: JSON.stringify('#'), //TODO: replace with project source repository
+		__PROJECT_SOURCE__: JSON.stringify('https://github.com/ZEBAS204/I-GEN'),
 	},
 
 	server: {
