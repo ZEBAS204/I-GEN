@@ -14,6 +14,10 @@ import {
 	supportedWordsLanguages,
 } from '@utils/supportedLanguages'
 
+/* eslint-disable react/jsx-key, no-undef */
+// i18next already handles the missing key prop
+// __CONTRIBUTE_TRANSLATION__ is wrongly marked as undefined
+
 const Interface = ({
 	nounLang,
 	adjLang,
@@ -128,7 +132,7 @@ const Interface = ({
 				)
 			}
 			<Text pt={2}>
-				<Link href="#" isExternal>
+				<Link href={__CONTRIBUTE_TRANSLATION__} isExternal>
 					{t('settings.language_contribute')} <Icon as={RiExternalLinkLine} />
 				</Link>
 			</Text>
