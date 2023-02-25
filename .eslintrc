@@ -25,5 +25,11 @@
 		"react/prop-types": "off",
 		"react/display-name": "off"
 	},
-	"plugins": ["react", "import", "jsx-a11y", "react-hooks", "prettier"]
+	"plugins": ["react", "import", "jsx-a11y", "react-hooks", "prettier"],
+	"globals": {
+		"__GIT_REVISION__": "readonly",
+		"__GIT_BRANCH__": "readonly",
+		"__PROJECT_SOURCE__": "readonly",
+		"__CONTRIBUTE_TRANSLATION__": "readonly"
+	}
 }

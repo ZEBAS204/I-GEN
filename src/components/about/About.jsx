@@ -1,9 +1,8 @@
 import { Text, Link as CLink } from '@chakra-ui/react'
 import { Trans } from 'react-i18next'
 
-/* eslint-disable react/jsx-key, no-undef */
-// i18next already handles the missing key prop
-// __PROJECT_SOURCE__ is wrongly marked as undefined
+/* eslint-disable react/jsx-key */
+// i18n Trans component already handles keys
 const Link = ({ children, ...props }) => (
 	<u>
 		<CLink {...props}>{children}</CLink>

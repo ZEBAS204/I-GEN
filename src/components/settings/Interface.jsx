@@ -14,10 +14,6 @@ import {
 	supportedWordsLanguages,
 } from '@utils/supportedLanguages'
 
-/* eslint-disable react/jsx-key, no-undef */
-// i18next already handles the missing key prop
-// __CONTRIBUTE_TRANSLATION__ is wrongly marked as undefined
-
 const Interface = ({
 	nounLang,
 	adjLang,
