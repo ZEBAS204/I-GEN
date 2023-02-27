@@ -40,7 +40,7 @@ Oh wait... do you feel like contributing today? That's awesome! We have a [Contr
 
 ## License
 
-I-GEN is licensed under the MIT license (MIT). But as this project uses content extracted using [Wiktextract](https://github.com/tatuylonen/wiktextract) from the [Wikimedia Foundation](https://www.wikimedia.org), may differ on licenses. See the [LICENSE](/LICENSE) file for more details.
+I-GEN is licensed under the MIT license (MIT). But as this project employs content extracted using [Wiktextract](https://github.com/tatuylonen/wiktextract) and [kaikki-adj-noun-parser](https://github.com/ZEBAS204/kaikki-adj-noun-parser) from the [Wikimedia Foundation](https://www.wikimedia.org), may differ on licenses. See the [LICENSE](/LICENSE) file for more details.
 
 ## Attributions
 
