@@ -61,3 +61,11 @@ If you wish to see by yourself any of these previous versions, please refer to t
 - [V1 branch](/tree/v1) -> [V1 APP](https://i-gen-v1.vercel.app/)
 - [V2 branch](/tree/v2) -> [V2 APP](https://i-gen-v2.vercel.app/)
 - The V3 branch is currently the `master` branch
+
+---
+
+## One-Click Deploy
+
+With just one click, you can deploy your own copy of this application using [Vercel](https://vercel.com). Simply click the "Deploy" button below, and Vercel will automatically create a new instance of the application, ready for you to customize and use however you like.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FZEBAS204%2FI-GEN)
