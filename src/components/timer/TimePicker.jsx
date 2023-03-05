@@ -8,9 +8,8 @@ import {
 	Text,
 	Heading as CHeading,
 } from '@chakra-ui/react'
-import { useMedia } from 'react-use'
+import { useMedia, useLifecycles, useUpdateEffect } from 'react-use'
 import { RiArrowUpSLine, RiArrowDownSLine } from 'react-icons/ri'
-import { useLifecycles, useUpdateEffect } from 'react-use'
 import { useTranslation } from 'react-i18next'
 import { useTimerContext } from './TimerContext'
 
