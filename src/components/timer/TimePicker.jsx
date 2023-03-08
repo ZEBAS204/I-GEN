@@ -37,7 +37,12 @@ const PresetButton = ({ preset, ...props }) => (
 	</Button>
 )
 
-const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
+export const NumSelector = ({
+	onSelect = () => {},
+	time = 0,
+	min = 0,
+	max = 59,
+}) => {
 	const [picker, setPicked] = useState({
 		next: min + 1,
 		current: min,
@@ -105,7 +110,7 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 	)
 }
 
-const TimePickerContent = () => {
+export const TimePickerContent = () => {
 	const { t } = useTranslation()
 	const { time, changeTime } = useTimerContext()
 
