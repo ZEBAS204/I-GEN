@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { ChakraProvider } from '@chakra-ui/react'
 import Clock from '@components/timer/Clock'
 
-describe('Content Error', () => {
+describe('Clock', () => {
 	test('Should render', () => {
 		const time = '42:06:09'
 		const time2 = '59:59:59'
