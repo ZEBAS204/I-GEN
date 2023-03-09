@@ -1,28 +1,10 @@
-import {
-	vi,
-	describe,
-	test,
-	expect,
-	afterAll,
-	beforeEach,
-	beforeAll,
-} from 'vitest'
+import { vi, describe, test, expect, afterAll, beforeEach } from 'vitest'
 import { render, act, screen, fireEvent } from '@testing-library/react'
 
 import { createRoot } from 'react-dom/client'
 import { ChakraProvider } from '@chakra-ui/react'
 import { TimePickerContent, NumSelector } from '@components/timer/TimePicker'
 import { TimerContextProvider } from '@components/timer/TimerContext'
-
-beforeAll(() => {
-	Object.defineProperty(window, 'matchMedia', {
-		value: vi.fn(() => ({
-			matches: true,
-			addListener: vi.fn(),
-			removeListener: vi.fn(),
-		})),
-	})
-})
 
 beforeEach(() => {
 	vi.restoreAllMocks()
