@@ -1,14 +1,10 @@
-import { vi, describe, test, expect, afterAll, beforeEach } from 'vitest'
+import { vi, describe, test, expect, afterAll } from 'vitest'
 import { render, act, screen, fireEvent } from '@testing-library/react'
 
 import { createRoot } from 'react-dom/client'
 import { ChakraProvider } from '@chakra-ui/react'
 import { TimePickerContent, NumSelector } from '@components/timer/TimePicker'
 import { TimerContextProvider } from '@components/timer/TimerContext'
-
-beforeEach(() => {
-	vi.restoreAllMocks()
-})
 
 // cleanup
 afterAll(() => {
