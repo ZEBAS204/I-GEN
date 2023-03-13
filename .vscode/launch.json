@@ -6,9 +6,13 @@
 			"request": "launch",
 			"type": "pwa-msedge",
 			"url": "http://localhost:3000",
-			"webRoot": "${workspaceFolder}",
+			"webRoot": "${workspaceFolder}/src",
 			"skipFiles": ["${workspaceFolder}/node_modules/**"],
-			"smartStep": true
+			"smartStep": true,
+			"sourceMaps": true,
+			"sourceMapPathOverrides": {
+				"*": "${webRoot}/*"
+			}
 		},
 		{
 			"name": "Firefox: Launch localhost",
@@ -21,12 +25,22 @@
 				"watch": ["${workspaceFolder}/src/**/*.js"],
 				"ignore": ["${workspaceFolder}/node_modules/**"]
 			},
-			"pathMappings": [
-				{
-					"url": "${workspaceFolder}/src",
-					"path": "${workspaceFolder}/src"
-				}
+			"skipFiles": [
+				"<node_internals>/**",
+				"${workspaceFolder}/node_modules/**",
+				"${workspaceRoot}/node_modules/**/*.js"
 			]
+		},
+		{
+			"name": "Debug Current Test File",
+			"type": "node",
+			"request": "launch",
+			"autoAttachChildProcesses": true,
+			"skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+			"program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
+			"args": ["run", "${relativeFile}"],
+			"smartStep": true,
+			"console": "integratedTerminal"
 		}
 	]
 }
