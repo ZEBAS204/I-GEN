@@ -99,12 +99,16 @@ We use a combination of smoke and unit tests to check the basic functionality of
 Each test of the vital components of the application is under the `src/__tests__` directory. These tests are being powered by [Vitest](https://vitest.dev/) + [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) and [jsdom](https://github.com/jsdom/jsdom) to emulate a web browser. The detailed config is inside the `vitest.config.js` file.
 
 - `npm run test` by default runs every test.
--
+
 - `npm run test [path]` runs tests in specific path or file.
 
 - `npm run test:ui` runs all tests and open a UI to view and interact with the tests (`http://localhost:51204/__vitest__/`)
 
 - `npm run coverage` output tests coverage reports (c8 is required: `npm i -D c8`)
+
+If you are VS Code user, it is highly recommended installing and using the [Vitest](https://marketplace.visualstudio.com/items?itemName=ZixuanChen.vitest-explorer) extension to easily debug, explore code execution and test single components.
+
+You can also find the `Debug current test file` launch command in the `Run and Debug` view, which attaches a debugger and runs all tests in the current file. For more information, see [Debugging](#debugging).
 
 ## Pull Request Guidelines
 
