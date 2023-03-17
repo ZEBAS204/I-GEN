@@ -93,14 +93,40 @@ afterEach(() => {
 })
 
 describe('Accessibility settings', () => {
-	test('Should render and toggle TTS usage', () => {
-		const Spy_isTTSEnabled = vi.spyOn(context_values, 'toggleSpeak')
-
+	test('Should render', () => {
 		renderAccessibility()
 
 		// TTS language selector
 		const TTSenabledTitle = screen.getByText('settings.tts (TTS)')
 		expect(TTSenabledTitle).toBeDefined()
+
+		// Expect two sliders, voice and volume
+		const allSliders = screen.getAllByRole('slider')
+		expect(allSliders.length).toBe(2)
+
+		// Rate slider
+		const TTSRateSliderTitle = screen.getByText('settings.tts_rate')
+		const RateSliderSlowerSubtitle = screen.getByText('settings.tts_slower')
+		const RateSliderFasterSubtitle = screen.getByText('settings.tts_faster')
+
+		expect(TTSRateSliderTitle).toBeDefined()
+		expect(RateSliderSlowerSubtitle).toBeDefined()
+		expect(RateSliderFasterSubtitle).toBeDefined()
+
+		// Volume slider
+		const TTSVolumeSliderTitle = screen.getByText('settings.tts_volume')
+		const VolumeSliderLowerSubtitle = screen.getByText('settings.tts_lower')
+		const VolumeSliderHigherSubtitle = screen.getByText('settings.tts_higher')
+
+		expect(TTSVolumeSliderTitle).toBeDefined()
+		expect(VolumeSliderLowerSubtitle).toBeDefined()
+		expect(VolumeSliderHigherSubtitle).toBeDefined()
+	})
+
+	test('Should render and toggle TTS usage', () => {
+		const Spy_isTTSEnabled = vi.spyOn(context_values, 'toggleSpeak')
+
+		renderAccessibility()
 
 		// First checkbox enables/disables TTS
 		const TTSenabledCheck = screen.getByRole('checkbox')
