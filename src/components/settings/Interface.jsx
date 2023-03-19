@@ -81,7 +81,7 @@ const Interface = ({
 				<LanguageSelector
 					value={wordsLang}
 					onChange={(e) => setWordsLang(e.target.value)}
-					includeCustom={true}
+					includeCustom
 				/>
 			</Stack>
 

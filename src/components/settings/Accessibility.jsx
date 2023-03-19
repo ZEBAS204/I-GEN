@@ -85,7 +85,7 @@ const VolumeSlider = () => {
 	)
 }
 
-const RateSldier = () => {
+const RateSlider = () => {
 	const { t } = useTranslation()
 	const [speed, setSpeed] = useState(TTS._rate * 100)
 	const [displaySpeedTooltip, setDisplaySpeedTooltip] = useState(false)
@@ -231,7 +231,7 @@ const Accessibility = ({ isTTSEnabled, toggleSpeak }) => {
 				</Stack>
 				<Stack>
 					<SmallHeading>{t('settings.tts_rate')}</SmallHeading>
-					<RateSldier />
+					<RateSlider />
 					<SliderGuidance />
 				</Stack>
 			</Stack>
