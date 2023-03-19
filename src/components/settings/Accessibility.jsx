@@ -87,7 +87,7 @@ const VolumeSlider = () => {
 
 const RateSldier = () => {
 	const { t } = useTranslation()
-	const [speed, setSpeed] = useState(TTS._speed * 100)
+	const [speed, setSpeed] = useState(TTS._rate * 100)
 	const [displaySpeedTooltip, setDisplaySpeedTooltip] = useState(false)
 	const changeSpeed = (newSpeed) => setData('tts_speed', newSpeed)
 
