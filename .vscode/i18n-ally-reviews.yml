@@ -158,3 +158,9 @@ reviews:
     description: >-
       Accessibility button title, this button toggles between `resume` and
       `pause` for the timer/countdown. This text is when running (keep short)
+  buttons.ok_btn:
+    description: General purpose confirmation button
+  common.tutorial_scroll_message:
+    description: >-
+      Dialogue message that will appear when you first open the page on a
+      small-screen device
