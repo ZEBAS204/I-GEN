@@ -73,7 +73,7 @@
     "vite-plugin-html": "^3.2.0",
     "vite-plugin-pwa": "^0.14.1",
     "vite-plugin-svgr": "^2.4.0",
-    "vite-plugin-webfont-dl": "^3.4.2",
+    "vite-plugin-webfont-dl": "^3.6.4",
     "vitest": "^0.28.4"
   }
 }
