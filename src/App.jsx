@@ -12,6 +12,7 @@ import { getData } from '@utils/appStorage'
 import Logger from '@utils/logger'
 import DefaultLayout from '@layouts/layout_default'
 import UpdateNotification from '@components/UpdateNotification'
+import ScrollMessage from '@components/common/ScrollMessage'
 import Footer from '@components/Footer'
 
 import { customTheme } from '@utils/theme'
@@ -51,6 +52,7 @@ export default function App({ swUpdate, registration }) {
 						isUpdateAvailable={swUpdate}
 						registration={registration}
 					/>
+					<ScrollMessage />
 					<DefaultLayout />
 					<Footer />
 				</ThemeEditorProvider>
