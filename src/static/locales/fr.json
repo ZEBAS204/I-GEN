@@ -5,14 +5,16 @@
     "adjective": "Adjectif",
     "new_version": "Une nouvelle version est disponible!",
     "refresh": "Rafraîchir",
-    "error_message": "Il semble que les ensembles de mots n'aient pas encore été chargés!\nCela peut être dû à une connexion Internet lente ou à quelque chose qui bloque le chargement des fichiers."
+    "error_message": "Il semble que les ensembles de mots n'aient pas encore été chargés!\nCela peut être dû à une connexion Internet lente ou à quelque chose qui bloque le chargement des fichiers.",
+    "tutorial_scroll_message": "Naviguez entre les onglets en faisant glisser ou défilez horizontalement"
   },
   "buttons": {
     "regenerate": "Générer",
     "play_btn": "Démarrer",
     "stop_btn": "Arrêter",
     "reset_btn": "Réinitialiser",
-    "edit_btn": "Modifier"
+    "edit_btn": "Modifier",
+    "ok_btn": "OK"
   },
   "settings": {
     "title": "Paramètres",
