@@ -14,6 +14,26 @@ import {
 	supportedWordsLanguages,
 } from '@utils/supportedLanguages'
 
+const LanguageSelector = ({ includeCustom = false, ...props }) => {
+	const { t } = useTranslation()
+
+	return (
+		<Select variant="filled" {...props}>
+			{
+				// Get all available languages
+				supportedWordsLanguages.map((lang) => (
+					<option value={lang.code} key={`wordlng-${lang.code}`}>
+						{t(`languages.${lang.code}`)}
+					</option>
+				))
+			}
+			{includeCustom && (
+				<option value="custom">{t('settings.language_word_custom')}</option>
+			)}
+		</Select>
+	)
+}
+
 const Interface = ({
 	nounLang,
 	adjLang,
@@ -58,20 +78,11 @@ const Interface = ({
 				</Select>
 			</Stack>
 			<Stack heading={t('settings.language_words')}>
-				<Select
+				<LanguageSelector
 					value={wordsLang}
 					onChange={(e) => setWordsLang(e.target.value)}
-				>
-					{
-						// Get all available languages
-						supportedWordsLanguages.map((lang, key) => (
-							<option value={lang.code} key={`wordlng-${lang}-${key}`}>
-								{t(`languages.${lang.code}`)}
-							</option>
-						))
-					}
-					<option value="custom">{t('settings.language_word_custom')}</option>
-				</Select>
+					includeCustom
+				/>
 			</Stack>
 
 			{
@@ -80,20 +91,10 @@ const Interface = ({
 					<Stack mt={2} justify="space-around">
 						<Stack mt={0} direction="column">
 							<SmallHeading>{t('common.adjective')}</SmallHeading>
-							<Select
-								variant="filled"
+							<LanguageSelector
 								value={adjLang}
 								onChange={(e) => setAdjLang(e.target.value)}
-							>
-								{
-									// Get all available languages
-									supportedWordsLanguages.map((lang, key) => (
-										<option value={lang.code} key={`wordlng-${lang}-${key}`}>
-											{t(`languages.${lang.code}`)}
-										</option>
-									))
-								}
-							</Select>
+							/>
 						</Stack>
 
 						<IconButton
@@ -109,26 +110,16 @@ const Interface = ({
 
 						<Stack mt={0} direction="column">
 							<SmallHeading>{t('common.noun')}</SmallHeading>
-							<Select
-								variant="filled"
+							<LanguageSelector
 								value={nounLang}
 								onChange={(e) => setNounLang(e.target.value)}
-							>
-								{
-									// Get all available languages
-									supportedWordsLanguages.map((lang, key) => (
-										<option value={lang.code} key={`wordlng-${lang}-${key}`}>
-											{t(`languages.${lang.code}`)}
-										</option>
-									))
-								}
-							</Select>
+							/>
 						</Stack>
 					</Stack>
 				)
 			}
 			<Text pt={2}>
-				<Link href="#" isExternal>
+				<Link href={__CONTRIBUTE_TRANSLATION__} isExternal>
 					{t('settings.language_contribute')} <Icon as={RiExternalLinkLine} />
 				</Link>
 			</Text>

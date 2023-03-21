@@ -5,14 +5,16 @@
     "adjective": "Adjective",
     "new_version": "A new version is available!",
     "refresh": "Refresh",
-    "error_message": "Looks like the word sets have not yet loaded!\nThis could be due to a slow internet connection or something blocking files from loading."
+    "error_message": "Looks like the word sets have not yet loaded!\nThis could be due to a slow internet connection or something blocking files from loading.",
+    "tutorial_scroll_message": "Navigate between tabs by sliding or scrolling horizontally"
   },
   "buttons": {
     "regenerate": "Regenerate",
     "play_btn": "Resume",
     "stop_btn": "Pause",
     "reset_btn": "Reset",
-    "edit_btn": "Edit"
+    "edit_btn": "Edit",
+    "ok_btn": "OK"
   },
   "settings": {
     "title": "Settings",
@@ -55,9 +57,26 @@
     "timer_desc2": "Reset countdown"
   },
   "languages": {
+    "ar": "Arabic",
+    "cs": "Czech",
+    "da": "Danish",
+    "de": "German",
     "en": "English",
     "es": "Spanish",
-    "fr": "French"
+    "fi": "Finnish",
+    "fr": "French",
+    "hi": "Hindi",
+    "hu": "Hungarian",
+    "it": "Italian",
+    "ja": "Japanese",
+    "ko": "Korean",
+    "nl": "Dutch",
+    "pl": "Polish",
+    "pt": "Portuguese",
+    "ru": "Russian",
+    "sv": "Swedish",
+    "tr": "Turkish",
+    "zh": "Chinese"
   },
   "timer": {
     "title": "Timer",

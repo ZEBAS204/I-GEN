@@ -5,14 +5,16 @@
     "adjective": "Adjectif",
     "new_version": "Une nouvelle version est disponible!",
     "refresh": "Rafraîchir",
-    "error_message": "Il semble que les ensembles de mots n'aient pas encore été chargés!\nCela peut être dû à une connexion Internet lente ou à quelque chose qui bloque le chargement des fichiers."
+    "error_message": "Il semble que les ensembles de mots n'aient pas encore été chargés!\nCela peut être dû à une connexion Internet lente ou à quelque chose qui bloque le chargement des fichiers.",
+    "tutorial_scroll_message": "Naviguez entre les onglets en faisant glisser ou défilez horizontalement"
   },
   "buttons": {
     "regenerate": "Générer",
     "play_btn": "Démarrer",
     "stop_btn": "Arrêter",
     "reset_btn": "Réinitialiser",
-    "edit_btn": "Modifier"
+    "edit_btn": "Modifier",
+    "ok_btn": "OK"
   },
   "settings": {
     "title": "Paramètres",
@@ -55,9 +57,26 @@
     "timer_desc2": "Réinitialiser le minuteur"
   },
   "languages": {
+    "ar": "Arabe",
+    "cs": "Tchèque",
+    "da": "Danois",
+    "de": "Allemand",
     "en": "Anglais",
+    "es": "Espagnol",
+    "fi": "Finnois",
     "fr": "Français",
-    "es": "Espagnol"
+    "hi": "Hindi",
+    "hu": "Hongrois",
+    "it": "Italien",
+    "ja": "Japonais",
+    "ko": "Coréen",
+    "nl": "Néerlandais",
+    "pl": "Polonais",
+    "pt": "Portugais",
+    "ru": "Russe",
+    "sv": "Suédois",
+    "tr": "Turc",
+    "zh": "Chinois"
   },
   "timer": {
     "title": "Minuteur",

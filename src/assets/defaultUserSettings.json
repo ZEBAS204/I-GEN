@@ -5,6 +5,11 @@
     "value": false
   },
   {
+    "key": "scroll_message_shown",
+    "type": "boolean",
+    "value": false
+  },
+  {
     "key": "countdown_time",
     "type": "number",
     "value": 600,

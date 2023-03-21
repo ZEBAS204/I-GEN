@@ -18,8 +18,11 @@ const AppContextProvider = ({ children }) => {
 	// flip words accordingly
 	useEffect(() => {
 		if (nounLang === adjLang) {
-			const { flip } = supportedWordsLanguages.find((e) => e.code === nounLang)
-			setWordFlip(flip ?? false)
+			const { flip = false } =
+				supportedWordsLanguages.find((e) => {
+					return e.code === nounLang
+				}) || {}
+			setWordFlip(flip)
 		}
 	}, [nounLang, adjLang])
 

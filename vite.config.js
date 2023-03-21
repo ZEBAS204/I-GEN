@@ -1,5 +1,4 @@
 import { readFile } from 'fs/promises'
-import { resolve } from 'path'
 
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -16,6 +15,9 @@ import {
 	viteServiceWorker,
 } from './scripts'
 
+// Relative alias
+import { alias } from './vite-alias.config'
+
 // https://vitejs.dev/config/
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
@@ -26,10 +28,12 @@ export default defineConfig({
 	},
 	publicDir: './src/static',
 	define: {
-		// See: https://github.com/revoltchat/revite/blob/master/vite.config.ts
 		__GIT_REVISION__: JSON.stringify(getGitRevision()),
 		__GIT_BRANCH__: JSON.stringify(getGitBranch()),
-		__PROJECT_SOURCE__: JSON.stringify('#'), //TODO: replace with project source repository
+		__PROJECT_SOURCE__: JSON.stringify('https://github.com/ZEBAS204/I-GEN'),
+		__CONTRIBUTE_TRANSLATION__: JSON.stringify(
+			'https://github.com/ZEBAS204/I-GEN/blob/master/CONTRIBUTING.md#translation-contributions'
+		),
 	},
 
 	server: {
@@ -71,17 +75,7 @@ export default defineConfig({
 		VitePWA(viteServiceWorker),
 	],
 	resolve: {
-		alias: {
-			'@/': resolve(__dirname, '.'),
-			'@src': resolve(__dirname, 'src'),
-			'@assets': resolve(__dirname, 'src/assets'),
-			'@styles': resolve(__dirname, 'src/assets/scss'),
-			'@components': resolve(__dirname, 'src/components'),
-			'@layouts': resolve(__dirname, 'src/layouts'),
-			'@pages': resolve(__dirname, 'src/pages'),
-			'@utils': resolve(__dirname, 'src/utils'),
-			'@contexts': resolve(__dirname, 'src/components/contexts'),
-		},
+		alias: alias(),
 	},
 	//* Handle JS files with JSX syntax
 	esbuild: {

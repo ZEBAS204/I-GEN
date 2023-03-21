@@ -1,4 +1,8 @@
-![I-GEN logo](.github/assets/logo.png)
+<p align="center">
+  <a href="https://i-gen.vercel.app" target="_blank">
+    <img alt="I-GEN Logo" src=".github/assets/logo.png" />
+  </a>
+</p>
 
 # I-GEN 🎨
 
@@ -36,7 +40,7 @@ Oh wait... do you feel like contributing today? That's awesome! We have a [Contr
 
 ## License
 
-I-GEN is licensed under the MIT license (MIT). But as this project uses content extracted using [Wiktextract](https://github.com/tatuylonen/wiktextract) from the [Wikimedia Foundation](https://www.wikimedia.org), may differ on licenses. See the [LICENSE](/LICENSE) file for more details.
+I-GEN is licensed under the MIT license (MIT). But as this project employs content extracted using [Wiktextract](https://github.com/tatuylonen/wiktextract) and [kaikki-adj-noun-parser](https://github.com/ZEBAS204/kaikki-adj-noun-parser) from the [Wikimedia Foundation](https://www.wikimedia.org), may differ on licenses. See the [LICENSE](/LICENSE) file for more details.
 
 ## Attributions
 
@@ -54,6 +58,14 @@ To this date, previous versions made before the release are still usable to anyo
 
 If you wish to see by yourself any of these previous versions, please refer to their following branches BUT, expect issues, unresponsiveness, performance problems, visual glitches, incomplete features, no words nor translations, and bugs:
 
-- [V1 branch](/tree/v1) -> [V1 APP]()
-- [V2 branch](/tree/v2) -> [V2 APP]()
+- [V1 branch](/tree/v1) -> [V1 APP](https://i-gen-v1.vercel.app/)
+- [V2 branch](/tree/v2) -> [V2 APP](https://i-gen-v2.vercel.app/)
 - The V3 branch is currently the `master` branch
+
+---
+
+## One-Click Deploy
+
+With just one click, you can deploy your own copy of this application using [Vercel](https://vercel.com). Simply click the "Deploy" button below, and Vercel will automatically create a new instance of the application, ready for you to customize and use however you like.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FZEBAS204%2FI-GEN)

@@ -12,13 +12,9 @@ import { getData } from '@utils/appStorage'
 import Logger from '@utils/logger'
 import DefaultLayout from '@layouts/layout_default'
 import UpdateNotification from '@components/UpdateNotification'
+import ScrollMessage from '@components/common/ScrollMessage'
 import Footer from '@components/Footer'
 
-/**
- ** DEFAULT THEME OVERRIDE
- ** If you want to set your own custom theme colors, uncomment the next import
- ** and the commented line inside extendTheme
- */
 import { customTheme } from '@utils/theme'
 
 const log = Logger.getLogger('app')
@@ -56,6 +52,7 @@ export default function App({ swUpdate, registration }) {
 						isUpdateAvailable={swUpdate}
 						registration={registration}
 					/>
+					<ScrollMessage />
 					<DefaultLayout />
 					<Footer />
 				</ThemeEditorProvider>

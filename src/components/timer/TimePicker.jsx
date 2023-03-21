@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
 import {
-	useMediaQuery,
 	Icon,
 	Grid,
 	Flex,
@@ -9,8 +8,8 @@ import {
 	Text,
 	Heading as CHeading,
 } from '@chakra-ui/react'
+import { useMedia, useLifecycles, useUpdateEffect } from 'react-use'
 import { RiArrowUpSLine, RiArrowDownSLine } from 'react-icons/ri'
-import { useLifecycles, useUpdateEffect } from 'react-use'
 import { useTranslation } from 'react-i18next'
 import { useTimerContext } from './TimerContext'
 
@@ -38,7 +37,12 @@ const PresetButton = ({ preset, ...props }) => (
 	</Button>
 )
 
-const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
+export const NumSelector = ({
+	onSelect = () => {},
+	time = 0,
+	min = 0,
+	max = 59,
+}) => {
 	const [picker, setPicked] = useState({
 		next: min + 1,
 		current: min,
@@ -106,7 +110,7 @@ const NumSelector = ({ onSelect = () => {}, time = 0, min = 0, max = 59 }) => {
 	)
 }
 
-const TimePickerContent = () => {
+export const TimePickerContent = () => {
 	const { t } = useTranslation()
 	const { time, changeTime } = useTimerContext()
 
@@ -179,7 +183,7 @@ const TimePickerContent = () => {
 }
 
 export default function TimePicker() {
-	const [isSmallDisplay] = useMediaQuery('(max-width: 800px)')
+	const isSmallDisplay = useMedia('(max-width: 800px)')
 
 	if (isSmallDisplay)
 		return (

@@ -57,13 +57,12 @@ const VolumeSlider = () => {
 			<Slider
 				aria-label={t('settings.tts_volume')}
 				aria-valuenow={volume}
-				focusThumbOnChange={false} // Prevent stealing focus when using the input from bellow
 				onChange={(val) => setVolume(val)}
 				onChangeStart={() => setDisplayVolumeTooltip(true)}
 				onChangeEnd={(val) => {
 					const decVol = val / 100 // The real value goes from 0 to 1
 					changeVolume(decVol)
-					TTS._volume = decVol // TTS class static var
+					TTS._volume = decVol
 					setDisplayVolumeTooltip(false)
 				}}
 				defaultValue={TTS._volume * 100}
@@ -86,9 +85,9 @@ const VolumeSlider = () => {
 	)
 }
 
-const RateSldier = () => {
+const RateSlider = () => {
 	const { t } = useTranslation()
-	const [speed, setSpeed] = useState(TTS._speed * 100)
+	const [speed, setSpeed] = useState(TTS._rate * 100)
 	const [displaySpeedTooltip, setDisplaySpeedTooltip] = useState(false)
 	const changeSpeed = (newSpeed) => setData('tts_speed', newSpeed)
 
@@ -102,12 +101,13 @@ const RateSldier = () => {
 				onChangeEnd={(vel) => {
 					const decVel = vel / 100 // The real value goes from 0 to 1
 					changeSpeed(decVel)
-					TTS._rate = decVel // TTS class static var
+					TTS._rate = decVel
 					setDisplaySpeedTooltip(false)
 				}}
 				defaultValue={TTS._rate * 100}
 			>
 				<Tooltip
+					aria-hidden="true"
 					isOpen={displaySpeedTooltip}
 					label={speed}
 					placement="top"
@@ -231,7 +231,7 @@ const Accessibility = ({ isTTSEnabled, toggleSpeak }) => {
 				</Stack>
 				<Stack>
 					<SmallHeading>{t('settings.tts_rate')}</SmallHeading>
-					<RateSldier />
+					<RateSlider />
 					<SliderGuidance />
 				</Stack>
 			</Stack>
