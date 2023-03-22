@@ -50,7 +50,7 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/react": "^13.4.0",
+    "@testing-library/react": "^14.0.0",
     "@vitejs/plugin-react": "^3.0.1",
     "@vitest/ui": "^0.28.4",
     "eslint": "^8.31.0",
