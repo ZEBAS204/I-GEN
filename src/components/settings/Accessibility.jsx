@@ -36,7 +36,12 @@ const Slider = (props) => (
 	</CSlider>
 )
 const SliderGuidance = ({ left, right }) => (
-	<Stack color="gray.400" direction="row" justifyContent="space-between">
+	<Stack
+		color="gray.400"
+		direction="row"
+		justifyContent="space-between"
+		aria-hidden
+	>
 		<Heading size="xs" as="h4">
 			{left}
 		</Heading>
