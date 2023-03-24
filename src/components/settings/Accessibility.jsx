@@ -29,7 +29,7 @@ const Slider = (props) => (
 		step={1}
 		{...props}
 	>
-		<SliderTrack aria-hidden="true">
+		<SliderTrack aria-hidden>
 			<SliderFilledTrack />
 		</SliderTrack>
 		{props.children}
@@ -73,11 +73,11 @@ const VolumeSlider = () => {
 				defaultValue={TTS._volume * 100}
 			>
 				<Tooltip
-					aria-hidden="true"
 					isOpen={displayVolumeTooltip}
 					label={volume}
 					placement="top"
 					hasArrow
+					aria-hidden
 				>
 					<SliderThumb />
 				</Tooltip>
@@ -112,11 +112,11 @@ const RateSlider = () => {
 				defaultValue={TTS._rate * 100}
 			>
 				<Tooltip
-					aria-hidden="true"
 					isOpen={displaySpeedTooltip}
 					label={speed}
 					placement="top"
 					hasArrow
+					aria-hidden
 				>
 					<SliderThumb />
 				</Tooltip>

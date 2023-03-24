@@ -41,7 +41,7 @@ export default function ScrollMessage() {
 					</AlertDialogHeader>
 
 					<AlertDialogBody display="flex" justifyContent="center">
-						<Box as={ScrollAnimation} w="full" h="8em" aria-hidden="true" />
+						<Box as={ScrollAnimation} w="full" h="8em" aria-hidden />
 					</AlertDialogBody>
 
 					<AlertDialogFooter justifyContent="center">

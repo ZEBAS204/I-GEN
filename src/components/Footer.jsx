@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react'
 
 export default function Footer() {
 	return (
-		<Box aria-hidden="true">
+		<Box aria-hidden>
 			<Box
 				h={16}
 				clipPath="polygon(

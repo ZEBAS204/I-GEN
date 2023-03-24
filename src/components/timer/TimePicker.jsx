@@ -26,7 +26,7 @@ const ArrowButton = ({ asIcon, onClick }) => (
 )
 
 const NumText = ({ children }) => (
-	<Text fontSize="lg" aria-hidden="true">
+	<Text fontSize="lg" aria-hidden>
 		{children}
 	</Text>
 )
