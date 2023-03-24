@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, memo } from 'react'
+import { useState, useEffect, useCallback, memo, useId } from 'react'
 import { setData } from '@utils/appStorage'
 import {
 	Divider,
@@ -178,6 +178,7 @@ const InputTest = () => {
 
 const Accessibility = ({ isTTSEnabled, toggleSpeak }) => {
 	const { t } = useTranslation()
+	const ttsCheckboxId = useId()
 
 	const [useTTS, setTTS] = useState(isTTSEnabled)
 
@@ -204,8 +205,13 @@ const Accessibility = ({ isTTSEnabled, toggleSpeak }) => {
 
 	return (
 		<>
-			<SpacedStack heading={`${t('settings.tts')} (TTS)`} mt={0}>
-				<Switch onChange={toggleTTS} isChecked={useTTS} />
+			<SpacedStack
+				as="label"
+				for={ttsCheckboxId}
+				heading={`${t('settings.tts')} (TTS)`}
+				mt={0}
+			>
+				<Switch id={ttsCheckboxId} onChange={toggleTTS} isChecked={useTTS} />
 			</SpacedStack>
 
 			<Select
