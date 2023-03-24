@@ -101,6 +101,8 @@ export const NumSelector = ({
 				_dark={{
 					bg: 'whiteAlpha.100',
 				}}
+				min={min}
+				max={max}
 				value={picker.current}
 				onChange={(e) => changeTime(parseInt(e.target.value) || 0)}
 			/>
