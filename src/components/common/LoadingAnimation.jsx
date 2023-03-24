@@ -22,8 +22,9 @@ export const LoadingAnimationContainer = (props) => {
 			flexDir="column"
 			alignItems="center"
 			justifyContent="center"
+			aria-busy="true"
 		>
-			<LoadingAnimation {...animationProps} />
+			<LoadingAnimation {...animationProps} aria-hidden />
 			{showLabel && (
 				<Text position="relative" top="1em">
 					{t('common.loading')}...
