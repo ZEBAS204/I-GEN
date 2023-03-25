@@ -165,8 +165,13 @@ export const TimePickerContent = () => {
 				<NumSelector time={minutes} onSelect={updateMinutes} />
 				<NumSelector time={seconds} onSelect={updateSeconds} />
 			</Grid>
-			<Flex direction="column" gap={6}>
-				<Heading>{t('timer.presets')}</Heading>
+			<Flex
+				aria-labelledby="timerpresets"
+				as="section"
+				direction="column"
+				gap={6}
+			>
+				<Heading id="timerpresets">{t('timer.presets')}</Heading>
 				<PresetButton
 					preset="01:00:00"
 					onClick={() => updateTime({ hours: 1 })}
