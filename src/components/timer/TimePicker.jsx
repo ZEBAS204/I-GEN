@@ -210,6 +210,7 @@ export default function TimePicker() {
 
 	return (
 		<Grid
+			w="100%"
 			templateColumns="60% 30%"
 			templateRows="1fr"
 			gap="10%"
