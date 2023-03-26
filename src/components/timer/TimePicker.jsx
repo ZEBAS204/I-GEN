@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useId } from 'react'
 import {
 	Icon,
 	Grid,
@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { useTimerContext } from './TimerContext'
 
 const Heading = (props) => (
-	<CHeading size="md" {...props}>
+	<CHeading as="label" size="md" {...props}>
 		{props.children}
 	</CHeading>
 )
@@ -39,6 +39,7 @@ const PresetButton = ({ preset, ...props }) => (
 
 export const NumSelector = ({
 	onSelect = () => {},
+	id,
 	time = 0,
 	min = 0,
 	max = 59,
@@ -92,6 +93,7 @@ export const NumSelector = ({
 			<ArrowButton asIcon={RiArrowUpSLine} onClick={increment} />
 			<NumText>{picker.next}</NumText>
 			<Input
+				id={id}
 				type="number"
 				variant="filled"
 				fontWeight="bold"
@@ -115,6 +117,9 @@ export const NumSelector = ({
 export const TimePickerContent = () => {
 	const { t } = useTranslation()
 	const { time, changeTime } = useTimerContext()
+	const hourId = useId()
+	const minId = useId()
+	const secId = useId()
 
 	const [hours, setHours] = useState(null)
 	const [minutes, setMinutes] = useState(null)
@@ -158,12 +163,12 @@ export const TimePickerContent = () => {
 	return (
 		<>
 			<Grid templateColumns="repeat(3, 1fr)" gap="5%" justifyItems="center">
-				<Heading>{t('timer.hours')}</Heading>
-				<Heading>{t('timer.minutes')}</Heading>
-				<Heading>{t('timer.seconds')}</Heading>
-				<NumSelector time={hours} onSelect={updateHours} max={99} />
-				<NumSelector time={minutes} onSelect={updateMinutes} />
-				<NumSelector time={seconds} onSelect={updateSeconds} />
+				<Heading htmlFor={hourId}>{t('timer.hours')}</Heading>
+				<Heading htmlFor={minId}>{t('timer.minutes')}</Heading>
+				<Heading htmlFor={secId}>{t('timer.seconds')}</Heading>
+				<NumSelector id={hourId} time={hours} onSelect={updateHours} max={99} />
+				<NumSelector id={minId} time={minutes} onSelect={updateMinutes} />
+				<NumSelector id={secId} time={seconds} onSelect={updateSeconds} />
 			</Grid>
 			<Flex
 				aria-labelledby="timerpresets"
