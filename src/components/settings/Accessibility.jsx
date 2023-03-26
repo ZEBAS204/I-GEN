@@ -207,7 +207,7 @@ const Accessibility = ({ isTTSEnabled, toggleSpeak }) => {
 		<>
 			<SpacedStack
 				as="label"
-				for={ttsCheckboxId}
+				htmlFor={ttsCheckboxId}
 				heading={`${t('settings.tts')} (TTS)`}
 				mt={0}
 			>
