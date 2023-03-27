@@ -231,12 +231,10 @@ const Accessibility = ({ isTTSEnabled, toggleSpeak }) => {
 				<Stack>
 					<SmallHeading>{t('settings.tts_volume')}</SmallHeading>
 					<VolumeSlider />
-					<SliderGuidance />
 				</Stack>
 				<Stack>
 					<SmallHeading>{t('settings.tts_rate')}</SmallHeading>
 					<RateSlider />
-					<SliderGuidance />
 				</Stack>
 			</Stack>
 			<InputTest />
