@@ -55,6 +55,7 @@ const GenerateButton = memo(({ generateWord }) => {
 				fontSize="2xl"
 				color="#f0f0f0"
 				bg="#8969eb"
+				w="100%"
 				p={8}
 				sx={{
 					'&:hover, &:active, &:focus': {
