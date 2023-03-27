@@ -21,14 +21,7 @@ import { wrapContext } from '@contexts/contextWrapper'
 import TTS from '@utils/tts'
 
 const Slider = (props) => (
-	<CSlider
-		aria-valuemin={1}
-		aria-valuemax={100}
-		min={1}
-		max={100}
-		step={1}
-		{...props}
-	>
+	<CSlider min={1} max={100} step={1} {...props}>
 		<SliderTrack aria-hidden>
 			<SliderFilledTrack />
 		</SliderTrack>
