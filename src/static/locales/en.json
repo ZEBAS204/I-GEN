@@ -85,6 +85,9 @@
     "presets": "Presets",
     "hours": "Hours",
     "minutes": "Minutes",
-    "seconds": "Seconds"
+    "seconds": "Seconds",
+    "time_over": "Time over",
+    "time_started": "Time started",
+    "time_remaining": "{{time}} remaining"
   }
 }

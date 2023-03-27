@@ -85,6 +85,9 @@
     "presets": "Préconfigurations",
     "hours": "Heures",
     "minutes": "Minutes",
-    "seconds": "Secondes"
+    "seconds": "Secondes",
+    "time_over": "le temps est écoulé",
+    "time_started": "Minuteur à commenced",
+    "time_remaining": "{{time}} restantantes"
   }
 }

@@ -85,6 +85,9 @@
     "presets": "Preajustes",
     "hours": "Horas",
     "minutes": "Minutos",
-    "seconds": "Segundos"
+    "seconds": "Segundos",
+    "time_over": "Se acabó el tiempo",
+    "time_started": "Temporizador iniciado",
+    "time_remaining": "Quedan {{time}}"
   }
 }
