@@ -1,8 +1,12 @@
 import { Text } from '@chakra-ui/react'
 
-export default function wClock({ remainingtimeToDisplay = '00:00:00' }) {
+export default function wClock({
+	remainingtimeToDisplay = '00:00:00',
+	...rest
+}) {
 	return (
 		<Text
+			role="timer"
 			fontFamily="Inter, Arial"
 			bgGradient="linear(to-b, #2a71fc, #6501f9)"
 			_dark={{
