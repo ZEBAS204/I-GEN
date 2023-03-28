@@ -92,7 +92,9 @@ describe('Interface settings', () => {
 		const Adjective = screen.getByText('common.adjective')
 		expect(Adjective).toBeDefined()
 
-		const WordFlipButton = screen.getByLabelText('settings.language_word_flip')
+		const WordFlipButton = screen.getByRole('checkbox', {
+			title: 'settings.language_word_flip',
+		})
 		fireEvent.click(WordFlipButton)
 
 		expect(SPY_wordFlip).toHaveBeenCalled()
