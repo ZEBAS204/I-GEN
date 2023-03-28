@@ -57,7 +57,11 @@ describe('Time Picker', () => {
 			)
 		})
 
-		const button = screen.getAllByRole('button')
+		const button = screen.getAllByRole('button', {
+			// This buttion has aria-hidden to prevent being accessible to screen readers
+			// it's not hidden but needs this property to be pick by the role selector
+			hidden: true,
+		})
 
 		// First button increases time
 		fireEvent.click(button[0])

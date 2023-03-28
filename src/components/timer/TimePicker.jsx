@@ -20,7 +20,14 @@ const Heading = (props) => (
 )
 
 const ArrowButton = ({ asIcon, onClick }) => (
-	<Button variant="ghost" size="xs" w="90%" onClick={onClick} tabIndex="-1">
+	<Button
+		variant="ghost"
+		size="xs"
+		w="90%"
+		onClick={onClick}
+		tabIndex="-1"
+		aria-hidden
+	>
 		<Icon as={asIcon} w={6} h={6} />
 	</Button>
 )
