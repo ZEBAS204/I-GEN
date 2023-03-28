@@ -225,7 +225,7 @@ const Accessibility = ({ isTTSEnabled, toggleSpeak }) => {
 				}
 			</Select>
 
-			<Divider my={6} />
+			<Divider my={6} aria-hidden />
 
 			<Stack direction="column" px={3} gap={5}>
 				<Stack>
