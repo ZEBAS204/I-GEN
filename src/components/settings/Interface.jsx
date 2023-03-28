@@ -98,14 +98,15 @@ const Interface = ({
 						</Stack>
 
 						<IconButton
+							role="checkbox"
 							size="lg"
 							rounded="full"
 							variant="solid"
 							icon={<FlipIcon />}
-							title={t('settings.language_word_flip')}
-							aria-label={t('settings.language_word_flip')}
+							aria-checked={isWordDisplayFlip}
 							colorScheme={isWordDisplayFlip ? 'green' : 'red'}
 							onClick={() => toggleWordFlip()}
+							title={t('settings.language_word_flip')}
 						/>
 
 						<Stack as="label" mt={0} direction="column">
