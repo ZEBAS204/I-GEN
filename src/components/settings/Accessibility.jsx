@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, memo } from 'react'
+import { useState, useEffect, useCallback, memo, useId } from 'react'
 import { setData } from '@utils/appStorage'
 import {
 	Divider,
@@ -21,22 +21,20 @@ import { wrapContext } from '@contexts/contextWrapper'
 import TTS from '@utils/tts'
 
 const Slider = (props) => (
-	<CSlider
-		aria-valuemin={1}
-		aria-valuemax={100}
-		min={1}
-		max={100}
-		step={1}
-		{...props}
-	>
-		<SliderTrack aria-hidden="true">
+	<CSlider min={1} max={100} step={1} {...props}>
+		<SliderTrack aria-hidden>
 			<SliderFilledTrack />
 		</SliderTrack>
 		{props.children}
 	</CSlider>
 )
 const SliderGuidance = ({ left, right }) => (
-	<Stack color="gray.400" direction="row" justifyContent="space-between">
+	<Stack
+		color="gray.400"
+		direction="row"
+		justifyContent="space-between"
+		aria-hidden
+	>
 		<Heading size="xs" as="h4">
 			{left}
 		</Heading>
@@ -68,11 +66,11 @@ const VolumeSlider = () => {
 				defaultValue={TTS._volume * 100}
 			>
 				<Tooltip
-					aria-hidden="true"
 					isOpen={displayVolumeTooltip}
 					label={volume}
 					placement="top"
 					hasArrow
+					aria-hidden
 				>
 					<SliderThumb />
 				</Tooltip>
@@ -107,11 +105,11 @@ const RateSlider = () => {
 				defaultValue={TTS._rate * 100}
 			>
 				<Tooltip
-					aria-hidden="true"
 					isOpen={displaySpeedTooltip}
 					label={speed}
 					placement="top"
 					hasArrow
+					aria-hidden
 				>
 					<SliderThumb />
 				</Tooltip>
@@ -173,6 +171,7 @@ const InputTest = () => {
 
 const Accessibility = ({ isTTSEnabled, toggleSpeak }) => {
 	const { t } = useTranslation()
+	const ttsCheckboxId = useId()
 
 	const [useTTS, setTTS] = useState(isTTSEnabled)
 
@@ -199,8 +198,13 @@ const Accessibility = ({ isTTSEnabled, toggleSpeak }) => {
 
 	return (
 		<>
-			<SpacedStack heading={`${t('settings.tts')} (TTS)`} mt={0}>
-				<Switch onChange={toggleTTS} isChecked={useTTS} />
+			<SpacedStack
+				as="label"
+				htmlFor={ttsCheckboxId}
+				heading={`${t('settings.tts')} (TTS)`}
+				mt={0}
+			>
+				<Switch id={ttsCheckboxId} onChange={toggleTTS} isChecked={useTTS} />
 			</SpacedStack>
 
 			<Select
@@ -221,18 +225,16 @@ const Accessibility = ({ isTTSEnabled, toggleSpeak }) => {
 				}
 			</Select>
 
-			<Divider my={6} />
+			<Divider my={6} aria-hidden />
 
 			<Stack direction="column" px={3} gap={5}>
 				<Stack>
 					<SmallHeading>{t('settings.tts_volume')}</SmallHeading>
 					<VolumeSlider />
-					<SliderGuidance />
 				</Stack>
 				<Stack>
 					<SmallHeading>{t('settings.tts_rate')}</SmallHeading>
 					<RateSlider />
-					<SliderGuidance />
 				</Stack>
 			</Stack>
 			<InputTest />

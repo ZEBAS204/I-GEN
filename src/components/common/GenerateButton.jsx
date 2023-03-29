@@ -1,5 +1,5 @@
 import { memo, useCallback } from 'react'
-import { Button } from '@chakra-ui/react'
+import { Button, Box } from '@chakra-ui/react'
 import { useKeyPressEvent } from 'react-use'
 
 import { useTranslation } from 'react-i18next'
@@ -28,27 +28,46 @@ const GenerateButton = memo(({ generateWord }) => {
 	})
 
 	return (
-		<Button
-			aria-label={t('keybinds.words_desc')}
-			aria-keyshortcuts="Space"
-			onClick={generateWord}
-			fontFamily="Poppins"
-			fontWeight="700"
-			fontSize="2xl"
+		<Box
+			display="inline-flex"
 			w={['45%', '20%']}
-			p={8}
-			colorScheme="purple"
-			bg="#8969eb"
 			sx={{
-				'&:hover, &:active, &:focus-visible': {
-					bg: '#6e4fcf',
+				// Filter trick to add focus ring to clipPath
+				'--focus': 'var(--chakra-colors-blue-500)',
+				'&:focus-within': {
+					filter: `drop-shadow(1px 0 0 var(--focus))
+          drop-shadow(-1px 0 0 var(--focus))
+          drop-shadow(0 1px 0 var(--focus))
+          drop-shadow(0 -1px 0 var(--focus))
+          drop-shadow(1px 1px 0 var(--focus))
+          drop-shadow(-1px -1px 0 var(--focus))
+          drop-shadow(-1px 1px 0 var(--focus))
+          drop-shadow(1px -1px 0 var(--focus))`,
 				},
 			}}
-			color="#f0f0f0"
-			clipPath="polygon(0 20px, 20px 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 100% 100%, 0 100%)"
 		>
-			{t('buttons.regenerate')}
-		</Button>
+			<Button
+				aria-label={t('keybinds.words_desc')}
+				aria-keyshortcuts="Space"
+				onClick={generateWord}
+				fontFamily="Poppins"
+				fontWeight="700"
+				fontSize="2xl"
+				color="#f0f0f0"
+				bg="#8969eb"
+				w="100%"
+				p={8}
+				sx={{
+					'&:hover, &:active, &:focus': {
+						bg: '#6e4fcf',
+						boxShadow: 'none',
+					},
+				}}
+				clipPath="polygon(0 20px, 20px 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 100% 100%, 0 100%)"
+			>
+				{t('buttons.regenerate')}
+			</Button>
+		</Box>
 	)
 })
 

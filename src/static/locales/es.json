@@ -43,7 +43,7 @@
   },
   "about": {
     "title": "Acerca de {{app_name}}",
-    "desc": "<0>{{app_name}}</0> es una aplicación de código abierto diseñada para ayudar a los artistas a mejorar sus habilidades, proporcionándoles un conjunto diverso de palabras para practicar.<1></1><1></1>Con su interfaz sencilla y configuraciones personalizables, <0>{{app_name}}</0> permite a los artistas generar rápida y fácilmente conjuntos aleatorios de palabras que pueden ser utilizados para una variedad de ejercicios creativos.",
+    "desc": "{{app_name}} es una aplicación de código abierto diseñada para ayudar a los artistas a mejorar sus habilidades, proporcionándoles un conjunto diverso de palabras para practicar.<0></0><0></0>Con su interfaz sencilla y configuraciones personalizables, {{app_name}} permite a los artistas generar rápida y fácilmente conjuntos aleatorios de palabras que pueden ser utilizados para una variedad de ejercicios creativos.",
     "desc_acknowledge": "Las palabras utilizadas en este proyecto se generaron automáticamente a partir de los <0>diccionarios de Kaikki</0> con una herramienta personalizada. Para más información, consulte la <1>fuente del proyecto</1>."
   },
   "keybinds": {
@@ -85,6 +85,9 @@
     "presets": "Preajustes",
     "hours": "Horas",
     "minutes": "Minutos",
-    "seconds": "Segundos"
+    "seconds": "Segundos",
+    "time_over": "Se acabó el tiempo",
+    "time_started": "Temporizador iniciado",
+    "time_remaining": "Quedan {{time}}"
   }
 }

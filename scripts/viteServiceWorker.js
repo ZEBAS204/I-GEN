@@ -47,7 +47,7 @@ export const viteServiceWorker = {
 
 		clientsClaim: true, // Needed for offline usage
 		skipWaiting: true, // Allow to trigger cache reload manually
-		globPatterns: ['**/*.{js,css,scss,html}'],
+		globPatterns: ['**/*.{js,css,scss,html,woff2}'],
 		runtimeCaching: [
 			{
 				urlPattern: ({ url }) => url.pathname.startsWith('/locales/'),

@@ -9,6 +9,37 @@ import TTS from '@utils/tts'
 import ContentError from './ContentError'
 import useFetch from './UseFetch'
 
+const WordBox = ({ word, isLoading, ...props }) => (
+	<Box
+		aria-live="polite"
+		aria-relevant="text"
+		bg="#fff"
+		_dark={{
+			bg: 'linear-gradient(to right, #6b4ecb 1%, #363e4d 1%, #363e4d 99%, #6b4ecb 99%)',
+		}}
+		p={[4, 8]}
+		rounded="20px"
+		_after={
+			import.meta.env.DEV && {
+				content: 'attr(aria-label)',
+				position: 'relative',
+				display: 'block',
+				transform: 'translate(-50%)',
+				inset: '-50% 0 0 15%',
+				color: '#00ff00',
+				h: 0,
+			}
+		}
+		{...props}
+	>
+		{isLoading ? (
+			<Skeleton w="50%" minH="1.5em" margin="0 auto" borderRadius={5} />
+		) : (
+			<Text>{word}</Text>
+		)}
+	</Box>
+)
+
 export default function WordGenerator() {
 	const { t } = useTranslation()
 	const [words, setWords] = useState({})
@@ -65,36 +96,6 @@ export default function WordGenerator() {
 		refetch()
 	}, [nounLang, adjLang])
 
-	const WordBox = ({ word, ...props }) => (
-		<Box
-			bg="#fff"
-			_dark={{
-				bg: 'linear-gradient(to right, #6b4ecb 1%, #363e4d 1%, #363e4d 99%, #6b4ecb 99%)',
-			}}
-			rounded="20px"
-			p={[4, 8]}
-			_after={
-				import.meta.env.DEV && {
-					content: 'attr(aria-label)',
-					position: 'relative',
-					display: 'block',
-					transform: 'translate(-50%)',
-					top: '-50%',
-					left: '15%',
-					color: '#00ff00',
-					h: 0,
-				}
-			}
-			{...props}
-		>
-			{isLoading ? (
-				<Skeleton w="50%" minH="1.5em" margin="0 auto" borderRadius={5} />
-			) : (
-				<Text>{word}</Text>
-			)}
-		</Box>
-	)
-
 	//* Prevent showing the ContentError Message on first renders
 	//* Without this, the error message will be shown before the word set
 	//* have been fetched or shuffled
@@ -120,8 +121,9 @@ export default function WordGenerator() {
 				word={isWordDisplayFlip ? words.noun : words.adj}
 				aria-label={t(`common.${isWordDisplayFlip ? 'noun' : 'adjective'}`)}
 				clipPath="polygon(0 0,25% 0,calc(25% + 15px) 15px,calc(75% - 15px) 15px,75% 0,100% 0,100% 100%,60% 100%,calc(60% - 20px) calc(100% - 20px),calc(40% + 20px) calc(100% - 20px),40% 100%,0 100%)"
+				{...isLoading}
 			/>
-			<Box h={0} aria-hidden="true">
+			<Box h={0} aria-hidden>
 				<Icon
 					as={RiAddLine}
 					color="#8a6aec"
@@ -146,6 +148,7 @@ export default function WordGenerator() {
 					100% 0,100% 100%,60% 100%,calc(60% - 20px) calc(100% - 20px),calc(40% + 20px) calc(100% - 20px),40% 100%,
 				0 100%)`,
 				]}
+				{...isLoading}
 			/>
 		</Grid>
 	)

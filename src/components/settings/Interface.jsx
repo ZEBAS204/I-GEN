@@ -59,7 +59,7 @@ const Interface = ({
 
 	return (
 		<>
-			<Stack heading={t('settings.language')} mt={0}>
+			<Stack as="label" heading={t('settings.language')} mt={0}>
 				<Select
 					value={
 						// Get current language without country code
@@ -77,7 +77,7 @@ const Interface = ({
 					}
 				</Select>
 			</Stack>
-			<Stack heading={t('settings.language_words')}>
+			<Stack as="label" heading={t('settings.language_words')}>
 				<LanguageSelector
 					value={wordsLang}
 					onChange={(e) => setWordsLang(e.target.value)}
@@ -89,7 +89,7 @@ const Interface = ({
 				//* Allow to manually set language options when language="custom"
 				wordsLang === 'custom' && (
 					<Stack mt={2} justify="space-around">
-						<Stack mt={0} direction="column">
+						<Stack as="label" mt={0} direction="column">
 							<SmallHeading>{t('common.adjective')}</SmallHeading>
 							<LanguageSelector
 								value={adjLang}
@@ -98,17 +98,18 @@ const Interface = ({
 						</Stack>
 
 						<IconButton
+							role="checkbox"
 							size="lg"
 							rounded="full"
 							variant="solid"
 							icon={<FlipIcon />}
-							title={t('settings.language_word_flip')}
-							aria-label={t('settings.language_word_flip')}
+							aria-checked={isWordDisplayFlip}
 							colorScheme={isWordDisplayFlip ? 'green' : 'red'}
 							onClick={() => toggleWordFlip()}
+							title={t('settings.language_word_flip')}
 						/>
 
-						<Stack mt={0} direction="column">
+						<Stack as="label" mt={0} direction="column">
 							<SmallHeading>{t('common.noun')}</SmallHeading>
 							<LanguageSelector
 								value={nounLang}

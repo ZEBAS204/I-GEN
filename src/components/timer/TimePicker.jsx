@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useId } from 'react'
 import {
 	Icon,
 	Grid,
@@ -14,19 +14,26 @@ import { useTranslation } from 'react-i18next'
 import { useTimerContext } from './TimerContext'
 
 const Heading = (props) => (
-	<CHeading size="md" {...props}>
+	<CHeading as="label" size="md" {...props}>
 		{props.children}
 	</CHeading>
 )
 
 const ArrowButton = ({ asIcon, onClick }) => (
-	<Button variant="ghost" size="xs" w="90%" onClick={onClick}>
+	<Button
+		variant="ghost"
+		size="xs"
+		w="90%"
+		onClick={onClick}
+		tabIndex="-1"
+		aria-hidden
+	>
 		<Icon as={asIcon} w={6} h={6} />
 	</Button>
 )
 
 const NumText = ({ children }) => (
-	<Text fontSize="lg" aria-hidden="true">
+	<Text fontSize="lg" aria-hidden>
 		{children}
 	</Text>
 )
@@ -39,6 +46,7 @@ const PresetButton = ({ preset, ...props }) => (
 
 export const NumSelector = ({
 	onSelect = () => {},
+	id,
 	time = 0,
 	min = 0,
 	max = 59,
@@ -92,6 +100,7 @@ export const NumSelector = ({
 			<ArrowButton asIcon={RiArrowUpSLine} onClick={increment} />
 			<NumText>{picker.next}</NumText>
 			<Input
+				id={id}
 				type="number"
 				variant="filled"
 				fontWeight="bold"
@@ -101,6 +110,8 @@ export const NumSelector = ({
 				_dark={{
 					bg: 'whiteAlpha.100',
 				}}
+				min={min}
+				max={max}
 				value={picker.current}
 				onChange={(e) => changeTime(parseInt(e.target.value) || 0)}
 			/>
@@ -113,6 +124,9 @@ export const NumSelector = ({
 export const TimePickerContent = () => {
 	const { t } = useTranslation()
 	const { time, changeTime } = useTimerContext()
+	const hourId = useId()
+	const minId = useId()
+	const secId = useId()
 
 	const [hours, setHours] = useState(null)
 	const [minutes, setMinutes] = useState(null)
@@ -156,15 +170,20 @@ export const TimePickerContent = () => {
 	return (
 		<>
 			<Grid templateColumns="repeat(3, 1fr)" gap="5%" justifyItems="center">
-				<Heading>{t('timer.hours')}</Heading>
-				<Heading>{t('timer.minutes')}</Heading>
-				<Heading>{t('timer.seconds')}</Heading>
-				<NumSelector time={hours} onSelect={updateHours} max={99} />
-				<NumSelector time={minutes} onSelect={updateMinutes} />
-				<NumSelector time={seconds} onSelect={updateSeconds} />
+				<Heading htmlFor={hourId}>{t('timer.hours')}</Heading>
+				<Heading htmlFor={minId}>{t('timer.minutes')}</Heading>
+				<Heading htmlFor={secId}>{t('timer.seconds')}</Heading>
+				<NumSelector id={hourId} time={hours} onSelect={updateHours} max={99} />
+				<NumSelector id={minId} time={minutes} onSelect={updateMinutes} />
+				<NumSelector id={secId} time={seconds} onSelect={updateSeconds} />
 			</Grid>
-			<Flex direction="column" gap={6}>
-				<Heading>{t('timer.presets')}</Heading>
+			<Flex
+				aria-labelledby="timerpresets"
+				as="section"
+				direction="column"
+				gap={6}
+			>
+				<Heading id="timerpresets">{t('timer.presets')}</Heading>
 				<PresetButton
 					preset="01:00:00"
 					onClick={() => updateTime({ hours: 1 })}
@@ -203,6 +222,7 @@ export default function TimePicker() {
 
 	return (
 		<Grid
+			w="100%"
 			templateColumns="60% 30%"
 			templateRows="1fr"
 			gap="10%"

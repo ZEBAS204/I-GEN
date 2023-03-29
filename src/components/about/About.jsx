@@ -13,10 +13,7 @@ export default function about() {
 	return (
 		<>
 			<Text>
-				<Trans
-					i18nKey="about.desc"
-					components={[<Link href={__PROJECT_SOURCE__} isExternal />, <br />]}
-				/>
+				<Trans i18nKey="about.desc" components={[<br />]} />
 			</Text>
 			<br />
 			<Text>

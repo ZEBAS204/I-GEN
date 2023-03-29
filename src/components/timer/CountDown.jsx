@@ -20,10 +20,7 @@ const ShapeButton = ({ icon, children, ...props }) => (
 	</Button>
 )
 
-export default function CountDown({
-	parentRunning = false,
-	remainingtimeToDisplay,
-}) {
+export default function CountDown({ parentRunning = false, ...clockProps }) {
 	const { t } = useTranslation()
 	const { toggleRunning, sendReset } = useTimerContext()
 	const [isPickerVisible, setPickerVisible] = useState(false)
@@ -52,7 +49,6 @@ export default function CountDown({
 		<>
 			<Flex
 				aria-label={t(`timer.${isPickerVisible ? 'picker' : 'title'}`)}
-				role={isPickerVisible ? null : 'timer'}
 				justifyContent="center"
 				alignItems="center"
 				borderRadius="20px"
@@ -64,11 +60,7 @@ export default function CountDown({
 				}}
 				clipPath="polygon(0 0,25% 0,calc(25% + 15px) 15px,calc(75% - 15px) 15px,75% 0,100% 0,100% 100%,60% 100%,calc(60% - 15px) calc(100% - 15px),calc(40% + 15px) calc(100% - 15px),40% 100%,0 100%)"
 			>
-				{isPickerVisible ? (
-					<TimePicker />
-				) : (
-					<Clock remainingtimeToDisplay={remainingtimeToDisplay} />
-				)}
+				{isPickerVisible ? <TimePicker /> : <Clock {...clockProps} />}
 			</Flex>
 
 			<Flex
