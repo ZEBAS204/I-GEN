@@ -164,3 +164,13 @@ reviews:
     description: >-
       Dialogue message that will appear when you first open the page on a
       small-screen device
+  timer.time_over:
+    description: Message for screen readers, displayed after the countdown is over
+  timer.time_remaining:
+    description: >-
+      Message for screen readers, displayed on intervals and when the time
+      remaining is 1min/30sec (you don't need to worry about time formatting)
+  timer.time_started:
+    description: Message for screen readers, displayed after the countdown started
+  about.desc_acknowledge:
+    description: Project description, over it is `about.desc`
