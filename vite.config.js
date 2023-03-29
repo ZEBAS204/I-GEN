@@ -67,8 +67,10 @@ export default defineConfig({
 
 			inject: {
 				data: {
-					title: 'I-GEN | Multilanguage Random World Generator',
+					// Title to be used in the document
+					title: 'I-GEN | Multilanguage Random Word Generator',
 				},
+				// HTML Tags to inject into the document
 				tags: [...headMetadata()],
 			},
 		}),
