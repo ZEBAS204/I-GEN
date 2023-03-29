@@ -67,7 +67,7 @@ export default defineConfig({
 
 			inject: {
 				data: {
-					title: 'I-GEN',
+					title: 'I-GEN | Multilanguage Random World Generator',
 				},
 				tags: [...headMetadata()],
 			},
